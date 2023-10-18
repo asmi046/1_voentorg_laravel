@@ -110,21 +110,21 @@ class OptionSeeder extends Seeder
                     "name" => "telegram_lnk",
                     "type" => "plan",
                     'title' => 'Ссылка Telegram',
-                    "value" => "tg://resolve?domain=floridasfl",
+                    "value" => "#",
                 ],
 
                 [
-                    "name" => "whatsapp_lnk",
+                    "name" => "ok_lnk",
                     "type" => "plan",
-                    'title' => 'Ссылка WhatsApp',
-                    "value" => "https://wa.me/792071025551",
+                    'title' => 'Ссылка Одноклассники',
+                    "value" => "https://ok.ru/profile/571716606301",
                 ],
 
                 [
                     "name" => "vk_lnk",
                     "type" => "plan",
                     'title' => 'Ссылка Vk',
-                    "value" => "https://vk.com/florida46kursk",
+                    "value" => "https://vk.com/onevoentorg",
                 ],
             ]);
     }

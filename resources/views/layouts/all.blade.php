@@ -30,8 +30,8 @@
 
     @vite([
         'resources/css/app.css',
-
-
+        'public/fonts/shop/style.css',
+        'public/scss/style.scss',
         'resources/js/app.js',
     ])
 
@@ -39,7 +39,8 @@
 
 <body>
     <div class="wrapper" id="global_app">
-
+        <x-header.top-line></x-header.top-line>
+        <x-header.controll></x-header.controll>
         @yield('content')
 
     </div>
