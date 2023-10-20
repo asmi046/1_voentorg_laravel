@@ -208,6 +208,21 @@ ul {
 .header-menu {
     background-color: var(--menu-color);
     color: white;
+    ul {
+        display: flex;
+        justify-content:  space-between;
+        li {
+            flex-grow: 2;
+
+            a{
+                padding:  8px 0;
+                width: 100%;
+                display: inline-block;
+                text-align: center;
+            }
+        }
+
+    }
 }
 
 .header-menu ul li:first-child a::before{

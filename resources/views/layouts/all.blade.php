@@ -41,6 +41,21 @@
     <div class="wrapper" id="global_app">
         <x-header.top-line></x-header.top-line>
         <x-header.controll></x-header.controll>
+
+        <section class="menu_section">
+            <div class="header-menu">
+              <div class="container">
+                    <ul>
+                        <li><a href="#">Каталог</a></li>
+                        <li><a href="#">Обувь, берцы</a></li>
+                        <li><a href="#">Головные уборы</a></li>
+                        <li><a href="#">Снаряжение</a></li>
+                        <li><a href="#">Одежда</a></li>
+                    </ul>
+              </div>
+            </div>
+        </section>
+
         @yield('content')
 
     </div>
