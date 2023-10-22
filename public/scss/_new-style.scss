@@ -14,6 +14,13 @@ $redcolor:  #ed1c24;
     width: 1140px;
     margin-left: auto;
     margin-right: auto;
+
+    @media screen and (max-width: 1200px) {
+            width: 94%;
+            margin-left: 3%;
+            margin-right: 3%;
+    }
+
 }
 
 ul {
@@ -222,6 +229,10 @@ ul {
             }
         }
 
+    }
+
+    @media screen and (max-width: 862px) {
+        display: none;
     }
 }
 

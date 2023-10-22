@@ -17,12 +17,12 @@
 	<meta charset="UTF-8">
 	<meta name="format-detection" content="telephone=no">
 
-    <link rel="icon" type="image/png" href="{{asset('/img/favicons/icon256.png')}}" sizes="256x256">
-    <link rel="icon" type="image/png" href="{{asset('/img/favicons/icon128.png')}}" sizes="128x128">
-    <link rel="icon" type="image/png" href="{{asset('/img/favicons/icon64.png')}}" sizes="64x64">
-    <link rel="icon" type="image/png" href="{{asset('/img/favicons/icon32.png')}}" sizes="32x32">
-    <link rel="icon" type="image/png" href="{{asset('/img/favicons/icon16.png')}}" sizes="16x16">
-    <link rel="icon" type="image/svg" href="{{asset('/img/favicons/logo-mini.svg')}}" sizes="any">
+    <link rel="icon" type="image/png" href="{{asset('/images/favicons/icon256.png')}}" sizes="256x256">
+    <link rel="icon" type="image/png" href="{{asset('/images/favicons/icon128.png')}}" sizes="128x128">
+    <link rel="icon" type="image/png" href="{{asset('/images/favicons/icon64.png')}}" sizes="64x64">
+    <link rel="icon" type="image/png" href="{{asset('/images/favicons/icon32.png')}}" sizes="32x32">
+    <link rel="icon" type="image/png" href="{{asset('/images/favicons/icon16.png')}}" sizes="16x16">
+    <link rel="icon" type="image/svg" href="{{asset('/images/favicons/icon.svg')}}" sizes="any">
 
     <meta name="_token" content="{{ csrf_token() }}">
 
@@ -41,23 +41,26 @@
     <div class="wrapper" id="global_app">
         <x-header.top-line></x-header.top-line>
         <x-header.controll></x-header.controll>
+        <x-header.main-menu></x-header.main-menu>
 
-        <section class="menu_section">
-            <div class="header-menu">
-              <div class="container">
-                    <ul>
-                        <li><a href="#">Каталог</a></li>
-                        <li><a href="#">Обувь, берцы</a></li>
-                        <li><a href="#">Головные уборы</a></li>
-                        <li><a href="#">Снаряжение</a></li>
-                        <li><a href="#">Одежда</a></li>
-                    </ul>
-              </div>
+
+        <section class="slide">
+            <div class="container">
+                <swiper-container navigation="true">
+                    <swiper-slide>
+                        Slide 1
+                    </swiper-slide>
+
+                    <swiper-slide>
+                        Slide 2
+                    </swiper-slide>
+                </swiper-container>
             </div>
         </section>
 
         @yield('content')
 
+        <x-footer></x-footer>
     </div>
 </body>
 
