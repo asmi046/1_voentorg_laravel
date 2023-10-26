@@ -43,21 +43,6 @@
         <x-header.controll></x-header.controll>
         <x-header.main-menu></x-header.main-menu>
 
-
-        <section class="slide">
-            <div class="container">
-                <swiper-container navigation="true">
-                    <swiper-slide>
-                        Slide 1
-                    </swiper-slide>
-
-                    <swiper-slide>
-                        Slide 2
-                    </swiper-slide>
-                </swiper-container>
-            </div>
-        </section>
-
         @yield('content')
 
         <x-footer></x-footer>
