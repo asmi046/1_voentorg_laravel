@@ -112,6 +112,11 @@ ul {
     width: 90%;
 }
 
+.cat-item .children {
+    display: none;
+    flex-direction: column;
+}
+
 .cat_navigation ul .children{
     min-height: unset;
 }

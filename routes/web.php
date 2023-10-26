@@ -17,6 +17,9 @@ use App\Http\Controllers\EasyPageController;
 */
 
 Route::get('/', [IndexController::class, "show"])->name('home');
+
+Route::get('/category', [EasyPageController::class, "category"])->name('category');
+
 Route::get('/kontakty', [EasyPageController::class, "kontakty"])->name('kontakty');
 Route::get('/proizvodstvo', [EasyPageController::class, "proizvodstvo"])->name('proizvodstvo');
 Route::get('/optovye-postavki', [EasyPageController::class, "optovye_postavki"])->name('optovye-postavki');

@@ -16,6 +16,10 @@ class EasyPageController extends Controller
         return view('kontakty');
     }
 
+    public function category() {
+        return view('category');
+    }
+
     public function proizvodstvo() {
         return view('proizvodstvo');
     }
