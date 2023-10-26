@@ -3,9 +3,7 @@
 		<div class="header-top__wrapper">
 
             <ul id="header-top__menu" class="header-top__menu">
-                <li><a href="">Контакты</a></li>
-                <li><a href="">Производство ателье</a></li>
-                <li><a href="">Оптовые поставки</a></li>
+                <x-smile-menu-puncts></x-smile-menu-puncts>
             </ul>
 
 			<ul class="social-menu">

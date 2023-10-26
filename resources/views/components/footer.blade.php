@@ -3,9 +3,7 @@
       <div class="footer-block">
         <div class="footer-title"><h2>Информация</h2></div>
         <ul>
-          <li><a href="#">Оптовые поставки</a></li>
-          <li><a href="#">Производство ателье</a></li>
-          <li><a href="#">Контакты</a></li>
+            <x-smile-menu-puncts></x-smile-menu-puncts>
         </ul>
       </div>
       <div class="footer-block">

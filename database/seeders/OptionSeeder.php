@@ -30,10 +30,17 @@ class OptionSeeder extends Seeder
                 ],
 
                 [
-                    "name" => "delivery",
+                    "name" => "proizvodstvo",
                     "type" => "rich",
-                    'title' => 'Доставка',
-                    "value" => file_get_contents(public_path('texts//delivery.txt')),
+                    'title' => 'Производство',
+                    "value" => file_get_contents(public_path('texts//proizvodstvo.txt')),
+                ],
+
+                [
+                    "name" => "opt",
+                    "type" => "rich",
+                    'title' => 'Оптовые поставки',
+                    "value" => file_get_contents(public_path('texts//opt.txt')),
                 ],
 
                 [
