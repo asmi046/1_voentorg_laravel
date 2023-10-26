@@ -6,10 +6,10 @@
             <span class="sep"> / </span> <a href="{{route("catalog")}}">Каталог</a>
             <span class="sep"> / </span> <span class="finish">{{$category['name']}}</span>
         @endif --}}
-        @if (Request::route()->named('product'))
+        {{-- @if (Request::route()->named('product'))
             <span class="sep"> / </span> <a href="{{route('category', $category->slug)}}">{{$category->name}}</a>
             <span class="sep"> / </span> <span class="finish">{{$tovar['title']}}</span>
-        @endif
+        @endif --}}
         @if (isset($title))
             <span class="sep"> / </span> <span class="finish">{{ $title }}</span>
         @endif

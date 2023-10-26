@@ -1,0 +1,140 @@
+.product-wrapper {
+    display: flex;
+}
+
+.product-wrapper__images {
+    flex: 1;
+}
+
+.entry-content {
+    flex: 1;
+}
+
+.entry-content h1{
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.buy_btn {
+    position: relative;
+    padding-left: 45px ;
+}
+
+.buy_btn:before {
+    content: "\e907";
+    font-family: 'shop';
+    color: white;
+    position: absolute;
+    font-size: 20px;
+    left: 15px;
+    top: 5px;
+}
+
+/* Описание товара на странице */
+
+.tovar_bottom_part {
+    width:100%;
+}
+
+.sku_in_page span{
+    color: var(--gray-color);
+}
+
+.sku_in_page {
+    margin: 0 0 20px 0;
+    font-size: 14px;
+}
+
+/* Описание товара на странице end */
+
+
+/* слайдер на странице карточки товара */
+
+
+.slider-for {
+	width: 500px;
+	margin: 0px auto 1px 0;
+	overflow: hidden;
+}
+
+
+.slider-nav {
+    width: 500px;
+    height: 112px;
+    margin: 0px auto 1px 0;
+    overflow: hidden;
+}
+
+.slider-for__img-item {
+	position: relative;
+	display: block;
+	width: 500px;
+	height: 460px;
+	background-repeat: no-repeat;
+	background-position: center;
+	-webkit-background-size: contain;
+	background-size: contain;
+    border: 1px solid #d9d9da;
+    border-radius:10px;
+}
+
+.slider-for__img-item-link {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+.slider-nav .item {
+	width: 50px;
+	height: 90px;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+	margin: 10px;
+	outline: none;
+    border: 1px solid #d9d9da;
+    border-radius:10px;
+}
+
+.slider-nav .slick-prev:before,
+.slider-nav .slick-next:before {
+	color: gray;
+	opacity: 1;
+}
+
+.slider-nav .slick-prev,
+.slider-nav .slick-next {
+	z-index: 100;
+}
+
+.slider-nav .slick-prev {
+	left: 0;
+}
+
+.slider-nav .slick-next {
+	right: 0;
+}
+
+@media (max-width: 768px) {
+    .product-wrapper {
+        flex-direction: column;
+    }
+
+    .entry-content {
+        margin-left: 0;
+        margin-top: 20px;
+    }
+
+    .slider-nav,
+    .slider-for {
+        margin: 0px auto 1px auto;
+    }
+
+	.tovar_bottom_part {
+		margin-top: 40px;
+	}
+}
+
+/* слайдер на странице карточки товара */
