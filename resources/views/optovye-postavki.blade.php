@@ -9,6 +9,8 @@
 @section('description', $description)
 
 @section('content')
+    <x-breadcrumbs :title="$title"></x-breadcrumbs>
+
     <div class="container">
         <h1>Оптовые поставки</h1>
 
