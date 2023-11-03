@@ -14,10 +14,13 @@ class Category extends Model
     use AsSource;
 
     public $fillable = [
-        'title',
-        'slug',
-        'description',
-        'img'
+        "title",
+        "slug",
+        "parent",
+        "description",
+        "img",
+        "seo_title",
+        "seo_description"
     ];
 
     public function setSlugAttribute($value)

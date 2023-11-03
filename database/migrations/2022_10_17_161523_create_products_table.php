@@ -16,20 +16,19 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('sku')->unique();
-            $table->string('title');
-            $table->string('slug');
-            $table->string('img')->nullable();
-            $table->text('description')->nullable();
-            $table->double('price', 10, 2);
-            $table->double('old_price', 10, 2)->nullable()->default(0);
-            $table->integer('sales_count')->nullable()->default(0);
+            $table->string('sku')->unique()->comment('Артикул');
+            $table->string('group')->unique()->comment('Группа для вывода размеров или цветов');
+            $table->string('title')->comment('Название товара');;
+            $table->string('slug')->comment('Слаг');
+            $table->string('img')->nullable()->comment('Заглавное изображение');
+            $table->text('description')->nullable()->comment('Описание');
+            $table->text('short_description')->nullable()->comment('Краткое Описание');
+            $table->text('specification')->nullable()->comment('Спецификация');
+
+            $table->integer('viev_count')->nullable()->default(0);
 
             $table->boolean("hit")->nullable();
             $table->boolean("new")->nullable();
-
-            $table->string('height')->nullable();
-            $table->string('radius')->nullable();
 
             $table->string('seo_title')->nullable();
             $table->text('seo_description')->nullable();

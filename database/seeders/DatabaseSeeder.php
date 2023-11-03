@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             OptionSeeder::class,
+            CategorySeeder::class,
         ]);
         // \App\Models\User::factory(10)->create();
 
