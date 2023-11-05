@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EasyPageController;
 
 /*
@@ -18,7 +19,8 @@ use App\Http\Controllers\EasyPageController;
 
 Route::get('/', [IndexController::class, "show"])->name('home');
 
-Route::get('/category', [EasyPageController::class, "category"])->name('category');
+Route::get('/category/katalog', [CategoryController::class, "catalog"])->name('catalog');
+Route::get('/category/katalog/{slug}', [CategoryController::class, "category"])->name('category');
 Route::get('/product', [EasyPageController::class, "product"])->name('product');
 
 Route::get('/kontakty', [EasyPageController::class, "kontakty"])->name('kontakty');

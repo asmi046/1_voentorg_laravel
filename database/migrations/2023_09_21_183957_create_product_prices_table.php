@@ -22,7 +22,7 @@ return new class extends Migration
 
             $table->string('sku', 20)->unicue();
             $table->string('value', 80);
-            $table->double('price', 10, 2);
+            $table->double('price', 10, 2)->default(0);
             $table->double('old_price', 10, 2)->default(0);
         });
     }

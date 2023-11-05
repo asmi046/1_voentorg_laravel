@@ -2,10 +2,12 @@
 <div class="container">
     <div class="breadcrumbs">
         <a href="{{route('home')}}">Главная</a>
-        {{-- @if (Request::route()->named('category'))
+
+        @if (Request::route()->named('category'))
             <span class="sep"> / </span> <a href="{{route("catalog")}}">Каталог</a>
-            <span class="sep"> / </span> <span class="finish">{{$category['name']}}</span>
-        @endif --}}
+            <span class="sep"> / </span> <span class="finish">{{$category->title}}</span>
+        @endif
+
         {{-- @if (Request::route()->named('product'))
             <span class="sep"> / </span> <a href="{{route('category', $category->slug)}}">{{$category->name}}</a>
             <span class="sep"> / </span> <span class="finish">{{$tovar['title']}}</span>

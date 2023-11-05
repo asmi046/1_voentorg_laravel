@@ -1,17 +1,17 @@
 @extends('layouts.all')
 
 @php
-    $title = "Категория";
-    $description = "Категория";
+    $title = $category_info->seo_title;
+    $description = $category_info->seo_description;
 @endphp
 
 @section('title', $title)
 @section('description', $description)
 
 @section('content')
-    <x-breadcrumbs :title="$title"></x-breadcrumbs>
+    <x-breadcrumbs :category="$category_info" ></x-breadcrumbs>
     <div class="container">
-        <h1>Категория</h1>
+        <h1>{{$category_info->title}}</h1>
 
         <div class="cat_product_wrapper">
             <div class ="cat_navigation">
@@ -73,9 +73,10 @@
             </div>
 
             <div class="cat_product_list">
-                @for ($i=0; $i<16; $i++)
-                    <x-tovar-card.main></x-tovar-card.main>
-                @endfor
+                @foreach ($tovars as $item)
+                    <x-tovar-card.main :item="$item"></x-tovar-card.main>
+                @endforeach
+
             </div>
         </div>
     </div>

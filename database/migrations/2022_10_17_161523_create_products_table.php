@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('sku')->unique()->comment('Артикул');
-            $table->string('group')->unique()->comment('Группа для вывода размеров или цветов');
+            $table->string('group')->comment('Группа для вывода размеров или цветов');
             $table->string('title')->comment('Название товара');;
             $table->string('slug')->comment('Слаг');
             $table->string('img')->nullable()->comment('Заглавное изображение');
@@ -26,6 +26,8 @@ return new class extends Migration
             $table->text('specification')->nullable()->comment('Спецификация');
 
             $table->integer('viev_count')->nullable()->default(0);
+
+            $table->integer('old_site_id')->nullable()->default(0);
 
             $table->boolean("hit")->nullable();
             $table->boolean("new")->nullable();

@@ -1,10 +1,10 @@
-<a href="#" class="cat_in_page_blk">
+<a href="{{route('category', $item->slug)}}" class="cat_in_page_blk">
     <div class="catimg">
-        <img src="{{asset('tmp_content/cat/cat1.jpg')}}" alt="" title="">
+        <img src="{{$item->img}}" alt="" title="">
     </div>
 
     <div class="cattext">
-        <span>Головные уборы</span>
+        <span>{{$item->title}}</span>
     </div>
 
 </a>

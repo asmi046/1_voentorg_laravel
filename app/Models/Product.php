@@ -21,22 +21,20 @@ class Product extends Model
     use Filterable;
 
     public $fillable = [
-        'id',
         'sku',
+        'group',
         'title',
         'slug',
         'img',
         'description',
-        'price',
-        'old_price',
-        'sales_count',
+        'short_description',
+        'specification',
+        'viev_count',
+        'old_site_id',
         'hit',
         'new',
-        'asc_nal',
-        'height',
-        'radius',
         'seo_title',
-        'seo_description'
+        'seo_description',
     ];
 
     protected $allowedSorts = [
@@ -66,11 +64,11 @@ class Product extends Model
         return $this->hasMany(ProductImage::class);
     }
 
-    public function tovar_categories() {
-        return $this->belongsToMany(Category::class);
+    public function product_prices() {
+        return $this->hasMany(ProductPrices::class)->orderBy('price');
     }
 
-    public function tovar_celebration() {
-        return $this->belongsToMany(Celebration::class);
+    public function tovar_categories() {
+        return $this->belongsToMany(Category::class);
     }
 }

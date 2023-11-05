@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
+use Illuminate\Support\Facades\Storage;
 use DB;
 
 class CategorySeeder extends Seeder
@@ -12,6 +13,28 @@ class CategorySeeder extends Seeder
     /**
      * Run the database seeds.
      */
+
+     protected function get_media_data($id) {
+
+        if (empty($id)) return [];
+
+
+
+
+            $data = \WordPress::media()
+            ->find(1, ['id' => $id]);
+
+
+            if (!isset($data['guid'])) return [];
+
+            $file_info = pathinfo($data['guid']['rendered']);
+
+            return [
+                'url' => $data['guid']['rendered'],
+                'alt' => $data['alt_text'],
+                'file_name' => $data['slug'].".".$file_info['extension'],
+            ];
+    }
 
 
     public function run(): void
@@ -44,10 +67,26 @@ class CategorySeeder extends Seeder
 
         foreach ($category as $item) {
             $parentId = $item["id"];
+
+            try{
+                $thumb = $this->get_media_data($item["meta"]["_cat_preview"]);
+                $img = "";
+                if (!empty($thumb))
+                    {
+                        Storage::disk('public')->put($thumb["file_name"], file_get_contents($thumb["url"]), 'public');
+                        $img = Storage::url($thumb["file_name"]);
+                    }
+
+            } catch (\Throwable $e) {
+                echo 'Caught exception: ',  $e->getMessage(), "\n";
+                $img = "";
+            }
+
             DB::table("categories")->insert([
                 "title" => $item["name"],
                 "slug" => $item["slug"],
                 "parent" => 0,
+                "img" => $img,
                 "description" => $item["description"],
                 "seo_title" =>  $item["name"]. " купить в Курске",
                 "seo_description" =>  $item["name"]. " купить в Курске по выгодной цене. Доставка по России.",

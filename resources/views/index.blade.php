@@ -12,21 +12,22 @@
     <x-main-banner></x-main-banner>
 
     <x-tovar-line-section name="Популярные товары">
-        @for ($i=0; $i<4; $i++)
-            <x-tovar-card.main></x-tovar-card.main>
-        @endfor
+        @foreach ($sales_liders as $item)
+            <x-tovar-card.main :item="$item"></x-tovar-card.main>
+        @endforeach
+
     </x-tovar-line-section>
 
     <x-categories.list>
-        @for ($i=0; $i<20; $i++)
-            <x-categories.item></x-categories.item>
-        @endfor
+        @foreach ($category as $item)
+            <x-categories.item :item="$item"></x-categories.item>
+        @endforeach
     </x-categories.list>
 
     <x-tovar-line-section name="Новинки">
-        @for ($i=0; $i<8; $i++)
-            <x-tovar-card.main></x-tovar-card.main>
-        @endfor
+        @foreach ($sales as $item)
+            <x-tovar-card.main :item="$item"></x-tovar-card.main>
+        @endforeach
     </x-tovar-line-section>
 
 @endsection

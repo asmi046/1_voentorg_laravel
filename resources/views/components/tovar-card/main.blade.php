@@ -1,15 +1,21 @@
 <div class="prod-card__body d-flex">
 
 	<a href="#" class="prod-card__link">
-		<img src="{{asset('tmp_content/tovar/bertsi.jpg')}}" alt="">
+		<img src="{{$item->img}}" alt="">
 	</a>
 
 	<a href="#" class="prod-card__text d-flex">
-		<h4>Ботинки Фарадей 974 зимние</h4>
-		<span class="spacer__vendor">Артикул: </span>
+		<h4>{{$item->title}}</h4>
+		<span class="spacer__vendor">Артикул: {{$item->sku}}</span>
 		<div class="prod-card__price d-flex">
-            <p class='prod-card__price-old'> 3332 руб.</p>
-			<p class="prod-card__price-new">1111 руб.</p>
+            @if ($item->product_prices[0]->old_price)
+                <p class='prod-card__price-old'> {{$item->product_prices[0]->old_price}} руб.</p>
+			@endif
+
+            <p class="prod-card__price-new">{{$item->product_prices[0]->price}} руб.</p>
+
+
+
 		</div>
 		<p class="prod-card__benefit"><span></span></p>
 	</a>
