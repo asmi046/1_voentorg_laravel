@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace App\Orchid\Screens;
 
+use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
+
+use App\Models\Category;
+use App\Models\Product;
 
 class PlatformScreen extends Screen
 {
@@ -16,23 +20,33 @@ class PlatformScreen extends Screen
      */
     public function query(): iterable
     {
-        return [];
+        return [
+            'metrics' => [
+                'tovars' => ['value' => Product::all()->count()],
+                'categorys'   => ['value' => Category::all()->count()],
+            ],
+
+        ];
     }
 
     /**
      * The name of the screen displayed in the header.
+     *
+     * @return string|null
      */
     public function name(): ?string
     {
-        return 'Get Started';
+        return 'Краски и штукатурки';
     }
 
     /**
      * Display header description.
+     *
+     * @return string|null
      */
     public function description(): ?string
     {
-        return 'Welcome to your Orchid application.';
+        return 'Крски и штукатурки для декоративной отделки';
     }
 
     /**
@@ -42,7 +56,11 @@ class PlatformScreen extends Screen
      */
     public function commandBar(): iterable
     {
-        return [];
+        return [
+            Link::make('Перейти на сайт')
+                ->href(route("home"))
+                ->icon('window-sidebar'),
+        ];
     }
 
     /**
@@ -53,8 +71,10 @@ class PlatformScreen extends Screen
     public function layout(): iterable
     {
         return [
-            Layout::view('platform::partials.update-assets'),
-            Layout::view('platform::partials.welcome'),
+            Layout::metrics([
+                'Товаров' => 'metrics.tovars',
+                'Категорий' => 'metrics.categorys',
+            ]),
         ];
     }
 }

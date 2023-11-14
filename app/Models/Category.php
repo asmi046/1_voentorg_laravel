@@ -6,12 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 use Orchid\Screen\AsSource;
+use Orchid\Filters\Filterable;
 use Illuminate\Support\Str;
+use Orchid\Filters\Types\Like;
 
 class Category extends Model
 {
     use HasFactory;
     use AsSource;
+    use Filterable;
 
     public $fillable = [
         "title",
@@ -21,6 +24,15 @@ class Category extends Model
         "img",
         "seo_title",
         "seo_description"
+    ];
+
+    protected $allowedSorts = [
+        'title',
+    ];
+
+    protected $allowedFilters = [
+        'title' => Like::class,
+        'parent' => Like::class,
     ];
 
     public function setSlugAttribute($value)
@@ -33,5 +45,9 @@ class Category extends Model
 
     public function category_tovars() {
         return $this->belongsToMany(Product::class);
+    }
+
+    public function parent_category() {
+        return $this->hasOne(Category::class,"id","parent");
     }
 }
