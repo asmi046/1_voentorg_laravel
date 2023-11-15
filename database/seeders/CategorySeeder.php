@@ -44,9 +44,11 @@ class CategorySeeder extends Seeder
     {
         // gwEJ s36l z7T3 sq5x qZZj dYzd
 
-        $RR = \Http::get('https://1voentorg.ru/wp-json/wp/v2/categories?per_page=100&parent=247');
+        $RR = \Http::connectTimeout(40)::get('https://1voentorg.ru/wp-json/wp/v2/categories?per_page=100&parent=247');
 
         print_r($RR);
+
+        return;
 
         $category = [];
 
