@@ -55,7 +55,7 @@ class CategorySeeder extends Seeder
         ->get();
 
         echo "1-------\n\r";
-        print_r(config('app'));
+        print_r(config('wp.WORDPRESS_URL'));
 
         foreach ($all_cat["data"] as $item) {
 
