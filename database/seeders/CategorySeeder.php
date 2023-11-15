@@ -55,7 +55,7 @@ class CategorySeeder extends Seeder
         ->get();
 
         echo "1-------\n\r";
-        print_r(App::environment());
+        print_r(config('app'));
 
         foreach ($all_cat["data"] as $item) {
 
