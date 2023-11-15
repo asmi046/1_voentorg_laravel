@@ -8,6 +8,9 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
 use DB;
 
+use Illuminate\Support\Facades\App;
+
+
 class CategorySeeder extends Seeder
 {
     /**
