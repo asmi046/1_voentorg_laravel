@@ -52,7 +52,7 @@ class CategorySeeder extends Seeder
         ->get();
 
         echo "1-------\n\r";
-        print_r(env("APP_URL"));
+        print_r(App::environment());
 
         foreach ($all_cat["data"] as $item) {
 
