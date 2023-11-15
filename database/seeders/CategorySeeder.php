@@ -51,7 +51,7 @@ class CategorySeeder extends Seeder
         ->parameter("parent", 247)
         ->get();
 
-        print_r($all_cat);
+        print_r(\WordPress::posts()->get());
 
         foreach ($all_cat["data"] as $item) {
 
