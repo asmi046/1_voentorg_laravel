@@ -44,6 +44,10 @@ class CategorySeeder extends Seeder
     {
         // gwEJ s36l z7T3 sq5x qZZj dYzd
 
+        $RR = \Http::get('https://1voentorg.ru/wp-json/wp/v2/categories?per_page=100&parent=247');
+
+        print_r($RR);
+
         $category = [];
 
         $cat_sootn = [];
@@ -54,8 +58,8 @@ class CategorySeeder extends Seeder
         ->parameter("parent", 247)
         ->get();
 
-        echo "1-------\n\r";
-        print_r(config('wp.WORDPRESS_URL'));
+
+
 
         foreach ($all_cat["data"] as $item) {
 
