@@ -18,6 +18,7 @@ class Category extends Model
 
     public $fillable = [
         "title",
+        "title_mini",
         "slug",
         "parent",
         "description",

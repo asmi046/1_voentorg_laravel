@@ -41,6 +41,11 @@ class CategoryEditFields extends Rows
                 ->required()
                 ->horizontal(),
 
+            Input::make('category.title_mini')
+                ->title('Заголовок (короткий)')
+                ->help('Короткий заголовок категории')
+                ->horizontal(),
+
 
             Input::make('category.slug')
                 ->title('Окончание ссылки')

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string("title")->comment("Название");
+            $table->string("title_mini")->nullable()->comment("Название");
             $table->string("slug")->comment("Слаг");
             $table->integer("parent")->nullable()->comment("Родительская категория (ID)");
             $table->text("description")->nullable()->comment("Описание");

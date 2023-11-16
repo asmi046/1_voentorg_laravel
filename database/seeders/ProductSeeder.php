@@ -13,6 +13,7 @@ class ProductSeeder extends Seeder
 {
 
     protected $categories;
+    protected $image_load = false;
 
     protected function string_clear($str) {
         return str_replace(['&#171;','&#187;'], "", $str);
@@ -30,7 +31,8 @@ class ProductSeeder extends Seeder
             $img = "";
             if (!empty($thumb))
                 {
-                    Storage::disk('public')->put($thumb["file_name"], file_get_contents($thumb["url"]), 'public');
+                    if ($this->image_load)
+                        Storage::disk('public')->put($thumb["file_name"], file_get_contents($thumb["url"]), 'public');
                     $img = Storage::url($thumb["file_name"]);
                 }
 
@@ -106,7 +108,8 @@ class ProductSeeder extends Seeder
             if (!empty($thumb))
             {
                 try {
-                    Storage::disk('public')->put($thumb["file_name"], file_get_contents($thumb["url"]), 'public');
+                    if ($this->image_load)
+                        Storage::disk('public')->put($thumb["file_name"], file_get_contents($thumb["url"]), 'public');
 
                     DB::table("product_images")->insert([
                         "product_id" => $t_id,
