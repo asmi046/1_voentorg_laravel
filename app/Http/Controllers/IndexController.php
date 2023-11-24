@@ -25,7 +25,7 @@ class IndexController extends Controller
         }
     )->take(8)->get();
 
-        $category = Category::where("parent", 0)->get();
+        $category = Category::where("parent", 0)->orWhere("parent", NULL) ->get();
 
         // dd($all_product, $sales_liders,  $sales);
 

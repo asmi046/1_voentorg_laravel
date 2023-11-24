@@ -175,8 +175,8 @@ class ProductSeeder extends Seeder
 
                     $t_id = DB::getPdo()->lastInsertId();
 
-                    $cats = $this->set_category($item, $t_id);
-                    DB::table("category_product")->insert($cats);
+                    // $cats = $this->set_category($item, $t_id);
+                    // DB::table("category_product")->insert($cats);
 
                     $this->set_galery($item, $t_id);
 
