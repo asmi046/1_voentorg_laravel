@@ -20,7 +20,9 @@
 
     <x-categories.list>
         @foreach ($category as $item)
-            <x-categories.item :item="$item"></x-categories.item>
+            @if (!empty($item->img))
+                <x-categories.item :item="$item"></x-categories.item>
+            @endif
         @endforeach
     </x-categories.list>
 
