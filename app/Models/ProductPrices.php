@@ -20,4 +20,8 @@ class ProductPrices extends Model
         'price',
         'old_price',
     ];
+
+    public function product_info() {
+        return $this->hasOne(Product::class, 'id', 'product_id');
+    }
 }

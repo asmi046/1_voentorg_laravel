@@ -38,8 +38,8 @@ class ProductPricesTable extends Table
 
             TD::make('id', 'id'),
 
-            TD::make('ed_izm', 'Единица измерения'),
-            TD::make('volume', 'Объем'),
+            TD::make('sku', 'Артикул'),
+            TD::make('value', 'Характеристика'),
             TD::make('price', 'Цена'),
             TD::make('old_price', 'Старая цена'),
 

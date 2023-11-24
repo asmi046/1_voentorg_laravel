@@ -19,4 +19,8 @@ class ProductImage extends Model
         'alt',
         'title'
     ];
+
+    public function product_info() {
+        return $this->hasOne(Product::class, 'id', 'product_id');
+    }
 }

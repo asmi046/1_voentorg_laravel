@@ -4,9 +4,8 @@ namespace App\Orchid\Screens\Product;
 
 use Orchid\Screen\Screen;
 
-use App\Models\ProductGroupImage;
-use App\Models\Category;
 use App\Models\ProductImage;
+use App\Models\Category;
 use App\Models\Celebration;
 
 use Orchid\Screen\Actions\Link;
@@ -32,7 +31,7 @@ class ProductGaleryCreateScreen extends Screen
 
     public function query($id): iterable
     {
-        $tovar = ProductGroupImage::where('product_group_id', $id)->first();
+        $tovar = ProductImage::where('product_id', $id)->first();
         return [
             "tovar" => $tovar
         ];
@@ -81,9 +80,9 @@ class ProductGaleryCreateScreen extends Screen
         ]);
 
         $data = $request->get('element');
-        $data['product_group_id'] = $this->tovar->product_info->id;
+        $data['product_id'] = $this->tovar->product_info->id;
 
-        $element_id = ProductGroupImage::create($data);
+        $element_id = ProductImage::create($data);
 
         return redirect()->route('platform.product_galery_edit', $element_id);
     }

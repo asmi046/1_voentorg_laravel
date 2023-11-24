@@ -4,7 +4,7 @@ namespace App\Orchid\Screens\Product;
 
 use Orchid\Screen\Screen;
 
-use App\Models\ProductGroup;
+use App\Models\Product;
 use App\Models\Category;
 use App\Models\ProductImage;
 
@@ -72,10 +72,9 @@ class ProductCreateScreen extends Screen
         ]);
 
 
-        $new_id = ProductGroup::create($request->get('product'));
+        $new_id = Product::create($request->get('product'));
 
-        $new_id->category_tovars()->sync($request->get("category"));
-        $new_id->effects()->sync($request->get("effect"));
+        $new_id->tovar_categories()->sync($request->get("category"));
 
         return redirect()->route('platform.product_edit', $new_id);
     }

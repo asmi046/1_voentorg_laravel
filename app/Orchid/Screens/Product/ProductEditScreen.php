@@ -4,7 +4,7 @@ namespace App\Orchid\Screens\Product;
 
 use Orchid\Screen\Screen;
 
-use App\Models\ProductGroup;
+use App\Models\Product;
 use App\Models\Category;
 use App\Models\ProductImage;
 use App\Models\Celebration;
@@ -37,12 +37,12 @@ class ProductEditScreen extends Screen
 
     public function query($id): iterable
     {
-        $product = ProductGroup::where('id',$id)->first();
+        $product = Product::where('id',$id)->first();
 
-        $product_galery = $product->tovar_images;
-        $product_prices = $product->tovar_prices;
+        $product_galery = $product->product_images;
+        $product_prices = $product->product_prices;
 
-        $category = $product->category_tovars;
+        $category = $product->tovar_categories;
         $effect = $product->effects;
 
         // dd($category, $effect);
@@ -112,7 +112,9 @@ class ProductEditScreen extends Screen
     }
 
     public function delete_galery_img($id) {
+
         $dell_elem = $this->product_galery->where('id', $id)->first();
+
         if ($dell_elem ) {
             $dell_elem->delete();
             Toast::info("Запись удалена");
@@ -138,8 +140,7 @@ class ProductEditScreen extends Screen
             'product.sku' => ['required', 'string'],
         ]);
 
-        $this->product->category_tovars()->sync($request->get("category"));
-        $this->product->effects()->sync($request->get("effect"));
+        $this->product->tovar_categories()->sync($request->get("category"));
 
         $this->product->fill($request->get('product'))->save();
 

@@ -4,7 +4,7 @@ namespace App\Orchid\Screens\Product;
 
 use Orchid\Screen\Screen;
 
-use App\Models\ProductGroupPrice;
+use App\Models\ProductPrices;
 use App\Models\Category;
 use App\Models\ProductImage;
 use App\Models\Celebration;
@@ -32,7 +32,7 @@ class ProductPriceCreateScreen extends Screen
 
     public function query($id): iterable
     {
-        $tovar = ProductGroupPrice::where('product_group_id', $id)->first();
+        $tovar = ProductPrices::where('product_id', $id)->first();
         return [
             "tovar" => $tovar
         ];
@@ -45,7 +45,7 @@ class ProductPriceCreateScreen extends Screen
      */
     public function name(): ?string
     {
-        return 'Создание ценового предложения для продукта: '.$this->tovar->product_info->title;
+        return 'Создание варианта цены для продукта: '.$this->tovar->product_info->title;
     }
 
     /**
@@ -77,15 +77,15 @@ class ProductPriceCreateScreen extends Screen
 
     public function save_info( Request $request) {
         $request->validate([
-            'element.volume' => ['required', 'string'],
+            'element.sku' => ['required', 'string'],
             'element.price' => ['required', 'string'],
             'element.old_price' => ['required', 'string'],
         ]);
 
         $data = $request->get('element');
-        $data['product_group_id'] = $this->tovar->product_info->id;
+        $data['product_id'] = $this->tovar->product_info->id;
 
-        $element_id = ProductGroupPrice::create($data);
+        $element_id = ProductPrices::create($data);
 
         return redirect()->route('platform.product_price_edit', $element_id);
     }

@@ -44,15 +44,15 @@ class ProductListTable extends Table
             TD::make('sku', 'Артикул')->width("20%")->sort(),
             TD::make('category', 'Категории')->render(function($element) {
                 $rstr = "";
-                foreach($element->category_tovars as $item) {
-                    $rstr .= $item->name."<br/>";
+                foreach($element->tovar_categories()->get() as $item) {
+                    $rstr .= $item->title."<br/>";
                 }
 
                 return $rstr;
-            })->width("20%"),
-            TD::make('tm', 'Торговая арка')->sort()->width("15%"),
+            })->width("25%"),
 
-            TD::make('title', 'Заголовок')->width("45%")->filter(TD::FILTER_TEXT),
+
+            TD::make('title', 'Заголовок')->width("55%")->sort(),
 
             // TD::make('slug', 'Ссылка'),
             // TD::make('description', 'Описание')->render(function($element) {

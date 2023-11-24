@@ -39,34 +39,43 @@ class ProductEditFields extends Rows
 
             Input::make('product.title')
                 ->title('Заголовок')
-                ->help('Заголовок товара')
                 ->required()
                 ->horizontal(),
-
-            Input::make('product.tm')
-                ->title('Торговая марка')
-                ->help('Торговая марка товара')
-                ->horizontal(),
-
-            Switcher::make('product.popular')
-                ->sendTrueOrFalse()
-                ->title('Популярный товар')
-                ->placeholder('Популярный товар')
-                ->horizontal()
-                ->help('Разместить товар в популярных'),
-
 
             Input::make('product.sku')
                 ->title('Артикул')
                 ->required()
-                ->help('Артикул товара')
-                ->required()
                 ->horizontal(),
 
+            Input::make('product.group')
+                ->title('Группа товаров')
+                ->horizontal(),
+
+            Relation::make('category.')
+                ->fromModel(Category::class, 'title', 'id')
+                ->title('Категории товара')
+                ->multiple()
+                ->horizontal()
+                ->help('Выберите категорию'),
 
             Input::make('product.slug')
                 ->title('Окончание ссылки')
-                ->help('Slug категории')
+                ->horizontal(),
+
+            Input::make('product.viev_count')
+                ->title('Количество просмотров')
+                ->horizontal(),
+
+            Switcher::make('product.hit')
+                ->sendTrueOrFalse()
+                ->title('Хит продаж')
+                ->placeholder('Хит продаж')
+                ->horizontal(),
+
+            Switcher::make('product.new')
+                ->sendTrueOrFalse()
+                ->title('Новинка')
+                ->placeholder('Новинка')
                 ->horizontal(),
 
             Quill::make('product.description')
@@ -79,34 +88,10 @@ class ProductEditFields extends Rows
                 ->help('Введите краткое описание товара')
                 ->horizontal(),
 
-            Relation::make('category.')
-                ->fromModel(Category::class, 'name', 'id')
-                ->title('Категории товара')
-                ->multiple()
-                ->horizontal()
-                ->help('Выберите категорию'),
-
-            Relation::make('effect.')
-                ->fromModel(ColorEffect::class, 'name', 'id')
-                ->title('Визуальный эффект')
-                ->multiple()
-                ->horizontal()
-                ->help('Выберите эффект'),
-
-            Matrix::make('product.props')
-                ->title('Свойства')
-                ->horizontal()
-                ->columns([
-                    'Параметр',
-                    'Величина',
-                ]),
-
-            Matrix::make('product.advantages')
-                ->title('Преимущества')
-                ->horizontal()
-                ->columns([
-                    'Преимущество',
-                ]),
+            Quill::make('product.specification')
+                ->title('Спецификация')
+                ->help('Введите спецификацию товара')
+                ->horizontal(),
 
             Picture::make('product.img')
                 ->title('Основное изображение')

@@ -38,31 +38,22 @@ class ProductPriceEditFields extends Rows
             Input::make("element.product_group_id")
             ->type('hidden'),
 
-            Select::make('element.ed_izm')
-                ->options([
-                    'шт'   => 'шт',
-                    'л' => 'л',
-                    'кг' => 'кг',
-                ])
-                ->title('Единица')
-                ->help('Единица измерения')
+            Input::make('element.sku')
+                ->title('Артикул')
+                ->required()
                 ->horizontal(),
 
-            Input::make('element.volume')
-                ->title('Значение')
-                ->required()
-                ->help('Значение единицы')
+            Input::make('element.value')
+                ->title('Характеристика')
                 ->horizontal(),
 
             Input::make('element.price')
                 ->title('Цена')
                 ->required()
-                ->help('Действующая цена')
                 ->horizontal(),
 
             Input::make('element.old_price')
                 ->title('Старая цена')
-                ->help('Цена до скидки')
                 ->required()
                 ->horizontal(),
 

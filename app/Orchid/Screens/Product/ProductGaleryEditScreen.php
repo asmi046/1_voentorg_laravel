@@ -4,9 +4,8 @@ namespace App\Orchid\Screens\Product;
 
 use Orchid\Screen\Screen;
 
-use App\Models\ProductGroupImage;
-use App\Models\Category;
 use App\Models\ProductImage;
+use App\Models\Category;
 use App\Models\Celebration;
 
 use Orchid\Screen\Actions\Link;
@@ -31,7 +30,7 @@ class ProductGaleryEditScreen extends Screen
 
     public function query($id): iterable
     {
-        $element = ProductGroupImage::where('id', $id)->first();
+        $element = ProductImage::where('id', $id)->first();
         return [
             "element" => $element
         ];
@@ -44,7 +43,7 @@ class ProductGaleryEditScreen extends Screen
      */
     public function name(): ?string
     {
-        return 'Создание элемента галереи для продукта: '.$this->element->product_info->title;
+        return 'Редактирование элемента галереи для продукта: '.$this->element->product_info->title;
     }
 
     /**

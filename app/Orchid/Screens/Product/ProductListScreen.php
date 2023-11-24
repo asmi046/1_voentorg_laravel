@@ -4,8 +4,9 @@ namespace App\Orchid\Screens\Product;
 
 use Orchid\Screen\Screen;
 
-use App\Models\ProductGroup;
+use App\Models\Product;
 use App\Orchid\Layouts\Product\ProductListTable;
+use App\Orchid\Layouts\Product\ProductSelection;
 
 use Orchid\Screen\Actions\Link;
 use Orchid\Support\Color;
@@ -23,7 +24,7 @@ class ProductListScreen extends Screen
     public function query(): iterable
     {
         return [
-            "products" => ProductGroup::filters()->defaultSort('created_at', 'desc')->orderBy("created_at")->paginate(15)
+            "products" => Product::filters(ProductSelection::class)->paginate(15)
         ];
     }
 
@@ -57,6 +58,7 @@ class ProductListScreen extends Screen
     public function layout(): iterable
     {
         return [
+            ProductSelection::class,
             ProductListTable::class
         ];
     }

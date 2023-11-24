@@ -4,7 +4,7 @@ namespace App\Orchid\Screens\Product;
 
 use Orchid\Screen\Screen;
 
-use App\Models\ProductGroupPrice;
+use App\Models\ProductPrices;
 use App\Models\Category;
 use App\Models\ProductImage;
 use App\Models\Celebration;
@@ -31,7 +31,7 @@ class ProductPriceEditScreen extends Screen
 
     public function query($id): iterable
     {
-        $element = ProductGroupPrice::where('id', $id)->first();
+        $element = ProductPrices::where('id', $id)->first();
         return [
             "element" => $element
         ];
@@ -44,7 +44,7 @@ class ProductPriceEditScreen extends Screen
      */
     public function name(): ?string
     {
-        return 'Создание элемента галереи для продукта: '.$this->element->product_info->title;
+        return 'Редактирование варианта цены для продукта: '.$this->element->product_info->title;
     }
 
     /**

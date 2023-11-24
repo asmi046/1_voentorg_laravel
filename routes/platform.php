@@ -29,6 +29,13 @@ use App\Orchid\Screens\Product\ProductCreateScreen;
 use App\Orchid\Screens\Product\ProductEditScreen;
 use App\Orchid\Screens\Product\ProductListScreen;
 
+use App\Orchid\Screens\Product\ProductGaleryCreateScreen;
+use App\Orchid\Screens\Product\ProductGaleryEditScreen;
+
+use App\Orchid\Screens\Product\ProductPriceCreateScreen;
+use App\Orchid\Screens\Product\ProductPriceEditScreen;
+
+
 use App\Orchid\Screens\Options\OptionsList;
 use App\Orchid\Screens\Options\EditOptions;
 
@@ -75,6 +82,26 @@ Route::screen('/products/create', ProductCreateScreen::class)
     ->name('platform.product_create')->breadcrumbs(fn (Trail $trail) => $trail
     ->parent('platform.product')
     ->push(__('Добавление товара'), route('platform.product_create')));
+
+Route::screen('/products/galery/{id}/edit', ProductGaleryEditScreen::class)
+    ->name('platform.product_galery_edit')->breadcrumbs(fn (Trail $trail, $id) => $trail
+    ->parent('platform.product')
+    ->push(__('Редактирование изображения галереи'), route('platform.product_galery_edit', $id)));
+
+Route::screen('/products/{id}/galery/create', ProductGaleryCreateScreen::class)
+    ->name('platform.product_galery_create')->breadcrumbs(fn (Trail $trail, $id) => $trail
+    ->parent('platform.product')
+    ->push(__('Создание изображения галереи'), route('platform.product_galery_create', $id)));
+
+Route::screen('/products/price/{id}/edit', ProductPriceEditScreen::class)
+    ->name('platform.product_price_edit')->breadcrumbs(fn (Trail $trail, $id) => $trail
+    ->parent('platform.product')
+    ->push(__('Редактирование ценового предложения'), route('platform.product_price_edit', $id)));
+
+Route::screen('/products/{id}/price/create', ProductPriceCreateScreen::class)
+    ->name('platform.product_price_create')->breadcrumbs(fn (Trail $trail, $id) => $trail
+    ->parent('platform.product')
+    ->push(__('Редактирование ценового предложения'), route('platform.product_price_create', $id)));
 
 // Опции
 Route::screen('/options', OptionsList::class)
