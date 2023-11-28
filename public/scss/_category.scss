@@ -8,7 +8,7 @@
     .cat_in_page_blk{
         width: 32%;
         display:  flex;
-        border: 3px solid #65B965;
+        border: 3px solid #ffcb00;
         margin-bottom: 20px;
         overflow: hidden;
         position: relative;
@@ -23,13 +23,14 @@
         .cattext{
             z-index: 200;
             position: absolute;
-            background-color: #65B965;
-            color: white;
+            background-color: #ffcb00;
+            color: #333;
             padding: 2px 15px;
             right: 0;
             bottom: 0;
             text-align: right;
             font-size: 20px;
+            font-weight: bold;
         }
 
     }
