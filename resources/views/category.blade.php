@@ -72,11 +72,26 @@
                 </ul>
             </div>
 
-            <div class="cat_product_list">
-                @foreach ($tovars as $item)
-                    <x-tovar-card.main :item="$item"></x-tovar-card.main>
-                @endforeach
+            <div class="cat_product_list_wrapper">
+                <div class="sub_categories_list">
+                    @foreach ($sub_category as $item)
+                        <a href="{{route('category', $item->slug)}}" class="sc__item">
+                            <div class="img">
+                                <img src="{{ !empty($item->img)?$item->img:asset('img/sc_test.webp') }}" alt="{{$item->title}}">
+                            </div>
 
+                            <div class="name">
+                               <span>{{$item->title}}</span>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+
+                <div class="cat_product_list">
+                    @foreach ($tovars as $item)
+                        <x-tovar-card.main :item="$item"></x-tovar-card.main>
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>
