@@ -54,7 +54,6 @@ class ProductPriceEditFields extends Rows
 
             Input::make('element.old_price')
                 ->title('Старая цена')
-                ->required()
                 ->horizontal(),
 
 

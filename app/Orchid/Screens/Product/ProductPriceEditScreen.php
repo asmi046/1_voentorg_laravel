@@ -76,9 +76,8 @@ class ProductPriceEditScreen extends Screen
 
     public function save_info(Request $request) {
         $request->validate([
-            'element.volume' => ['required', 'string'],
+            'element.sku' => ['required', 'string'],
             'element.price' => ['required', 'string'],
-            'element.old_price' => ['required', 'string'],
         ]);
 
 

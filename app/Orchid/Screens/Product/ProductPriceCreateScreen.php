@@ -79,7 +79,6 @@ class ProductPriceCreateScreen extends Screen
         $request->validate([
             'element.sku' => ['required', 'string'],
             'element.price' => ['required', 'string'],
-            'element.old_price' => ['required', 'string'],
         ]);
 
         $data = $request->get('element');
