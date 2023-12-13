@@ -81,7 +81,7 @@
                             </div>
 
                             <div class="name">
-                               <span>{{$item->title}}</span>
+                               <span>{{$item->title_mini}}</span>
                             </div>
                         </a>
                     @endforeach
