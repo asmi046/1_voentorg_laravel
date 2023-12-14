@@ -65,7 +65,7 @@ class ProductListScreen extends Screen
 
 
     public function delete_field($id) {
-        $dell_elem = ProductGroup::where('id', $id)->first();
+        $dell_elem = Product::where('id', $id)->first();
         if ($dell_elem ) {
             $dell_elem->delete();
             Toast::info("Товар удален");
