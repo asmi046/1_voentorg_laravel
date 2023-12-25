@@ -16,7 +16,7 @@ class ProductController extends Controller
 
         if($prosuct == null) abort('404');
 
-        $categories = $prosuct->tovar_categories()->first();
+        $categories = $prosuct->tovar_categories()->get();
 
         return view('product', ['product' => $prosuct, 'category'=> $categories]);
     }
