@@ -1,10 +1,10 @@
 <div class="prod-card__body d-flex">
 
-	<a href="#" class="prod-card__link">
+	<a href="{{ route('product', $item->slug) }}" class="prod-card__link">
 		<img src="{{$item->img}}" alt="">
 	</a>
 
-	<a href="#" class="prod-card__text d-flex">
+	<a href="{{ route('product', $item->slug) }}" class="prod-card__text d-flex">
 		<h4>{{$item->title}}</h4>
 		<span class="spacer__vendor">Артикул: {{$item->sku}}</span>
 		<div class="prod-card__price d-flex">

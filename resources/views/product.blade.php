@@ -9,7 +9,7 @@
 @section('description', $description)
 
 @section('content')
-    <x-breadcrumbs :title="$title"></x-breadcrumbs>
+    <x-breadcrumbs :product="$product" :category="$category"></x-breadcrumbs>
 
     <div class="container">
         <div class="product-wrapper ">
@@ -17,12 +17,15 @@
             </div>
 
             <div class="entry-content text_decoration">
-                <h1>{{$title}}</h1>
-                <p class="sku_in_page">Артикул: <span></span></p>
+                <h1>{{ $product->title }}</h1>
+                <p class="sku_in_page">Артикул: <span>{{ $product->sku}}</span></p>
 
                 <div class="content-block content-block__price">
-                    <span class="single-price__old">2500 руб.</span>
-                    <span class="single-price">1500 руб.</span>
+                    @if ($product->old_price)
+                        <span class="single-price__old">{{ $product->old_price}} руб.</span>
+                    @endif
+
+                    <span class="single-price">{{ $product->price}} руб.</span>
                 </div>
 
                 <div class= "by_blk">
