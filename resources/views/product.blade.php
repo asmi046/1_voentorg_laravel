@@ -96,9 +96,15 @@
 
         </div>
 
+        @if ($product->specification)
         <div class="tovar_bottom_part text_decoration">
             <h2>Все характеристики</h2>
+
+            <div class="text_styles">
+                {!! $product->specification !!}
+            </div>
         </div>
+        @endif
     </div>
 
 @endsection
