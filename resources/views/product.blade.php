@@ -14,6 +14,13 @@
     <div class="container">
         <div class="product-wrapper ">
             <div class="product-wrapper__images">
+                <swiper-container slides-per-view="1">
+                    @foreach ($product->product_images as $item)
+                        <swiper-slide>
+                            <img src="{{ $item->link }}" alt="{{ $item->alt }}">
+                        </swiper-slide>
+                    @endforeach
+                </swiper-container>
             </div>
 
             <div class="entry-content text_decoration">
