@@ -56,7 +56,7 @@
 
                 @auth('web')
                     <div class="edit_panel">
-                        <a target="_blanck" href="{{ route('platform.product_edit', $item->id) }}">Редактировать товар</a>
+                        <a target="_blanck" href="{{ route('platform.product_edit', $product->id) }}">Редактировать товар</a>
                     </div>
                 @endauth
 
