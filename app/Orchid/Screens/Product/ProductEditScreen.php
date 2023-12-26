@@ -81,6 +81,11 @@ class ProductEditScreen extends Screen
             Link::make('Добавить цену')
             ->href(route("platform.product_price_create", $this->product->id))
             ->icon('coin'),
+
+            Link::make('Просмотр')
+            ->href(route("product", $this->product->slug))
+            ->target('_blanck')
+            ->icon('aspect-ratio'),
         ];
     }
 
