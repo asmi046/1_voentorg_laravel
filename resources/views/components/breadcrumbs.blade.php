@@ -20,6 +20,7 @@
                 @if ($category)
                     @foreach ($category as $item)
                     / <a href="{{route("category", $item->slug)}}">{{$item->title}}</a>
+                    @break
                     @endforeach
                 @endif
                 / </span> <span class="finish">{{ $product->title }}</span>

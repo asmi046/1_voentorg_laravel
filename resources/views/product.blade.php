@@ -44,22 +44,32 @@
                     <span class="single-price">{{ $product->price}} руб.</span>
                 </div>
 
-                <div class="category_in_page">
-                    @foreach ($category as $item)
-                        <a title="Товарв категории {{ $item->title }}" href="{{ route('category', $item->slug) }}">{{ $item->title }}</a>
-                    @endforeach
-                </div>
-
                 <div class= "by_blk">
                     <a href="#" class="btn buy_btn">Добавить в корзину</a>
                 </div>
+
+                @if (count($category) > 0)
+                    <h3>Товар из категорий:</h3>
+                    <div class="category_in_page">
+                        @foreach ($category as $item)
+                            <a title="Товарв категории {{ $item->title }}" href="{{ route('category', $item->slug) }}">{{ $item->title }}</a>
+                        @endforeach
+                    </div>
+                @endif
+
+                @if ($product->short_description)
+                    <h2>Описание</h2>
+
+                    <div class="text_styles">
+                        {!! $product->short_description !!}
+                    </div>
+                @endif
 
             </div>
 
         </div>
 
         <div class="tovar_bottom_part text_decoration">
-            <h2>Описание</h2>
             <h2>Все характеристики</h2>
         </div>
     </div>
