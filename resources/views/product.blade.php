@@ -53,6 +53,13 @@
             </div>
 
             <div class="entry-content text_decoration">
+
+                @auth('web')
+                    <div class="edit_panel">
+                        <a target="_blanck" href="{{ route('platform.product_edit', $item->id) }}">Редактировать товар</a>
+                    </div>
+                @endauth
+
                 <h1>{{ $product->title }}</h1>
                 <p class="sku_in_page">Артикул: <span>{{ $product->sku}}</span></p>
 
