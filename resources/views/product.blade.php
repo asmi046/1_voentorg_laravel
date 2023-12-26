@@ -84,11 +84,11 @@
                     </div>
                 @endif
 
-                @if ($product->short_description)
+                @if ($product->description)
                     <h2>Описание</h2>
 
                     <div class="text_styles">
-                        {!! $product->short_description !!}
+                        {!! $product->description !!}
                     </div>
                 @endif
 
