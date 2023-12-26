@@ -20,8 +20,8 @@ use App\Http\Controllers\ProductController;
 
 Route::get('/', [IndexController::class, "show"])->name('home');
 
-Route::get('/category/katalog', [CategoryController::class, "catalog"])->name('catalog');
-Route::get('/category/katalog/{slug}', [CategoryController::class, "category"])->name('category');
+Route::get('/katalog', [CategoryController::class, "catalog"])->name('catalog');
+Route::get('/katalog/{slug}', [CategoryController::class, "category"])->name('category');
 Route::get('/product/{slug}', [ProductController::class, "show"])->name('product');
 
 Route::get('/kontakty', [EasyPageController::class, "kontakty"])->name('kontakty');

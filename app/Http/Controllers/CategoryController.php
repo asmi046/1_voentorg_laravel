@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 class CategoryController extends Controller
 {
     public function catalog() {
-        $category = Category::where("parent", 0)->get();
+        $category = Category::where("parent", 0)->orWhere("parent", NULL) ->get();
 
         return view("catalog", [
             'category' => $category

@@ -10,12 +10,17 @@
 
 @section('content')
     <x-breadcrumbs :title="$title"></x-breadcrumbs>
+
     <div class="container">
-        <h1>{{$title}}</h1>
-        <x-categories.list>
-            @foreach ($category as $item)
-                <x-categories.item :item="$item"></x-categories.item>
-            @endforeach
-        </x-categories.list>
+        <h1>Каталог товаров</h1>
     </div>
+
+    <x-categories.list>
+        @foreach ($category as $item)
+            @if (!empty($item->img))
+                <x-categories.item :item="$item"></x-categories.item>
+            @endif
+        @endforeach
+    </x-categories.list>
+
 @endsection
