@@ -14,13 +14,22 @@
     <div class="container">
         <div class="product-wrapper ">
             <div class="product-wrapper__images">
-                <swiper-container slides-per-view="1">
+                <swiper-container thumbs-swiper=".product_thumb_slider" class="product_main_slider" slides-per-view="1">
                     @foreach ($product->product_images as $item)
                         <swiper-slide>
                             <img src="{{ $item->link }}" alt="{{ $item->alt }}">
                         </swiper-slide>
                     @endforeach
                 </swiper-container>
+
+                <swiper-container class="product_thumb_slider" space-between="30" slides-per-view="3">
+                    @foreach ($product->product_images as $item)
+                        <swiper-slide>
+                            <img src="{{ $item->link }}" alt="{{ $item->alt }}">
+                        </swiper-slide>
+                    @endforeach
+                </swiper-container>
+
             </div>
 
             <div class="entry-content text_decoration">
@@ -33,6 +42,12 @@
                     @endif
 
                     <span class="single-price">{{ $product->price}} руб.</span>
+                </div>
+
+                <div class="category_in_page">
+                    @foreach ($category as $item)
+                        <a title="Товарв категории {{ $item->title }}" href="{{ route('category', $item->slug) }}">{{ $item->title }}</a>
+                    @endforeach
                 </div>
 
                 <div class= "by_blk">
