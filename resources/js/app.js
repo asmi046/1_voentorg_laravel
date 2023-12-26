@@ -1,4 +1,7 @@
 import './bootstrap';
+import {createApp} from 'vue/dist/vue.esm-bundler';
+
+import FsLightbox from "fslightbox-vue/v3";
 
 import { register } from 'swiper/element/bundle';
 register();
@@ -22,9 +25,6 @@ if (swiperEl) {
       swiperEl.initialize();
 }
 
-
-
-
 document.addEventListener("DOMContentLoaded", () => {
     let catalog_up_btn = document.querySelectorAll(".cat_navigation ul li a")
       for (let elem of catalog_up_btn)
@@ -36,4 +36,40 @@ document.addEventListener("DOMContentLoaded", () => {
             elem.classList.toggle("active")
           }
         })
-  })
+})
+
+
+const global_app = createApp({
+    components:{
+        // Swiper,
+        // SwiperSlide,
+        // YandexMap,
+        // ToBascetBtn,
+        // ToBascetBtnPage,
+        // BascetCounter,
+        // FavoritesCounter,
+        // Bascet,
+        // Favorites,
+        // ToFavoritesBtn,
+        // PageToBascet,
+        // Forma,
+        FsLightbox
+    },
+
+    // setup() {
+
+    //     const store = useStore()
+
+    //     store.dispatch('initialBascet');
+    //     store.dispatch('initialFavorites');
+
+    //     return {
+    //       modules: [EffectCoverflow, Pagination],
+    //     };
+    // },
+})
+
+global_app.mount("#global_app")
+
+
+

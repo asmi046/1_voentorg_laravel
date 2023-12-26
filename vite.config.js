@@ -11,6 +11,7 @@ export default defineConfig({
                 'public/fonts/shop/style.css',
                 'public/scss/style.scss',
                 'resources/js/app.js',
+                'public/js/fslightbox.js',
             ],
             refresh: true,
         }),

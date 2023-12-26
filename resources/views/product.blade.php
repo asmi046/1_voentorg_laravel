@@ -18,14 +18,20 @@
 
                     @if (isset($product->img))
                         <swiper-slide>
-                            <img src="{{ $product->img }}" alt="{{ $product->title }}">
+                            <a data-fslightbox="product_thumb_slider" href="{{ $product->img }}">
+                                <img src="{{ $product->img }}" alt="{{ $product->title }}">
+                            </a>
+
                         </swiper-slide>
                     @endif
 
 
                     @foreach ($product->product_images as $item)
                         <swiper-slide>
-                            <img src="{{ $item->link }}" alt="{{ $item->alt }}">
+                            <a data-fslightbox="product_thumb_slider" href="{{ $item->link }}">
+                                <img src="{{ $item->link }}" alt="{{ $item->alt }}">
+                            </a>
+
                         </swiper-slide>
                     @endforeach
                 </swiper-container>
