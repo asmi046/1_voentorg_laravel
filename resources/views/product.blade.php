@@ -15,6 +15,14 @@
         <div class="product-wrapper ">
             <div class="product-wrapper__images">
                 <swiper-container thumbs-swiper=".product_thumb_slider" class="product_main_slider" slides-per-view="1">
+
+                    @if (isset($product->img))
+                        <swiper-slide>
+                            <img src="{{ $product->img }}" alt="{{ $product->title }}">
+                        </swiper-slide>
+                    @endif
+
+
                     @foreach ($product->product_images as $item)
                         <swiper-slide>
                             <img src="{{ $item->link }}" alt="{{ $item->alt }}">
@@ -23,6 +31,12 @@
                 </swiper-container>
 
                 <swiper-container class="product_thumb_slider" space-between="30" slides-per-view="3">
+                    @if (isset($product->img))
+                        <swiper-slide>
+                            <img src="{{ $product->img }}" alt="{{ $product->title }}">
+                        </swiper-slide>
+                    @endif
+
                     @foreach ($product->product_images as $item)
                         <swiper-slide>
                             <img src="{{ $item->link }}" alt="{{ $item->alt }}">
