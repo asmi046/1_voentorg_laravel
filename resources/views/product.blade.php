@@ -85,9 +85,10 @@
                 @endif
 
                 @if ($product->description)
-                    <h2>Описание</h2>
 
-                    <div class="text_styles">
+
+                    <div class="text_decoration">
+                        <h2>Описание</h2>
                         {!! $product->description !!}
                     </div>
                 @endif
@@ -100,9 +101,7 @@
         <div class="tovar_bottom_part text_decoration">
             <h2>Все характеристики</h2>
 
-            <div class="text_styles">
-                {!! $product->specification !!}
-            </div>
+            {!! $product->specification !!}
         </div>
         @endif
     </div>

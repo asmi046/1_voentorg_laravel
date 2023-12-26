@@ -110,6 +110,7 @@
 
 .tovar_bottom_part {
     width:100%;
+    margin-bottom: 40px;
 }
 
 .sku_in_page span{
@@ -211,6 +212,11 @@
 	.tovar_bottom_part {
 		margin-top: 40px;
 	}
+
+    .product-wrapper .product-wrapper__images {
+        width: 100%;
+        margin-right: 0;
+    }
 }
 
 /* слайдер на странице карточки товара */

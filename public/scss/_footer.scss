@@ -18,14 +18,15 @@
 
 .footer .callback__phone {
 	position: relative;
+    padding-left: 20px;
 }
 
 .footer .callback__phone::before {
 	content: '';
 	position: absolute;
 	height: 13px;
-	left: -18px;
-	bottom: 7px;
+	left: 0;
+	bottom: 3px;
 	width: 13px;
 	background-repeat: no-repeat;
 	background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTMiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAxMyAxMyI+DQogIDxpbWFnZSBpZD0icGhvbmUiIHdpZHRoPSIxMyIgaGVpZ2h0PSIxMyIgeGxpbms6aHJlZj0iZGF0YTppbWFnZS9wbmc7YmFzZTY0LGlWQk9SdzBLR2dvQUFBQU5TVWhFVWdBQUFBMEFBQUFOQ0FZQUFBQnk2K1I4QUFBQUJITkNTVlFJQ0FnSWZBaGtpQUFBQVBOSlJFRlVLRk9OMEN0TEJVRWNodkhmU2VJbWcyQ1IyV0FUVVRCb0ZoU2JWWXlDV1V4Vy9RNUd2NERZTklzWUxFYnhVa1J3RmpSNFFReG5pOEtSMFQyeTRtWFBXNGJoL3o3enpFeXJIY01lSm56bUdWTlppSy9WL3RlbDFZN2hCbmx0T3B5RmVOc0VuYVRUYTZXWkxNU2pKbWdiSzdYU2FoYmlWaE8waUoycWRJNWtlbXlDK25HSE40eG1JVDc4QjZSWnE5UHBLSXQ4QTV1WXkwSTg2QlZLdGpQMFlUb0xNWm4vekljcHBTenlTUnpqR3ZOZHNDenlRU3hWaDE3aC9ndXF3Rm5zNHduTE9NVWh4bXJheTI5UXpiaUxFYVJmVEtaNlhuNUFGWmpldUk0MURQUUVkVXRsa1NkNEFlbmE0eGpDeFR2emQxNHBrQ1BNS3dBQUFBQkpSVTVFcmtKZ2dnPT0iLz4NCjwvc3ZnPg0K");
