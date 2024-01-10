@@ -6,24 +6,8 @@ import FsLightbox from "fslightbox-vue/v3";
 import { register } from 'swiper/element/bundle';
 register();
 
-const swiperEl = document.querySelector('swiper-container');
-if (swiperEl) {
-    const params = {
 
-        injectStyles: [
-          `
-          .swiper-button-next svg,
-          .swiper-button-prev svg {
-              display: none;
-          }
-          `,
-        ],
-      };
 
-      Object.assign(swiperEl, params);
-
-      swiperEl.initialize();
-}
 
 document.addEventListener("DOMContentLoaded", () => {
     let catalog_up_btn = document.querySelectorAll(".cat_navigation ul li a")
@@ -56,17 +40,41 @@ const global_app = createApp({
         FsLightbox
     },
 
-    // setup() {
+    setup() {
+
+        // const swiperEl = document.querySelector('swiper-container');
+        // if (swiperEl) {
+        //     const params = {
+
+        //         injectStyles: [
+        //         `
+        //         .swiper-button-next svg,
+        //         .swiper-button-prev svg {
+        //             display: none;
+        //         }
+        //         `,
+        //         ],
+        //     };
+
+        //     Object.assign(swiperEl, params);
+
+        //     swiperEl.initialize();
+        // }
 
     //     const store = useStore()
 
     //     store.dispatch('initialBascet');
     //     store.dispatch('initialFavorites');
 
-    //     return {
-    //       modules: [EffectCoverflow, Pagination],
-    //     };
-    // },
+        return {
+              noarrow:[
+                `
+                .swiper-button-next svg, .swiper-button-prev svg {display: none;}
+                `,
+            ]
+            //   modules: [EffectCoverflow, Pagination],
+        };
+    },
 })
 
 global_app.mount("#global_app")

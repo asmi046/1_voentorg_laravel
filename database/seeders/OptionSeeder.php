@@ -51,67 +51,12 @@ class OptionSeeder extends Seeder
                 ],
 
                 [
-                    "name" => "organization",
-                    "type" => "plan",
-                    'title' => 'Организация',
-                    "value" => "ИП Арепьев И. М.",
-                ],
-
-                [
-                    "name" => "adress_ur",
-                    "type" => "plan",
-                    'title' => 'Адрес (Юридический)',
-                    "value" => "Курская область, Курский район, д.Зорино, ул. Пески, д.13",
-                ],
-
-                [
-                    "name" => "adress_fk",
-                    "type" => "plan",
-                    'title' => 'Адрес (Фактический)',
-                    "value" => "г. Курск, пр. Победы, 14",
-                ],
-
-                [
-                    "name" => "inn",
-                    "type" => "plan",
-                    'title' => 'ИНН',
-                    "value" => "463225653229",
-                ],
-
-                [
-                    "name" => "ogrnip",
-                    "type" => "plan",
-                    'title' => 'ОГРНИП',
-                    "value" => "311463210100023",
-                ],
-
-                [
-                    "name" => "phone",
-                    "type" => "plan",
-                    'title' => 'Телефон',
-                    "value" => "+7 (920) 710 25 55",
-                ],
-
-                [
-                    "name" => "email",
-                    "type" => "plan",
-                    'title' => 'e-mail',
-                    "value" => "info@florida46.ru",
-                ],
-
-                [
                     "name" => "email_send",
                     "type" => "plan",
                     'title' => 'e-mail для отправки',
                     "value" => "info@florida46.ru, asmi046@gmail.com",
                 ],
 
-                [
-                    "name" => "main_h1",
-                    "type" => "plan",
-                    'title' => 'Заголовок главной страницы',
-                    "value" => "Доставка цветов в Курске на официальном сайте «Флорида»!",
-                ],
 
                 [
                     "name" => "telegram_lnk",

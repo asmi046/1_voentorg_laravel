@@ -25,6 +25,14 @@ use App\Orchid\Screens\Category\CategoryCreateScreen;
 use App\Orchid\Screens\Category\CategoryEditScreen;
 use App\Orchid\Screens\Category\CategoryListScreen;
 
+use App\Orchid\Screens\Shop\ShopCreateScreen;
+use App\Orchid\Screens\Shop\ShopEditScreen;
+use App\Orchid\Screens\Shop\ShopListScreen;
+
+use App\Orchid\Screens\Vedomstvo\VedomstvoCreateScreen;
+use App\Orchid\Screens\Vedomstvo\VedomstvoEditScreen;
+use App\Orchid\Screens\Vedomstvo\VedomstvoListScreen;
+
 use App\Orchid\Screens\Product\ProductCreateScreen;
 use App\Orchid\Screens\Product\ProductEditScreen;
 use App\Orchid\Screens\Product\ProductListScreen;
@@ -65,6 +73,38 @@ Route::screen('/categories/create', CategoryCreateScreen::class)
     ->name('platform.category_create')->breadcrumbs(fn (Trail $trail) => $trail
     ->parent('platform.category')
     ->push(__('Добавление категории'), route('platform.category_create')));
+
+// Ведомства
+Route::screen('/vedomstva', VedomstvoListScreen::class)
+    ->name('platform.vedomstva')->breadcrumbs(fn (Trail $trail) => $trail
+    ->parent('platform.index')
+    ->push(__('Ведомства'), route('platform.vedomstva')));
+
+Route::screen('/vedomstva/{id}/edit', VedomstvoEditScreen::class)
+    ->name('platform.vedomstva_edit')->breadcrumbs(fn (Trail $trail, $id) => $trail
+    ->parent('platform.vedomstva')
+    ->push(__('Редактирование ведомства'), route('platform.vedomstva_edit', $id)));
+
+Route::screen('/vedomstva/create', VedomstvoCreateScreen::class)
+    ->name('platform.vedomstva_create')->breadcrumbs(fn (Trail $trail) => $trail
+    ->parent('platform.vedomstva')
+    ->push(__('Добавление ведомства'), route('platform.vedomstva_create')));
+
+// Магазины
+Route::screen('/shops', ShopListScreen::class)
+    ->name('platform.shops')->breadcrumbs(fn (Trail $trail) => $trail
+    ->parent('platform.index')
+    ->push(__('Магазины'), route('platform.shops')));
+
+Route::screen('/shops/{id}/edit', ShopEditScreen::class)
+    ->name('platform.shops_edit')->breadcrumbs(fn (Trail $trail, $id) => $trail
+    ->parent('platform.shops')
+    ->push(__('Редактирование магазина'), route('platform.shops_edit', $id)));
+
+Route::screen('/shops/create', ShopCreateScreen::class)
+    ->name('platform.shops_create')->breadcrumbs(fn (Trail $trail) => $trail
+    ->parent('platform.shops')
+    ->push(__('Добавление магазина'), route('platform.shops_create')));
 
 
 // Товары

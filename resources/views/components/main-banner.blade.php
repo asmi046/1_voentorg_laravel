@@ -1,10 +1,8 @@
 <section class="main-slider">
     <div class="container">
-        <swiper-container
-            init="false"
-            navigation="true"
-            >
-            <swiper-slide>
+        <swiper-container>
+
+            <swiper-slide lazy="true">
                 <x-banner-slide-content
                     img="tmp_content/bn/tactical-snaryag.webp"
                     title="Тактическое снаряжение <br> и экипировка"
@@ -12,7 +10,7 @@
                 </x-banner-slide-content>
             </swiper-slide>
 
-            <swiper-slide>
+            <swiper-slide lazy="true">
                 <x-banner-slide-content
                     img="tmp_content/bn/forma-yunarmii.webp"
                     title="Уставная форма Юнармии"
@@ -20,7 +18,7 @@
                 </x-banner-slide-content>
             </swiper-slide>
 
-            <swiper-slide>
+            <swiper-slide lazy="true">
                 <x-banner-slide-content
                     img="tmp_content/bn/forma-vov-velikoj-otechestvennoj-vojny.webp"
                     title="Форма Великой Отечественной"

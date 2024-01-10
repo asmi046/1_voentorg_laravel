@@ -194,9 +194,6 @@ ul {
     }
 }
 
-.cat_product_list .prod-card__body {
-    flex: 0 1 32%;
-}
 
 @media (max-width: 1024px) {
     .entry-content{
@@ -221,11 +218,6 @@ ul {
 @media (max-width: 543px) {
     .cat_product_wrapper {
         flex-direction: column;
-    }
-
-    .cat_product_list .prod-card__body,
-    .cat_product_wrapper .prod-card__body {
-        flex: 0 1 100%;
     }
 }
 

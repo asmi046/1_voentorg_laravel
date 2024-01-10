@@ -1,10 +1,11 @@
-<div class="prod-card__body d-flex">
+<a href="{{ route('product', $item->slug) }}" class="prod-card__body d-flex">
 
-	<a href="{{ route('product', $item->slug) }}" class="prod-card__link">
-		<img src="{{$item->img}}" alt="">
-	</a>
+    <div class="img_wrapper">
+        <img src="{{$item->img}}" alt="Артикул: {{$item->sku}} {{$item->title}}">
+    </div>
 
-	<a href="{{ route('product', $item->slug) }}" class="prod-card__text d-flex">
+
+    <div class="text_wrapper">
 		<h4>{{$item->title}}</h4>
 		<span class="spacer__vendor">Артикул: {{$item->sku}}</span>
 		<div class="prod-card__price d-flex">
@@ -13,14 +14,10 @@
 			@endif
 
             <p class="prod-card__price-new">{{$item->product_prices[0]->price}} руб.</p>
-
-
-
 		</div>
-		<p class="prod-card__benefit"><span></span></p>
-	</a>
+    </div>
 
 	<div class="prod-card__button d-flex">
-		<a href="#" class="prod-card__order d-flex">Подробнее</a>
+		<span class="prod-card__order d-flex">Подробнее</span>
 	</div>
-</div>
+</a>

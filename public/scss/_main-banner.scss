@@ -1,12 +1,30 @@
 .main-slider {
     margin: 20px 0;
 
+
     .swiper {
         display: none;
     }
 
+    swiper-container {
+        overflow: hidden;
+        border-radius: 10px;
+    }
+
     swiper-slide {
+
         position: relative;
+        .slider_contetnt {
+            display: flex;
+            width: 100%;
+            height: auto;
+            img {
+                width:100%;
+                height: auto;
+            }
+
+        }
+
 
         .info-sl__text-new {
             position: absolute;

@@ -44,11 +44,19 @@ class PlatformProvider extends OrchidServiceProvider
                 ->icon('grid')
                 ->route('platform.product'),
 
+            Menu::make('Ведомства')
+                ->icon('slash-square')
+                ->route('platform.vedomstva'),
+
 
             Menu::make('Опции сайта')
-                ->icon('settings')
+                ->icon('list-check')
                 ->route('platform.options')
                 ->title('Настройки сайта'),
+
+            Menu::make('Магазины')
+                ->icon('shop')
+                ->route('platform.shops'),
 
             // Menu::make('Get Started')
             //     ->icon('bs.book')
