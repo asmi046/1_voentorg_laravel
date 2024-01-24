@@ -43,7 +43,7 @@ class VedomstvoSeeder extends Seeder
 
         foreach ($ved as $key => $photo)
         {
-            Storage::disk('public')->put($photo, file_get_contents(public_path('tmp\\vedomstva\\'.$photo)), 'public');
+            Storage::disk('public')->put($photo, file_get_contents(public_path('tmp/vedomstva/'.$photo)), 'public');
             DB::table("vedomstvos")->insert(
                 [
                     [

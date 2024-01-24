@@ -16,7 +16,7 @@
         "migrate_rep": "ssh asmi04s9_all@asmi04s9.beget.tech \"cd vtg.asmi-studio.ru/public_html && php8.1 artisan migrate\"",
         "rollback_rep": "ssh asmi04s9_all@asmi04s9.beget.tech \"cd vtg.asmi-studio.ru/public_html && php8.1 artisan migrate:rollback\"",
         "seed_rep": "ssh asmi04s9_all@asmi04s9.beget.tech \"cd vtg.asmi-studio.ru/public_html && php8.1 artisan DB:seed\"",
-        "seed_rep_one": "ssh asmi04s9_all@asmi04s9.beget.tech \"cd vtg.asmi-studio.ru/public_html && php8.1 artisan DB:seed ProductSeederCorrecTextForQuil\"",
+        "seed_rep_one": "ssh asmi04s9_all@asmi04s9.beget.tech \"cd vtg.asmi-studio.ru/public_html && php8.1 artisan DB:seed VedomstvoSeeder\"",
         "db_update": "npm run rollback_rep && npm run migrate_rep && npm run seed_rep",
         "db_update_total": "ssh asmi04s9_all@asmi04s9.beget.tech \"cd vtg.asmi-studio.ru/public_html && php8.1 artisan migrate:refresh --seed\"",
         "optimized_rep": "ssh asmi04s9_all@asmi04s9.beget.tech \"cd vtg.asmi-studio.ru/public_html && php8.1 composer.phar update --optimize-autoloader --no-dev\"",
