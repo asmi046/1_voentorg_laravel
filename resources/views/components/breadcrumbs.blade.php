@@ -8,6 +8,11 @@
             <span class="sep"> / </span> <span class="finish">{{$category->title}}</span>
         @endif
 
+        @if (Request::route()->named('vedomstvo'))
+            <span class="sep"> / </span> <a href="{{route("vedomstva")}}">Подразделения и ведомства</a>
+            <span class="sep"> / </span> <span class="finish">{{$vedomstvo->title}}</span>
+        @endif
+
         {{-- @if (Request::route()->named('product'))
             <span class="sep"> / </span> <a href="{{route('category', $category->slug)}}">{{$category->name}}</a>
             <span class="sep"> / </span> <span class="finish">{{$tovar['title']}}</span>

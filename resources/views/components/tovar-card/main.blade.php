@@ -1,9 +1,8 @@
-<a href="{{ route('product', $item->slug) }}" class="prod-card__body d-flex">
+<a href="{{ route('product', $item->slug) }}" class="prod_card d-flex">
 
     <div class="img_wrapper">
         <img src="{{$item->img}}" alt="Артикул: {{$item->sku}} {{$item->title}}">
     </div>
-
 
     <div class="text_wrapper">
 		<h4>{{$item->title}}</h4>

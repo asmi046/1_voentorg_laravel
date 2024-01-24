@@ -75,6 +75,7 @@ class ProductCreateScreen extends Screen
         $new_id = Product::create($request->get('product'));
 
         $new_id->tovar_categories()->sync($request->get("category"));
+        $new_id->tovar_vedomstva()->sync($request->get("vedomstvo"));
 
         return redirect()->route('platform.product_edit', $new_id);
     }

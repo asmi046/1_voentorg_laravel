@@ -17,7 +17,7 @@ use Orchid\Screen\Fields\Matrix;
 use Orchid\Screen\Fields\Relation;
 
 use App\Models\Category;
-use App\Models\ColorEffect;
+use App\Models\Vedomstvo;
 
 class ProductEditFields extends Rows
 {
@@ -57,6 +57,13 @@ class ProductEditFields extends Rows
                 ->multiple()
                 ->horizontal()
                 ->help('Выберите категорию'),
+
+            Relation::make('vedomstvo.')
+                ->fromModel(Vedomstvo::class, 'title', 'id')
+                ->title('Ведомство')
+                ->multiple()
+                ->horizontal()
+                ->help('Выберите ведомство'),
 
             Input::make('product.slug')
                 ->title('Окончание ссылки')

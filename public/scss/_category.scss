@@ -35,6 +35,20 @@
     }
 }
 
+
+@media (max-width: 768px) {
+    .cat_subcat_list .cat_in_page_blk {
+        width:48%;
+    }
+}
+
+
+@media (max-width: 480px) {
+    .cat_subcat_list .cat_in_page_blk {
+        width:100%;
+    }
+}
+
 // .cat_subcat_list .cat_in_page_blk:hover{
 // 	border: 1px solid #65B965;
 // 	text-decoration: none;

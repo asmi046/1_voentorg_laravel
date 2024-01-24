@@ -75,4 +75,8 @@ class Product extends Model
     public function tovar_categories() {
         return $this->belongsToMany(Category::class);
     }
+
+    public function tovar_vedomstva() {
+        return $this->belongsToMany(Vedomstvo::class);
+    }
 }

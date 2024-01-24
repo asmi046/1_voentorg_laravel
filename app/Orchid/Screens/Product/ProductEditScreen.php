@@ -33,6 +33,7 @@ class ProductEditScreen extends Screen
      public $product_galery;
      public $product_prices;
      public $category;
+     public $vedomstvo;
      public $effect;
 
     public function query($id): iterable
@@ -43,6 +44,7 @@ class ProductEditScreen extends Screen
         $product_prices = $product->product_prices;
 
         $category = $product->tovar_categories;
+        $vedomstvo = $product->tovar_vedomstva;
         $effect = $product->effects;
 
         // dd($category, $effect);
@@ -50,6 +52,7 @@ class ProductEditScreen extends Screen
         return [
             "product" => $product,
             "category"=> $category,
+            "vedomstvo"=> $vedomstvo,
             "effect"=> $effect,
             "product_galery"=> $product_galery,
             "product_prices"=> $product_prices,
@@ -146,6 +149,7 @@ class ProductEditScreen extends Screen
         ]);
 
         $this->product->tovar_categories()->sync($request->get("category"));
+        $this->product->tovar_vedomstva()->sync($request->get("vedomstvo"));
 
         $this->product->fill($request->get('product'))->save();
 

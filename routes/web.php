@@ -6,6 +6,7 @@ use App\Http\Controllers\IndexController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EasyPageController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\VedomstvoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,8 @@ use App\Http\Controllers\ProductController;
 
 Route::get('/', [IndexController::class, "show"])->name('home');
 
+Route::get('/vedomstva', [VedomstvoController::class, "index"])->name('vedomstva');
+Route::get('/vedomstva/{slug}', [VedomstvoController::class, "vedomstvo"])->name('vedomstvo');
 Route::get('/katalog', [CategoryController::class, "catalog"])->name('catalog');
 Route::get('/katalog/{slug}', [CategoryController::class, "category"])->name('category');
 Route::get('/product/{slug}', [ProductController::class, "show"])->name('product');

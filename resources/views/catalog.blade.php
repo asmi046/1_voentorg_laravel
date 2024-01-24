@@ -11,9 +11,12 @@
 @section('content')
     <x-breadcrumbs :title="$title"></x-breadcrumbs>
 
-    <div class="container">
-        <h1>Каталог товаров</h1>
-    </div>
+    <section>
+        <div class="container">
+            <h1>Каталог товаров</h1>
+        </div>
+    </section>
+
 
     <x-categories.list>
         @foreach ($category as $item)
