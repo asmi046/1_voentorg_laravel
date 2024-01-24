@@ -289,7 +289,9 @@ ul {
 
 }
 
-
+.menu_section {
+    padding: 0;
+}
 
 .header-menu a:hover{
     background-color: var(--catalog-color);
@@ -309,6 +311,10 @@ ul {
 /* Меню сайта end*/
 
 /* Блок шапки с логотипом */
+
+.header_info {
+    padding: 0;
+}
 
 .header_info .container {
     display: flex;
