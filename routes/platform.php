@@ -29,6 +29,10 @@ use App\Orchid\Screens\Shop\ShopCreateScreen;
 use App\Orchid\Screens\Shop\ShopEditScreen;
 use App\Orchid\Screens\Shop\ShopListScreen;
 
+use App\Orchid\Screens\Banner\BannerCreateScreen;
+use App\Orchid\Screens\Banner\BannerEditScreen;
+use App\Orchid\Screens\Banner\BannerListScreen;
+
 use App\Orchid\Screens\Vedomstvo\VedomstvoCreateScreen;
 use App\Orchid\Screens\Vedomstvo\VedomstvoEditScreen;
 use App\Orchid\Screens\Vedomstvo\VedomstvoListScreen;
@@ -105,6 +109,22 @@ Route::screen('/shops/create', ShopCreateScreen::class)
     ->name('platform.shops_create')->breadcrumbs(fn (Trail $trail) => $trail
     ->parent('platform.shops')
     ->push(__('Добавление магазина'), route('platform.shops_create')));
+
+// Баннеры
+Route::screen('/banner', BannerListScreen::class)
+    ->name('platform.banner')->breadcrumbs(fn (Trail $trail) => $trail
+    ->parent('platform.index')
+    ->push(__('Баннеры'), route('platform.banner')));
+
+Route::screen('/banner/{id}/edit', BannerEditScreen::class)
+    ->name('platform.banner_edit')->breadcrumbs(fn (Trail $trail, $id) => $trail
+    ->parent('platform.banner')
+    ->push(__('Редактирование Баннера'), route('platform.banner_edit', $id)));
+
+Route::screen('/banner/create', BannerCreateScreen::class)
+    ->name('platform.banner_create')->breadcrumbs(fn (Trail $trail) => $trail
+    ->parent('platform.banner')
+    ->push(__('Добавление Баннера'), route('platform.banner_create')));
 
 
 // Товары

@@ -58,6 +58,10 @@ class PlatformProvider extends OrchidServiceProvider
                 ->icon('shop')
                 ->route('platform.shops'),
 
+            Menu::make('Баннеры')
+                ->icon('card-image')
+                ->route('platform.banner'),
+
             // Menu::make('Get Started')
             //     ->icon('bs.book')
             //     ->title('Navigation')

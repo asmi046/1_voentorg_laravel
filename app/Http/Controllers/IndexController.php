@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Vedomstvo;
+use App\Models\Banner;
 
 use Illuminate\Database\Eloquent\Builder;
 
@@ -31,11 +32,14 @@ class IndexController extends Controller
         $vedomstva = Vedomstvo::select("*")->take(6)->get();
         // dd($all_product, $sales_liders,  $sales);
 
+        $banners = Banner::all();
+
         return view('index', [
             'all_product' => $all_product,
             'sales_liders' => $sales_liders,
             'sales' => $sales,
             'category' => $category,
+            'banners' => $banners,
             'vedomstva' => $vedomstva
         ]);
     }

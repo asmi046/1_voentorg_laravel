@@ -36,9 +36,11 @@
             padding: 10px 30px;
             background-color: var(--other-color);
             border-radius: 12px;
+            text-align: left;
 
             h2{
                 margin: 0;
+                text-align: left;
                 @media screen and (max-width: 768px) {
                     font-size: 18px;
                     line-height: 20px;

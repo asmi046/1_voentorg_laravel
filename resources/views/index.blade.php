@@ -9,7 +9,7 @@
 @section('description', $description)
 
 @section('content')
-    <x-main-banner></x-main-banner>
+    <x-main-banner :banners="$banners"></x-main-banner>
 
     <section class="vedomstva_section">
         <div class="container">
