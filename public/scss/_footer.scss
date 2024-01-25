@@ -9,6 +9,7 @@
 .footer ul {
 	list-style: none;
 	padding-left: 0;
+    margin-bottom: 20px;
 }
 
 .footer li {
@@ -56,10 +57,14 @@
 	margin-bottom: 26px;
 }
 
+footer strong,
 .footer-address {
 	color: #fff;
 }
 
+.footer-address {
+    font-size: 14px;
+}
 
 @media screen and (max-width: 1012px) {
 	.footer .container {

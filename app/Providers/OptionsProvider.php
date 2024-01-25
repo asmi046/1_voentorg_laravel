@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Option;
 use App\Models\Category;
 use App\Models\Celebration;
+use App\Models\Shop;
 use Illuminate\Support\ServiceProvider;
 
 use View;
@@ -32,6 +33,8 @@ class OptionsProvider extends ServiceProvider
             $all_options = Option::all();
             $categoryes = Category::all();
 
+            $shops = Shop::all();
+
             $opt = [];
 
             foreach ($all_options as $otion) {
@@ -39,6 +42,7 @@ class OptionsProvider extends ServiceProvider
             }
             View::share('options', $opt);
             View::share('all_cat', $categoryes);
+            View::share('shops', $shops);
         });
     }
 }

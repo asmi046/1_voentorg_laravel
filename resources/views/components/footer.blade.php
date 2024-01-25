@@ -27,33 +27,27 @@
       </div>
       <div class="footer-block">
 
-          <div class="footer-title"><h2>Контакты</h2></div>
+        <div class="footer-title"><h2>Контакты</h2></div>
 
-          <ul>
-            <li><span class="footer-address adr_b">1-й Военторг г.Курск, ул.Верхняя Луговая, д.6 (ост. Ц.Рынок, ТЦ "ПОКРОВСКИЙ")</span></li>
-            <li><a class="callback__phone" href="tel:+79513112124">+7 (951) 311 21 24</a></li>
-            <li><a class="callback__phone" href="tel:+74712730449">+7 (4712) 730-449</a></li>
-          </ul>
+        @foreach ($shops as $item)
+            <ul>
+                <li>
+                    <strong>
+                        {{ $item->name }}
+                    </strong>
+                </li>
+                <li>
+                    <span class="footer-address adr_b">
+                        {{ $item->adress }}
+                        @if (!empty($item->orientir))
+                            ({{ $item->orientir }})
+                        @endif
 
-          <ul>
-            <li><span class="footer-address adr_b">1-й Военторг г.Курск, ул.Карла Маркса, д.66/3 т.</span></li>
-            <li><a class="callback__phone" href="tel:+79510889956">+7 (951) 088 99 56</a></li>
-          </ul>
-
-          <ul>
-            <li><span class="footer-address adr_b">1-й Военторг Жуковский г.Курск, пос.им.М.Жукова, квартал 5, д.18, т.</span></li>
-            <li><a class="callback__phone" href="tel:+79510818505">+7 (951) 081 85 05</a></li>
-          </ul>
-
-          <ul>
-            <li><span class="footer-address adr_b">1-й Военторг Валуйки Белгородская область, Валуйки, ул. 9 Января</span></li>
-            <li><a class="callback__phone" href="tel:+79040971614">+7 (904) 097 16 14</a></li>
-          </ul>
-
-          <ul>
-            <li><span class="footer-address adr_b">1-й Воентор Солоти Белгородская область,Валуйки с. Солоти, ул. Советская , 21. т.</span></li>
-            <li><a class="callback__phone" href="tel:+79040971614">+7 (904) 097 16 14</a></li>
-          </ul>
+                    </span>
+                </li>
+                <li><a class="callback__phone" href="tel:+7{{phone_format($item->phone)}}">{{ $item->phone }}</a></li>
+            </ul>
+        @endforeach
 
       </div>
     </div>
