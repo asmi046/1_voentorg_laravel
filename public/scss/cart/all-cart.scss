@@ -1,0 +1,14 @@
+$main_color: #65B965;
+
+@import "cart_table_in_page";
+@import "to_card_btn";
+
+.cart_icon {
+    fill: $main_color;
+}
+
+.cart_icon_loader {
+    fill: none;
+    stroke: $main_color;
+    height: 100px;
+}

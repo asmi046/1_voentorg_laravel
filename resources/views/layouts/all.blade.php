@@ -32,13 +32,16 @@
         'resources/css/app.css',
         'public/fonts/shop/style.css',
         'public/scss/style.scss',
+        'public/scss/cart/all-cart.scss',
         'resources/js/app.js',
+        'resources/js/cart.js',
         'public/js/fslightbox.js',
     ])
 
 </head>
 
 <body>
+    @include("cart.cart-svg")
     <div class="wrapper" id="global_app">
         <x-header.top-line></x-header.top-line>
         <x-header.controll></x-header.controll>

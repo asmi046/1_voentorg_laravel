@@ -52,7 +52,7 @@
 
             </div>
 
-            <div class="entry-content text_decoration">
+            <div id="cart_app" class="entry-content text_decoration">
 
                 @auth('web')
                     <div class="edit_panel">
@@ -63,17 +63,7 @@
                 <h1>{{ $product->title }}</h1>
                 <p class="sku_in_page">Артикул: <span>{{ $product->sku}}</span></p>
 
-                <div class="content-block content-block__price">
-                    @if ($product->old_price)
-                        <span class="single-price__old">{{ $product->old_price}} руб.</span>
-                    @endif
-
-                    <span class="single-price">{{ $product->price}} руб.</span>
-                </div>
-
-                <div class= "by_blk">
-                    <a href="#" class="btn buy_btn">Добавить в корзину</a>
-                </div>
+                <page-to-cart sku="{{$product->sku}}" :prices="{{json_encode($product->product_prices)}}"></page-to-cart>
 
                 @if (count($category) > 0)
                     <h3>Товар из категорий:</h3>

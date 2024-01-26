@@ -1,0 +1,99 @@
+/* --------- Компонент кнопка в корзину --------- */
+
+.tbComponent {
+    display: flex;
+    justify-content: space-between;
+}
+
+.b_counter_btn {
+    display: flex;
+    border: 1px solid #4E9E79;
+    color: white;
+    width: auto;
+    padding: 7px 15px;
+    border-radius: 12px;
+    font-size: 14px;
+
+    input{
+        border:none
+    }
+
+    span.cart_icon {
+        display: block;
+        margin-right: 15px;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-image: url(../img/icons/bascet.svg);
+        width:20px;
+        height: 20px;
+    }
+
+    .oform_icon {
+        color: #4E9E79;
+    }
+}
+
+
+.b_counter_btn span:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.b_counter_btn > *{
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.b_counter_btn a{
+    color: #4E9E79;
+}
+
+.b_counter_btn input {
+    background-color: transparent;
+    width:20px;
+    height: 20px;
+    min-height: 20px;
+    padding: 0;
+    margin: 0;
+    color: #4E9E79;
+    text-align:  center;
+    font-size: 14px;
+}
+
+.b_counter_btn .btn_number_wrapper{
+    display: flex;
+}
+
+.oform_wrapper {
+    width:100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.b_counter_btn_oform span{
+    margin-right: 0;
+    min-height: 20px;
+    line-height: 20px;
+}
+
+.bascet_input_section {
+    margin: 40px 0;
+}
+
+.thencs_message {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+
+    svg{
+        width:200px;
+        margin: 20px auto;
+    }
+
+    p{
+        margin: 20px auto;
+    }
+}
+
+/* --------- Компонент кнопка в корзину --------- */

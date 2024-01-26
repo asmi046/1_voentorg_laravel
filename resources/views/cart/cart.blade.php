@@ -9,14 +9,14 @@
 @section('description', $description)
 
 @section('content')
-    <x-head-page :h1="$title"></x-head-page>
-
     <x-breadcrumbs :title="$title"></x-breadcrumbs>
+    <div class="container">
+        <h1>Корзина</h1>
+    </div>
 
-    <section class="bascet_input_section">
-        <div class="_container">
-            <bascet></bascet>
+    <section>
+        <div id="cart_app" class="container">
+            <cart></cart>
         </div>
     </section>
-
 @endsection

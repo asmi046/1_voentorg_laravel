@@ -1,6 +1,11 @@
 <template>
+
     <div v-show="!show_bascet" class="bascet_lader">
-        <span></span>
+        <span>
+            <svg class="cart_icon cart_icon_loader">
+                <use xlink:href="#loader"></use>
+            </svg>
+        </span>
         <p>Загружаем корзину...</p>
     </div>
     <div  v-show="bascetList.length != 0" class="bascet__">
@@ -112,7 +117,9 @@
         </div>
     </div>
     <div class="empty_bascet" v-show="show_bascet && bascetList.length == 0">
-        <img src="../../../../public/img/icons/cart-empty.svg" alt="">
+        <svg class="cart_icon">
+            <use xlink:href="#empty_cart"></use>
+        </svg>
         <h3>Ваша корзина пуста</h3>
         <p>Жмите на значек корзиныи добавляйте товар!</p>
     </div>

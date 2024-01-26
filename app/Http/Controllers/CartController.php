@@ -15,7 +15,7 @@ use App\Http\Requests\BascetForm;
 class CartController extends Controller
 {
     public function index() {
-        return view('bascet');
+        return view('cart.cart');
     }
 
     public function add(Request $request) {
@@ -78,6 +78,6 @@ class CartController extends Controller
 
     public function thencs() {
         Cart::cart_clear();
-        return view("thencs");
+        return view("cart.thencs");
     }
 }
