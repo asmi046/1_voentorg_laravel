@@ -5,8 +5,7 @@ namespace App\Orchid\Screens\Product;
 use Orchid\Screen\Screen;
 
 use App\Models\ProductPrices;
-use App\Models\Category;
-use App\Models\ProductImage;
+use App\Models\Product;
 use App\Models\Celebration;
 
 use Orchid\Screen\Actions\Link;
@@ -32,7 +31,7 @@ class ProductPriceCreateScreen extends Screen
 
     public function query($id): iterable
     {
-        $tovar = ProductPrices::where('product_id', $id)->first();
+        $tovar = Product::where('id', $id)->first();
         return [
             "tovar" => $tovar
         ];
@@ -45,7 +44,7 @@ class ProductPriceCreateScreen extends Screen
      */
     public function name(): ?string
     {
-        return 'Создание варианта цены для продукта: '.$this->tovar->product_info->title;
+        return 'Создание варианта цены для продукта: '.$this->tovar->title;
     }
 
     /**
@@ -57,7 +56,7 @@ class ProductPriceCreateScreen extends Screen
     {
         return [
             Link::make('Назад')
-            ->href(route("platform.product_edit", $this->tovar->product_info->id))
+            ->href(route("platform.product_edit", $this->tovar->id))
             ->icon('arrow-up-left'),
         ];
     }
@@ -82,7 +81,9 @@ class ProductPriceCreateScreen extends Screen
         ]);
 
         $data = $request->get('element');
-        $data['product_id'] = $this->tovar->product_info->id;
+        $data['product_id'] = $this->tovar->id;
+
+        if ($data['old_price'] === null) $data['old_price'] = 0;
 
         $element_id = ProductPrices::create($data);
 
