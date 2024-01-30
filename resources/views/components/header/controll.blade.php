@@ -6,10 +6,10 @@
                   <button type="submit"></button>
               </form>
 
-        <div class="header__bascket-icon d-flex">
-                                  <a href="#" class="bascket-icon-1 d-flex"></a>
-                                  <a href="#" class="bascket-icon-2 bascet_counter d-flex">0</a>
-              </div>
+        <a href="{{ route('bascet') }}" class="header__bascket-icon d-flex">
+                                  <div class="bascket-icon-1 d-flex"></div>
+                                  <div class="bascket-icon-2 bascet_counter d-flex">0</div>
+        </a>
 
         <div class="header-contacts">
             <a href="tel:+74712730499">  <span class=red> 7 (4712) 730-449 </span> </a>	<div class="address">г. Курск, ул. Верхняя Луговая, 6 </div>
