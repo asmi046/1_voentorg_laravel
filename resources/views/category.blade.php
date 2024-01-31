@@ -14,7 +14,7 @@
         <h1>{{$category_info->title}}</h1>
 
         <div class="cat_product_wrapper">
-            <x-categories.navigation></x-categories.navigation>
+            <x-categories.navigation :category="$category_info"></x-categories.navigation>
 
 
             <div class="cat_product_list_wrapper">
