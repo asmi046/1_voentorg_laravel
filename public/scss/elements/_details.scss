@@ -1,0 +1,33 @@
+details {
+    display: flex;
+
+    summary{
+        list-style: none;
+        border: 1px solid $gray_border_color;
+        padding: 20px  50px 20px 30px;
+        background-color: $main_color;
+        border-radius: $border_rad;
+        position: relative;
+
+        &::before{
+            content: "";
+            background-color: white;
+            position: absolute;
+            border-radius: 10px;
+            width:30px;
+            height:30px;
+            right: 10px;
+            top: calc(50% - 15px);
+        }
+    }
+
+    &[open] summary{
+        background-color: $hover_color;
+    }
+
+    &[open] summary:before{
+        content: "";
+        transform: rotate(180deg);
+    }
+
+}

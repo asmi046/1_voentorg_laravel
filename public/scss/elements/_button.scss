@@ -1,0 +1,28 @@
+button,
+.button {
+    background-color: $main_color;
+    border: 1px solid $main_color;
+    color:white;
+    padding: 10px 30px;
+    cursor: pointer;
+    transition: $main_transition;
+    display: inline-block;
+    line-height: 1;
+    font-family: $main_fonts;
+    font-size: 16px;
+
+    &:hover {
+        background-color: $hover_color;
+    }
+}
+
+.button-white {
+    background-color: unset;
+    border: 1px solid white;
+    text-decoration: underline;
+
+    &:hover{
+        background-color: unset;
+        text-decoration: none;
+    }
+}

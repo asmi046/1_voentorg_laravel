@@ -48,6 +48,7 @@ ul {
 .cat_product_wrapper {
     width: 100%;
     display: flex;
+    margin-bottom: 20px;
 }
 
 .cat_navigation {
@@ -363,6 +364,7 @@ ul {
     width: 40px;
     margin: 3px;
     position: relative;
+    padding: unset;
 }
 
 .searchform button:before{

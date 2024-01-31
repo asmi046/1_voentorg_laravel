@@ -1,28 +1,33 @@
 <template>
-    <div class="price">
-        <select v-model="selected" name="prices" >
-            <option  v-for="(item, index) in prices" :key="item.id" :value="index">{{item.volume}} {{item.ed_izm}}</option>
-        </select>
-        <span class="price__main">
-            {{price}} руб.
-        </span>
+    <div class="to_card_widget">
+        <div class="price">
+            <select v-show="prices.length > 1" v-model="selected" name="prices" >
+                <option  v-for="(item, index) in prices" :key="item.id" :value="index">{{item.volume}} {{item.ed_izm}}</option>
+            </select>
+            <span class="price__main">
+                {{price}} руб.
+            </span>
 
 
 
-        <span v-show="oldprice != 0" class="price__old">
-            {{oldprice}}  руб.
-        </span>
-    </div>
+            <span v-show="oldprice != 0" class="price__old">
+                {{oldprice}}  руб.
+            </span>
+        </div>
 
-    <div class="lb_wrapper">
-        <div class="like">
+        <div class="lb_wrapper">
+
+
+            <div class="sale_btn">
+                <to-bascet-btn-page :sku="sku" :skuid="id_sku" :bascet="'/bascet'"></to-bascet-btn-page>
+            </div>
+
+            <div class="like">
                 <to-favorites-btn :sku="sku"></to-favorites-btn>
-        </div>
-
-        <div class="sale_btn">
-            <to-bascet-btn-page :sku="sku" :skuid="id_sku" :bascet="'/bascet'"></to-bascet-btn-page>
+            </div>
         </div>
     </div>
+
 
 
 </template>

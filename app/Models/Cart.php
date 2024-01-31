@@ -21,15 +21,15 @@ class Cart extends Model
     ];
 
     public function tovar_data() {
-        return $this->hasOne(ProductGroupPrice::class, 'id', 'product_id');
+        return $this->hasOne(ProductPrices::class, 'id', 'product_id');
     }
 
     public function tovar_content() {
-        return $this->hasOne(ProductGroup::class, 'sku', 'product_sku');
+        return $this->hasOne(Product::class, 'sku', 'product_sku');
     }
 
     public static function add($product_id, $product_sku, $addcount) {
-        $product = ProductGroupPrice::where('id', $product_id)->firstOrFail();
+        $product = ProductPrices::where('id', $product_id)->firstOrFail();
 
         if ($cart = self::where(["session_id" => session()->getId(), "product_sku" => $product_id])->first()) {
             $cart->quentity += $addcount;

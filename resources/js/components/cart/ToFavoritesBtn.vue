@@ -1,5 +1,13 @@
 <template>
-  <div @click="addToBascet" :class="{'favorite_fill':in_favorites}" class="to_favorites"></div>
+  <div @click="addToBascet" :class="{'favorite_fill':in_favorites}" class="to_favorites">
+    <svg v-show="!in_favorites" class="cart_icon">
+        <use xlink:href="#cart_like_icon"></use>
+    </svg>
+
+    <svg v-show="in_favorites" class="cart_icon">
+        <use xlink:href="#cart_like_icon_fill"></use>
+    </svg>
+  </div>
 </template>
 
 <script>

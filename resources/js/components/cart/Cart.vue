@@ -26,7 +26,7 @@
                         </div>
                         <div class="tovar_all_blk name_blk">
                             <h2>{{item.tovar_content.title}} {{item.tovar_data.volume}} {{item.tovar_data.ed_izm}}</h2>
-                            <p> Бренд: {{item.tovar_content.tm}} Артикул: {{item.product_sku}} / {{item.product_id}} / {{item.tovar_data.volume}} {{item.tovar_data.ed_izm}} </p>
+                            <p> Артикул: {{item.product_sku}} / {{item.product_id}} </p>
                         </div>
                     </div>
 

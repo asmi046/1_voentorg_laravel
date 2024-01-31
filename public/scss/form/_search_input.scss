@@ -1,0 +1,29 @@
+.search_input{
+    border: 1px solid $gray_border_color;
+    height: 35px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    background-color: $gray_bg_color;
+    input {
+        border: none;
+        height: 100%;
+        background-color: transparent;
+    }
+
+    button{
+        background-color: unset;
+        border: unset;
+        color: $gray_border_color;
+        padding-top:0;
+        padding-bottom:0;
+        padding-right: 10px;
+        & i::before{
+            font-size: 22px;
+        }
+
+        &:hover {
+            background-color: unset;
+        }
+    }
+}

@@ -1,0 +1,91 @@
+.to_card_widget {
+	padding: 20px 0;
+	border-top: 0.4px dotted #C6C6C6;
+	border-bottom: 0.4px dotted #C6C6C6;
+	display: flex;
+	justify-content: space-between;
+    flex-direction: column;
+
+	.price {
+		flex: 1;
+        display: flex;
+        flex-direction: column;
+		margin: auto 0;
+		white-space: nowrap;
+
+		&__main {
+			font-size: 24px;
+			font-weight: bold;
+            margin-top: auto;
+            margin-bottom: auto;
+		}
+
+		&__old {
+			font-size: 14px;
+			color: #C6C6C6;
+			text-decoration: line-through;
+		}
+
+        select {
+            margin-right: 20px;
+            background-color: white;
+        }
+	}
+
+    .lb_wrapper {
+        display: flex;
+        flex: 1;
+        margin-top: 20px;
+        .like {
+            display: flex;
+            height: 100%;
+            margin: auto auto auto 20px;
+
+            .to_favorites {
+                margin:  auto 0 0 auto;
+
+                @media screen and (max-width:768px) {
+                    width: 30px;
+                    margin-right: auto;
+                    margin-left: 0;
+                }
+
+                svg{
+                    width: 30px;
+                    height: 30px;
+                }
+            }
+
+            @media screen and (max-width:768px) {
+                flex: 0 1 30px;
+            }
+        }
+
+        .sale_btn {
+            margin-right: 0;
+            display: flex;
+
+            a{
+                margin-left: auto;
+
+                @media screen and (max-width:768px) {
+                    margin: auto auto auto 20px;
+                }
+            }
+
+
+
+        }
+
+        @media screen and (max-width:768px) {
+            flex: unset;
+            margin-top: 30px;
+        }
+    }
+
+    @media screen and (max-width:768px) {
+        flex-direction:column
+    }
+
+
+}

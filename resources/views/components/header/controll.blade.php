@@ -6,9 +6,11 @@
                   <button type="submit"></button>
               </form>
 
-        <a href="{{ route('bascet') }}" class="header__bascket-icon d-flex">
-                                  <div class="bascket-icon-1 d-flex"></div>
-                                  <div class="bascket-icon-2 bascet_counter d-flex">0</div>
+        <a id="counter_app" href="{{ route('bascet') }}" class="header__bascket-icon d-flex">
+            <div class="bascket-icon-1 d-flex"></div>
+            <div class="bascket-icon-2 bascet_counter d-flex">
+                <cart-counter></cart-counter>
+            </div>
         </a>
 
         <div class="header-contacts">

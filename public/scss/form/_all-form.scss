@@ -1,0 +1,15 @@
+@import "input";
+@import "label";
+@import "field";
+@import "search_input";
+
+
+form {
+    footer{
+        background-color: unset;
+    }
+
+    header{
+        background-color: unset;  
+    }
+}

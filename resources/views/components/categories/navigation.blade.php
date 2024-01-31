@@ -1,57 +1,22 @@
 <div class ="cat_navigation">
     <ul>
-        <li class="cat-item cat-item-299">
-            <a href="#">ВКПО (ВКБО)</a>
-        </li>
-        <li class="cat-item cat-item-38">
-            <a href="#">Головные уборы</a>
-            <ul class="children">
-                <li class="cat-item cat-item-56"><a href="#">Банданы</a>
-                </li>
-                <li class="cat-item cat-item-59"><a href="#">Береты</a>
-                </li>
-                <li class="cat-item cat-item-170"><a href="#">Головные уборы женские</a>
-                </li>
-                <li class="cat-item cat-item-60"><a href="#">Кепки бейсболки</a>
-                </li>
-                <li class="cat-item cat-item-279"><a href="#">Маски</a>
-                </li>
-                <li class="cat-item cat-item-63"><a href="#">Пилотки</a>
-                </li>
-                <li class="cat-item cat-item-65"><a href="#">Фуражки и бескозырки</a>
-                </li>
-                <li class="cat-item cat-item-66"><a href="#">Шапки</a>
-                </li>
-                <li class="cat-item cat-item-67"><a href="#">Шапки меховые</a>
+        @foreach ($all_cat as $item)
+            <li class="cat-item">
+                <a href="{{ route('category', $item['main']->slug) }}">{{$item['main']->title}}</a>
+                <ul class="children">
+                    <li class="cat-item">
+                        <a href="{{ route('category', $item['main']->slug) }}">Смотреть все товары</a>
+                    </li>
+                    @if (!empty($item['sub']))
+                        @foreach ($item['sub'] as $subitem)
+                            <li class="cat-item">
+                                <a href="{{ route('category', $subitem->slug) }}">{{$subitem->title_mini}}</a>
+                            </li>
+                        @endforeach
+                    @endif
+                </ul>
             </li>
-            </ul>
-        </li>
-        <li class="cat-item cat-item-263">
-            <a href="#">Детская одежда</a>
-        </li>
-        <li class="cat-item cat-item-302">
-            <a href="#">Женская форма</a>
-            <ul class="children">
-                <li class="cat-item cat-item-307"><a href="#">Юбки женские</a>
-                </li>
-            </ul>
-        </li>
-        <li class="cat-item cat-item-303">
-            <a href="#">Кадетская форма</a>
-        </li>
-        <li class="cat-item cat-item-289">
-            <a href="#">МЧС</a>
-        </li>
-        <li class="cat-item cat-item-40">
-            <a aria-current="page" href="#">Обувь, берцы</a>
-            <ul class="children">
-                <li class="cat-item cat-item-309"><a href="#">Lowa / Лова тактическая обувь</a>
-                </li>
-                <li class="cat-item cat-item-70"><a href="#">Берцы демисезонные / зимние</a>
-                </li>
-                <li class="cat-item cat-item-71"><a href="#">Берцы летние (неутепленные)</a>
-                </li>
-            </ul>
-        </li>
+        @endforeach
+
     </ul>
 </div>

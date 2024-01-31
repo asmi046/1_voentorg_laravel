@@ -40,8 +40,24 @@ class OptionsProvider extends ServiceProvider
             foreach ($all_options as $otion) {
                 $opt[$otion['name']] = $otion['value'];
             }
+
+            $struct_cat = [];
+
+            foreach ($categoryes as $item)
+                if (!isset($item->parent))
+                {
+                    $struct_cat[$item->id]['main'] = $item;
+                    $struct_cat[$item->id]['sub'] = [];
+                }
+
+            foreach ($categoryes as $item)
+                if (isset($item->parent))
+                {
+                    $struct_cat[$item->parent]['sub'][] = $item;
+                }
+
             View::share('options', $opt);
-            View::share('all_cat', $categoryes);
+            View::share('all_cat', $struct_cat);
             View::share('shops', $shops);
         });
     }

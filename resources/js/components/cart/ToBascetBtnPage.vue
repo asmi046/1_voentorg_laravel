@@ -1,7 +1,7 @@
 <template>
 
-    <a v-if="!inBascet" href="#" @click.prevent="addToBascet" class="fill_btn">В корзину</a>
-    <a v-else :href="bascet" class="fill_btn">Оформить {{ inBascetCount }} шт.</a>
+    <a v-if="!inBascet" href="#" @click.prevent="addToBascet" class="button fill_btn">Добавить в корзину</a>
+    <a v-else :href="bascet" class="button fill_btn">Оформить {{ inBascetCount }} шт.</a>
 
 </template>
 
