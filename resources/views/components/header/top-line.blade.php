@@ -6,11 +6,7 @@
                 <x-smile-menu-puncts></x-smile-menu-puncts>
             </ul>
 
-			<ul class="social-menu">
-				<li><a href="{{$options["vk_lnk"]}}" style="background-image: url({{asset('/images/icons/icons-vk.png')}})"></a></li>
-				<li><a href="{{$options["ok_lnk"]}}" style="background-image: url({{asset('/images/icons/icons-ok.png')}})"></a></li>
-				<li><a href="{{$options["telegram_lnk"]}}" style="background-image: url({{asset('/images/icons/icons-tg.png')}})"></a></li>
-			</ul>
+            <x-social-icon></x-social-icon>
 		</div>
 	</div>
 </header>

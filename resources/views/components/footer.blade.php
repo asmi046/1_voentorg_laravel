@@ -19,11 +19,7 @@
       </div>
       <div class="footer-block">
           <div class="footer-title"><h2>Мы в соцсетях</h2></div>
-        <ul class="social-menu">
-            <li><a href="{{$options["vk_lnk"]}}" style="background-image: url({{asset('/images/icons/icons-w-vk.png')}})"></a></li>
-            <li><a href="{{$options["ok_lnk"]}}" style="background-image: url({{asset('/images/icons/icons-w-ok.png')}})"></a></li>
-            <li><a href="{{$options["telegram_lnk"]}}" style="background-image: url({{asset('/images/icons/icons-w-tg.png')}})"></a></li>
-        </ul>
+          <x-social-icon></x-social-icon>
       </div>
       <div class="footer-block">
 

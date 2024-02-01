@@ -42,6 +42,7 @@
 
 <body>
     @include("cart.cart-svg")
+    @include("allicon")
     <div class="wrapper" id="global_app">
         <x-header.top-line></x-header.top-line>
         <x-header.controll></x-header.controll>
