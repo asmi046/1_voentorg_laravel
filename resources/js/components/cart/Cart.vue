@@ -11,7 +11,13 @@
     <div  v-show="bascetList.length != 0" class="bascet__">
         <div class="bascet_tovar">
             <div class="control">
-                <a @click.prevent="clearBascet()" class="clear_bascet_btn" href="#"><span>Очистить корзину</span></a>
+                <a @click.prevent="clearBascet()" class="clear_bascet_btn" href="#">
+                    <svg class="cart_icon cart_icon_loader">
+                        <use xlink:href="#cart_clear"></use>
+                    </svg>
+
+                    <span>Очистить корзину</span>
+                </a>
             </div>
 
             <div class="tovar_list">
@@ -111,7 +117,7 @@
 
 
 
-                <button @click.prevent="sendBascet()" class="btn" type="submit">Оформить</button> <span :class="{active: loadet }" class="btnLoaderCart shoved"></span>
+                <button @click.prevent="sendBascet()" class="button" type="submit">Оформить</button> <span :class="{active: loadet }" class="btnLoaderCart shoved"></span>
                 <p class="policy">Заполняя данную форму и отправляя заказ вы соглашаетесь с <a href="/policy">политикой конфиденциальности</a></p>
             </form>
         </div>

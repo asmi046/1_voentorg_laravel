@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\CartController;
+use App\Http\Controllers\Cart\CartController;
 
 Route::get('/bascet/thencs', [CartController::class, "thencs"])->name("bascet_thencs");
 Route::get('/bascet', [CartController::class, "index"])->name("bascet");

@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\Cart\FavoriteController;
 
 
 Route::get('/favorites', [FavoriteController::class, "index"])->name("favorites");

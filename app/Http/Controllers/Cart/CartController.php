@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Cart;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Cart;
@@ -9,8 +10,11 @@ use App\Models\Order;
 use App\Models\OrderProduct;
 
 use Illuminate\Support\Facades\Mail;
-use App\Mail\BascetSend;
-use App\Http\Requests\BascetForm;
+use App\Mail\Cart\BascetSend;
+use App\Http\Requests\Cart\BascetForm;
+
+use App\Actions\BascetToTextAction;
+use App\Actions\TelegramSendAction;
 
 class CartController extends Controller
 {
@@ -65,13 +69,21 @@ class CartController extends Controller
 
         ]);
 
-        // foreach ($request->input('tovars') as $item) {
-        //     $order->orderCart()->create($item);
-        // }
 
-        // $order->orderProducts()->sync(array_column($request->input('tovars'), "id"));
+        // отправка заказа в Telegram
+        $to_text = new BascetToTextAction();
+        $tgsender = new TelegramSendAction();
 
-        Mail::to(["asmi046@gmail.com","cubensis2009@yandex.ru"])->send(new BascetSend($request));
+        $to_text = $to_text->handle($request, $order->id);
+        $tgsender->handle($to_text);
+
+        foreach ($request->input('tovars') as $item) {
+            $order->orderCart()->create($item);
+        }
+
+        $order->orderProducts()->sync(array_column($request->input('tovars'), "id"));
+
+        Mail::to(config('cart.send_to'))->send(new BascetSend($request));
 
         return ['send' => true];
     }

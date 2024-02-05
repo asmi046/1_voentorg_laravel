@@ -47,7 +47,7 @@ class Order extends Model
     ];
 
     public function orderProducts() {
-        return $this->belongsToMany(ProductGroup::class);
+        return $this->belongsToMany(Product::class);
     }
 
     public function orderCart() {

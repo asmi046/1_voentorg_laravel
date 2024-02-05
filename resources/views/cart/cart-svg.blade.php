@@ -36,4 +36,13 @@
         <path d="M21.12 4.46011C20.46 1.71011 17.91 -0.149894 14.96 0.130106C13.59 0.260106 12.42 0.830106 11.44 1.80011C11.25 1.99011 11.06 2.17011 10.83 2.39011C10.65 2.19011 10.49 1.99011 10.31 1.82011C8.94003 0.480106 7.31003 -0.0798941 5.41003 0.150106C2.63003 0.490106 0.460034 2.89011 0.420034 5.70011C0.390034 7.37011 0.980034 8.80011 2.16003 9.98011C4.90003 12.7201 7.63004 15.4601 10.37 18.2101C10.74 18.5801 10.99 18.5801 11.36 18.2001C12.09 17.4701 12.82 16.7401 13.55 16.0101C15.55 14.0101 17.56 12.0201 19.54 10.0101C21.08 8.46011 21.63 6.59011 21.12 4.46011Z"/>
     </symbol>
 
+    <symbol id="cart_clear" viewBox="0 0 32 32">
+        <path d="  M25,10H7v17c0,1.105,0.895,2,2,2h14c1.105,0,2-0.895,2-2V10z" id="XMLID_129_" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+        <path d="  M20,7h-8V5c0-1.105,0.895-2,2-2h4c1.105,0,2,0.895,2,2V7z" id="XMLID_145_" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+        <path d="  M28,10H4V8c0-0.552,0.448-1,1-1h22c0.552,0,1,0.448,1,1V10z" id="XMLID_146_" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+        <line id="XMLID_148_" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" x1="16" x2="16" y1="15" y2="24"/>
+        <line id="XMLID_147_" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" x1="12" x2="12" y1="15" y2="24"/>
+        <line id="XMLID_149_" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" x1="20" x2="20" y1="15" y2="24"/>
+    </symbol>
+
   </svg>
