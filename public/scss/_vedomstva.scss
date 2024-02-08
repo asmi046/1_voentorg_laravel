@@ -13,7 +13,8 @@
 .vedomstvo_card {
     border-radius: 10px;
     padding: 10px;
-    width:13%;
+    width:20%;
+    margin-bottom: 20px;
     overflow: hidden;
     text-align:center;
     border: 1px solid #D5DFD5;
@@ -32,7 +33,7 @@
 @media (max-width: 768px) {
     .vedomstvo_card {
         width:28%;
-        margin-bottom: 20px;
+
     }
 }
 

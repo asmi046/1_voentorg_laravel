@@ -34,9 +34,12 @@
                     </div>
 
                     <div class="product_card_wrapper c_3">
+
                         @foreach ($tovars as $item)
                             <x-tovar-card.main :item="$item"></x-tovar-card.main>
                         @endforeach
+
+                        <x-pagination :tovars="$tovars"></x-pagination>
                     </div>
                 </div>
             </div>
