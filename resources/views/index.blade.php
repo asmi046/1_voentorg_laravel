@@ -35,15 +35,14 @@
                             </div>
                         </article>
 
-                        <article class="products">
+                        {{-- <article class="products">
                             <h2>Популярные товары</h2>
                             <div class="product_card_wrapper c_3">
                                 @foreach ($sales_liders as $item)
                                     <x-tovar-card.main :item="$item"></x-tovar-card.main>
                                 @endforeach
                             </div>
-
-                        </article>
+                        </article> --}}
 
                     </div>
                 </div>
