@@ -18,8 +18,6 @@
         </div>
 
 
-        <div class="header-contacts">
-            <a href="tel:+79510839956"><span class=red>+7 (951) 083-99-56 </span> </a>	<div class="address">ул. Карла Маркса, д. 66/3</div>
-        </div>
+
     </div>
   </section>
