@@ -275,16 +275,18 @@ ul {
 .header-menu {
     background-color: var(--menu-color);
     color: white;
-
-    .container {
+    padding: 0;
+    .blk_line {
         display: flex;
-        width:100%;
+        width: 100%;
+        justify-content: space-between;
     }
 
     ul {
         display: flex;
         justify-content:  space-between;
         max-width: 150px;
+        min-width: 150px;
         li {
             flex-grow: 2;
 
@@ -296,6 +298,17 @@ ul {
             }
         }
 
+    }
+
+    .left_panel{
+        display: flex;
+        justify-content: right;
+
+        line-height: 39px;
+
+        a{
+            padding: 0 20px;
+        }
     }
 
     @media screen and (max-width: 862px) {

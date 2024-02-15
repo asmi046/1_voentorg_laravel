@@ -1,11 +1,13 @@
-<section class="header-menu">
+<section id="panel_app" class="header-menu">
         <div class="container">
-            <ul>
-                <li><a href="{{route('catalog')}}">Каталог</a></li>
-            </ul>
+            <div class="blk_line">
+                <ul>
+                    <li><a href="{{route('catalog')}}">Каталог</a></li>
+                </ul>
 
-            <a href="#">Избранное (<favorites-counter></favorites-counter>)</a>
+                <div class="left_panel">
+                    <a href="{{ route('favorites')}}">Избранное (<favorites-counter></favorites-counter>)</a>
+                </div>
+            </div>
         </div>
-
-
 </section>
