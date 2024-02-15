@@ -275,9 +275,16 @@ ul {
 .header-menu {
     background-color: var(--menu-color);
     color: white;
+
+    .container {
+        display: flex;
+        width:100%;
+    }
+
     ul {
         display: flex;
         justify-content:  space-between;
+        max-width: 150px;
         li {
             flex-grow: 2;
 
@@ -296,16 +303,26 @@ ul {
     }
 }
 
+
+.header-menu ul li:first-child a:hover::before{
+    content: "\e911";
+    color: white;
+}
+
+.header-menu ul li:first-child a:hover{
+    background-color: $main_color;
+}
+
 .header-menu ul li:first-child a::before{
-    content: "\e933";
+    content: "\e911";
     font-family: 'shop';
     color: var(--catalog-color);
     position: absolute;
-    left: 10px;
-    width:16px;
-    height:16px;
-    top:calc(50% - 8px)
-
+    left: 20px;
+    width:20px;
+    height:20px;
+    top:calc(50% - 12px);
+    font-size: 20px;
 }
 
 .menu_section {
