@@ -32,6 +32,19 @@ section {
     }
 }
 
+.map_comment{
+    background-color: #65B965;
+    h2{
+        margin: 0;
+        text-align: left;
+    }
+}
+
+.map_page{
+    padding: 0;
+    height: 300px;
+}
+
 @import "pagination";
 @import "header-line";
 @import "main-banner";

@@ -50,6 +50,7 @@
 
         @yield('content')
 
+        <x-map-section></x-map-section>
         <x-footer></x-footer>
     </div>
 </body>
