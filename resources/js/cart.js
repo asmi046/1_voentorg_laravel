@@ -11,6 +11,8 @@ import VueAxios from 'vue-axios'
 import Cart from "./components/cart/Cart.vue"
 import PageToCart from './components/cart/PageToCart.vue'
 import CartCounter from './components/cart/CartCounter.vue'
+import FavoritesCounter from './components/cart/FavoritesCounter.vue'
+import Favorites from './components/cart/Favorites.vue'
 
 const cart_app = createApp({
     components:{
@@ -52,3 +54,36 @@ const counter_app = createApp({
 
 counter_app.use(store)
 counter_app.mount("#counter_app")
+
+const panel_app = createApp({
+    components:{
+        FavoritesCounter
+    },
+
+    setup() {
+
+        const store = useStore()
+        store.dispatch('initialBascet');
+        store.dispatch('initialFavorites');
+
+    },
+})
+
+panel_app.use(store)
+panel_app.mount("#panel_app")
+
+const favorites_app = createApp({
+    components:{
+        Favorites
+    },
+
+    setup() {
+
+        const store = useStore()
+        store.dispatch('initialBascet');
+        store.dispatch('initialFavorites');
+    },
+})
+
+favorites_app.use(store)
+favorites_app.mount("#favorites_app")

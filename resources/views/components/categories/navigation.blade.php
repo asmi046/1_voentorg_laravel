@@ -15,7 +15,7 @@
 
 @endphp
 <div class ="cat_navigation">
-    <h2>Каталог</h2>
+    <h2>Категории</h2>
     <ul>
         @foreach ($all_cat as $item)
             <li class="cat-item">

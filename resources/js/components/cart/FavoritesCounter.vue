@@ -1,5 +1,5 @@
 <template>
-    <div class="fb_counter">{{count}}</div>
+    <span class="fb_counter">{{count}}</span>
 </template>
 
 <script>

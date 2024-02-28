@@ -51,6 +51,7 @@ class Product extends Model
         'sku' => Like::class,
     ];
 
+    protected $with = ['product_prices'];
 
     public function scopeFilter(Builder $builder, QueryFilter $filter) {
         return $filter->apply($builder);
