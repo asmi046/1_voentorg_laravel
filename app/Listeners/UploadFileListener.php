@@ -31,7 +31,7 @@ class UploadFileListener
         $watermark = new WaterMark();
         $img = imagecreatefromjpeg($img_patch);
         $water = imagecreatefrompng(public_path('watermark/wm.png'));
-        $im=$watermark->handle($img,$water,10);
+        $im=$watermark->handle($img,$water,100);
         imagejpeg($im, $img_patch);
         Log::info("Закончили");
     }
