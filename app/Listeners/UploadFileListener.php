@@ -26,7 +26,6 @@ class UploadFileListener
     public function handle(UploadFileEvent $event): void
     {
         Log::info("Накладываем марку");
-
         $img_patch = Storage::path($event->attachment->disk."/".$event->attachment->path.$event->attachment->name.".".$event->attachment->extension);
         $watermark = new WaterMark();
         $img = imagecreatefromjpeg($img_patch);
