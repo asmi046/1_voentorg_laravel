@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Banner;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Vedomstvo;
-use App\Models\Banner;
-
-use Illuminate\Database\Eloquent\Builder;
 
 use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\Builder;
 
 class IndexController extends Controller
 {
