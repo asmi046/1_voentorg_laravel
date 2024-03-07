@@ -8,8 +8,8 @@ class WaterMark {
         $watermark_width = imagesx($watermark_img_obj);
         $watermark_height = imagesy($watermark_img_obj);
 
-        $dest_x = imagesx($main_img_obj) - $watermark_width - 5;
-        $dest_y = imagesy($main_img_obj) - $watermark_height - 5;
+        $dest_x = imagesx($main_img_obj) - $watermark_width;
+        $dest_y = imagesy($main_img_obj) - $watermark_height;
         imagecopymerge($main_img_obj, $watermark_img_obj, $dest_x, $dest_y, 0, 0, $watermark_width, $watermark_height, $alpha_level);
 
         return $main_img_obj;
