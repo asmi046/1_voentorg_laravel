@@ -33,11 +33,24 @@ class UploadFileListener
         $manager = new ImageManager(new Driver());
 
         $img_patch = Storage::path($event->attachment->disk."/".$event->attachment->path.$event->attachment->name.".".$event->attachment->extension);
-        $watermark = new WaterMark();
-        $img = imagecreatefromjpeg($img_patch);
-        $water = imagecreatefrompng(public_path('watermark/wm_s1.png'));
-        $im=$watermark->handle($img,$water,40);
-        imagejpeg($im, $img_patch);
+        $wm_patch = public_path('watermark/wm_s2.png');
+
+        $img = $manager->read($img_patch);
+        $img_wm = $manager->read(public_path('watermark/wm_s2.png'));
+
+        $wm_pos_right = ($img->width() - $img_wm->width())/2;
+        $wm_pos_bottom = ($img->height() - $img_wm->height())/2;
+
+        $img->place(
+            $img_wm,
+            'bottom-right',
+            $wm_pos_right,
+            $wm_pos_bottom,
+            100
+        );
+
+        $img->save($img_patch);
+
         Log::info("Закончили");
     }
 }

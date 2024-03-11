@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EasyPageController;
@@ -20,6 +21,8 @@ use App\Http\Controllers\VedomstvoController;
 */
 
 Route::get('/', [IndexController::class, "show"])->name('home');
+
+Route::get('/test', [TestController::class, "index"])->name('test');
 
 Route::get('/vedomstva', [VedomstvoController::class, "index"])->name('vedomstva');
 Route::get('/vedomstva/{slug}', [VedomstvoController::class, "vedomstvo"])->name('vedomstvo');
