@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 class CategoryController extends Controller
 {
     public function catalog() {
-        $category = Category::where("parent", 0)->orWhere("parent", NULL) ->get();
+        $category = Category::where("parent", 0)->orWhere("parent", NULL)->get();
 
         return view("catalog", [
             'category' => $category
@@ -23,7 +23,7 @@ class CategoryController extends Controller
         $category_info = Category::with("category_tovars")->where("slug", $slug)->first();
         $sub_category = Category::where("parent", $category_info->id)->get();
 
-        $product = $category_info->category_tovars()->paginate(16)->withQueryString();
+        $product = $category_info->category_tovars()->orderBy('created_at', "DESC")->paginate(16)->withQueryString();
         return view("category", [
             'category_info' => $category_info,
             'sub_category' => $sub_category,
