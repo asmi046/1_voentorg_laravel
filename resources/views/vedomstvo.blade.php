@@ -18,6 +18,7 @@
 
             <div class="cat_product_list_wrapper">
                 <div class="category_content">
+                    <x-sort-form></x-sort-form>
                     <div class="product_card_wrapper c_3">
                         @if (isset($tovars))
                             @foreach ($tovars as $item)

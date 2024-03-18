@@ -33,6 +33,8 @@
                         @endforeach
                     </div>
 
+                    <x-sort-form></x-sort-form>
+
                     <div class="product_card_wrapper c_3">
 
                         @foreach ($tovars as $item)
