@@ -11,7 +11,7 @@ class VedomstvoController extends Controller
     public function vedomstvo($slug) {
         $vedomstvo_info = Vedomstvo::with('vedomstvo_tovars')->where('slug', $slug)->first();
 
-        return view('vedomstvo', ['vedomstvo_info' => $vedomstvo_info, 'tovars' => $vedomstvo_info->vedomstvo_tovars()->orderBy('created_at', "DESC")->get() ]);
+        return view('vedomstvo', ['vedomstvo_info' => $vedomstvo_info, 'tovars' => $vedomstvo_info->vedomstvo_tovars()->orderBy('updated_at', "DESC")->get() ]);
     }
 
     public function index() {
