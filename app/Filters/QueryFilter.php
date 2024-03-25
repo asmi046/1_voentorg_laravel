@@ -27,13 +27,18 @@ class QueryFilter
 
         $this->builder = $builder;
 
-
+        $sort_exist = false;
 
         foreach ($this->filters() as $name => $value) {
             if (method_exists($this, $name)) {
                 call_user_func_array([$this, $name], array_filter([$value]));
             }
+
+            if ($name == "sort") $sort_exist = true;
         }
+
+        if (!$sort_exist)
+            $this->builder->orderBy('id', "DESC");
 
         return $this->builder;
     }
