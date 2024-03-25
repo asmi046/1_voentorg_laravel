@@ -23,9 +23,11 @@ class QueryFilter
 
     public function apply(Builder $builder)
     {
+        $builder->orderBy('id', "DESC");
+
         $this->builder = $builder;
 
-        $this->builder->orderBy('id', "DESC");
+
 
         foreach ($this->filters() as $name => $value) {
             if (method_exists($this, $name)) {
