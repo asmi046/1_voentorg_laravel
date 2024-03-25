@@ -15,6 +15,7 @@ class VedomstvoController extends Controller
         return view('vedomstvo', ['vedomstvo_info' => $vedomstvo_info, 'tovars' =>
             $vedomstvo_info
             ->vedomstvo_tovars()
+            ->orderBy('id', 'DESC')
             ->filter($request)
             ->get() ]);
     }
