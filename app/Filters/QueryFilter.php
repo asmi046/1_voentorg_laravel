@@ -23,7 +23,7 @@ class QueryFilter
 
     public function apply(Builder $builder)
     {
-        $builder->orderBy('id', "DESC");
+        // $builder->orderBy('id', "DESC");
 
         $this->builder = $builder;
 

@@ -30,14 +30,6 @@ class ProductFilter extends QueryFilter {
             }
 
         }
-            // $this->builder->whereHas('product_prices', function ($query) use ($sort) {
-            //     if ($sort === "Сначала дешевые")
-            //         $query->orderBy('price', "DESC");
-            //     if ($sort === "Сначала дорогие")
-            //         $query->orderBy('price', "ASC");
-            // });
-
-
     }
 
 
