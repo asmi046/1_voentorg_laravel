@@ -44,7 +44,7 @@ class Vedomstvo extends Model
     }
 
     public function vedomstvo_tovars() {
-        return $this->belongsToMany(Product::class)->orderBy('id', "DESC")->get();
+        return $this->belongsToMany(Product::class)->orderBy('id', "DESC");
     }
 
 }
