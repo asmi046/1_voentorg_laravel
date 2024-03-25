@@ -29,8 +29,6 @@ class ProductFilter extends QueryFilter {
                     ->orderBy('product_prices.price', $direction);
             }
 
-        } else {
-            $this->builder->orderBy('id', 'DESC');
         }
             // $this->builder->whereHas('product_prices', function ($query) use ($sort) {
             //     if ($sort === "Сначала дешевые")
