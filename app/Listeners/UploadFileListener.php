@@ -36,7 +36,7 @@ class UploadFileListener
         $wm_patch = public_path('watermark/wm_s2.png');
 
         $img = $manager->read($img_patch);
-        $img_wm = $manager->read(public_path('watermark/1000_750_1.png'));
+        $img_wm = $manager->read(public_path('watermark/1000_750_2.png'));
 
         $wm_pos_right = ($img->width() - $img_wm->width())/2;
         $wm_pos_bottom = ($img->height() - $img_wm->height())/2;
