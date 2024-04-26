@@ -61,7 +61,7 @@
     </x-categories.list>
 
     <x-tovar-line-section name="Новинки">
-        @foreach ($sales as $item)
+        @foreach ($news as $item)
             <x-tovar-card.main :item="$item"></x-tovar-card.main>
         @endforeach
     </x-tovar-line-section>

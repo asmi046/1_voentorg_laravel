@@ -22,11 +22,14 @@ class IndexController extends Controller
                 $query->where('price', "!=", 0);
             }
         )->orderBy('viev_count')->take(6)->get();
+
         $sales = Product::whereHas("product_prices",
-        function (Builder $query) {
-            $query->where('old_price', "!=", 0);
-        }
-    )->take(8)->get();
+            function (Builder $query) {
+                $query->where('old_price', "!=", 0);
+            }
+        )->take(8)->get();
+
+        $news = Product::where("new", 1)->take(8)->get();
 
         $category = Category::where("parent", 0)->orWhere("parent", NULL) ->get();
 
@@ -39,6 +42,7 @@ class IndexController extends Controller
             'all_product' => $all_product,
             'sales_liders' => $sales_liders,
             'sales' => $sales,
+            'news' => $news,
             'category' => $category,
             'banners' => $banners,
             'vedomstva' => $vedomstva
