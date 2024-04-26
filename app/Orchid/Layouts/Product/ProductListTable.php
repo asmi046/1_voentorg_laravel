@@ -41,7 +41,7 @@ class ProductListTable extends Table
                     return "<img width='50' height='50' src='".($element->img?$element->img:asset("img/no_photo.jpg"))."'>";
                 }
             )->width("10%"),
-            TD::make('sku', 'Артикул')->width("20%")->sort(),
+            TD::make('sku', 'Артикул')->width("15%")->sort(),
             TD::make('category', 'Категории')->render(function($element) {
                 $rstr = "";
                 foreach($element->tovar_categories()->get() as $item) {
@@ -52,7 +52,12 @@ class ProductListTable extends Table
             })->width("25%"),
 
 
-            TD::make('title', 'Заголовок')->width("55%")->sort(),
+            TD::make('title', 'Заголовок')->width("50%")->sort(),
+            TD::make('new', 'Новинка')->width("10%")->sort()->render(
+                function($element) {
+                    return ($element->new)?"Да":"Нет";
+                }
+            ),
 
             // TD::make('slug', 'Ссылка'),
             // TD::make('description', 'Описание')->render(function($element) {

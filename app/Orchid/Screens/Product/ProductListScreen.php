@@ -24,7 +24,7 @@ class ProductListScreen extends Screen
     public function query(): iterable
     {
         return [
-            "products" => Product::filters(ProductSelection::class)->paginate(15)
+            "products" => Product::filters(ProductSelection::class)->defaultSort('id')->paginate(15)
         ];
     }
 
