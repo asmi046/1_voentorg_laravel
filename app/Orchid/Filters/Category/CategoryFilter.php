@@ -40,7 +40,7 @@ class CategoryFilter extends Filter
     public function run(Builder $builder): Builder
     {
         return $builder->where("title", 'LIKE', '%'.$this->request->get('title').'%')
-        ->orWhereHas("parent_category", function (Builder $query) {
+        ->whereHas("parent_category", function (Builder $query) {
             $query->where('title', "LIKE", '%'.$this->request->get('parent').'%');
         });
     }
