@@ -46,7 +46,7 @@ class ProductFilter extends Filter
             return $builder->where("title", 'LIKE', '%'.$this->request->get('title').'%')
             ->where("sku", 'LIKE', '%'.$this->request->get('sku').'%')
             ->whereHas("tovar_categories", function (Builder $query) {
-                    $query->where('category_id', "LIKE", '%'.$this->request->get('category').'%');
+                    $query->where('category_id', $this->request->get('category'));
             });
         else
             return $builder->where("title", 'LIKE', '%'.$this->request->get('title').'%')
