@@ -42,11 +42,15 @@ class ProductFilter extends Filter
      */
     public function run(Builder $builder): Builder
     {
-        return $builder->where("title", 'LIKE', '%'.$this->request->get('title').'%')
-        ->where("sku", 'LIKE', '%'.$this->request->get('sku').'%')
-        ->whereHas("tovar_categories", function (Builder $query) {
-            $query->where('category_id',  $this->request->get('category'));
-        });
+        if (!empty($this->request->get('category')))
+            return $builder->where("title", 'LIKE', '%'.$this->request->get('title').'%')
+            ->where("sku", 'LIKE', '%'.$this->request->get('sku').'%')
+            ->whereHas("tovar_categories", function (Builder $query) {
+                    $query->where('category_id', "LIKE", '%'.$this->request->get('category').'%');
+            });
+        else
+            return $builder->where("title", 'LIKE', '%'.$this->request->get('title').'%')
+            ->where("sku", 'LIKE', '%'.$this->request->get('sku').'%');
     }
 
     /**
@@ -72,6 +76,7 @@ class ProductFilter extends Filter
 
             Select::make('category')
                 ->fromModel(Category::class, 'title', 'id')
+                ->value($this->request->get('category'))
                 ->empty('Все категории')
                 ->title('Категория'),
 
