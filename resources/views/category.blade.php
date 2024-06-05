@@ -13,25 +13,27 @@
     <div class="container">
         <h1>{{$category_info->title}}</h1>
 
+        <div class="sub_categories_list">
+            @foreach ($sub_category as $item)
+                <a href="{{route('category', $item->slug)}}" class="sc__item">
+                    <div class="img">
+                        <img src="{{ !empty($item->img)?$item->img:asset('img/sc_test.webp') }}" alt="{{$item->title}}">
+                    </div>
+
+                    <div class="name">
+                       <span>{{$item->title_mini}}</span>
+                    </div>
+                </a>
+            @endforeach
+        </div>
+
         <div class="cat_product_wrapper">
             <x-categories.navigation :category="$category_info"></x-categories.navigation>
 
 
             <div class="cat_product_list_wrapper">
                 <div class="category_content">
-                    <div class="sub_categories_list">
-                        @foreach ($sub_category as $item)
-                            <a href="{{route('category', $item->slug)}}" class="sc__item">
-                                <div class="img">
-                                    <img src="{{ !empty($item->img)?$item->img:asset('img/sc_test.webp') }}" alt="{{$item->title}}">
-                                </div>
 
-                                <div class="name">
-                                   <span>{{$item->title_mini}}</span>
-                                </div>
-                            </a>
-                        @endforeach
-                    </div>
 
                     <x-sort-form></x-sort-form>
 
