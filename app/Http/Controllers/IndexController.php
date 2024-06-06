@@ -29,7 +29,7 @@ class IndexController extends Controller
             }
         )->take(8)->get();
 
-        $news = Product::where("new", 1)->take(8)->get();
+        $news = Product::where("new", 1)->take(10)->get();
 
         $category = Category::where("parent", 0)->orWhere("parent", NULL) ->get();
 
