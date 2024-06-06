@@ -27,13 +27,13 @@ class IndexController extends Controller
             function (Builder $query) {
                 $query->where('old_price', "!=", 0);
             }
-        )->take(8)->get();
+        )->take(10)->get();
 
         $news = Product::where("new", 1)->take(10)->get();
 
         $category = Category::where("parent", 0)->orWhere("parent", NULL) ->get();
 
-        $vedomstva = Vedomstvo::select("*")->take(10)->get();
+        $vedomstva = Vedomstvo::select("*")->take(8)->get();
         // dd($all_product, $sales_liders,  $sales);
 
         $banners = Banner::all();
