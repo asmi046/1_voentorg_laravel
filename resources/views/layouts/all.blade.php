@@ -35,6 +35,7 @@
         'public/scss/cart/all-cart.scss',
         'resources/js/app.js',
         'resources/js/cart.js',
+        'public/js/mobile_catalog_menu.js',
         'public/js/fslightbox.js',
     ])
 
@@ -64,6 +65,8 @@
     @include("cart.cart-svg")
     @include("allicon")
     <div class="wrapper" id="global_app">
+        <x-mobile-catalog-menu></x-mobile-catalog-menu>
+        <x-mobile-bottom-menu></x-mobile-bottom-menu>
         <x-header.top-line></x-header.top-line>
         <x-header.controll></x-header.controll>
         <x-header.main-menu></x-header.main-menu>

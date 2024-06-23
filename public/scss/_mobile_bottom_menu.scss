@@ -1,0 +1,85 @@
+.mobile_bottom_menu {
+    width:96%;
+    position: fixed;
+    z-index: 100000;
+    bottom: 0;
+    left: 0;
+    background-color: white;
+    box-shadow: 0 0 10px rgb(0 0 0 / 10%);
+    display: none;
+    min-height: 60px;
+    justify-content: space-between;
+    padding: 7px 3%;
+}
+
+.mobile_bottom_menu .bm_btn{
+    text-decoration: none;
+}
+
+.mobile_bottom_menu .bm_btn {
+    padding: 0 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 12px;
+    width:25%;
+    text-align: center;
+}
+
+.mobile_bottom_menu .bm_btn {
+    border-right: 1px solid lightgray;
+}
+
+.mobile_bottom_menu .bm_btn:hover {
+    color:black;
+}
+
+.mobile_bottom_menu .bm_btn:last-child {
+    border-right: none;
+}
+
+.mobile_bottom_menu .bm_btn .icon.icon-ec_icon_abort{
+    font-size: 24px;
+    line-height: 1.5;
+}
+
+.mobile_bottom_menu .bm_btn .icon{
+   width:25px;
+   height:25px;
+   margin: 5px auto;
+   background-position: center;
+   background-size: cover;
+   background-repeat: no-repeat;
+   font-size: 28px;
+   color:var(--catalog-color);
+}
+
+.mobile_bottom_menu .bm_btn p{
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.bascet_blk {
+    position:relative;
+}
+
+.bascet_blk .bascet_counter {
+    position: absolute;
+    width: 13px;
+    height: 13px;
+    border-radius: 10px;
+    color: white;
+    background-color: var(--other-color);
+    font-size: 8px;
+    text-align: center;
+    line-height: 12px;
+    right: -5px;
+    top: 5px;
+}
+
+@media (max-width: 1024px) {
+    .mobile_bottom_menu {
+        display: flex;
+
+    }
+}

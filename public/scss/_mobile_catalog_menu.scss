@@ -1,0 +1,21 @@
+.mobile_catalog_menu {
+    width: 90%;
+    height: calc(100% - 61px);
+    display: block;
+    position: fixed;
+    z-index: 90000;
+    background-color: #fff;
+    left: 900px;
+    transition: all .5s ease!important;
+    padding: 25px 5% 0 5%;
+    left: 110%;
+    overflow: auto;
+}
+
+.mobMenuWrappe {
+    width: 100%;
+}
+
+.mcm_active {
+    left:0;
+}

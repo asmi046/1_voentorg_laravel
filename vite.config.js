@@ -13,6 +13,7 @@ export default defineConfig({
                 'public/scss/cart/all-cart.scss',
                 'resources/js/app.js',
                 'resources/js/cart.js',
+                'public/js/mobile_catalog_menu.js',
                 'public/js/fslightbox.js',
             ],
             refresh: true,
