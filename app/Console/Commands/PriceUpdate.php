@@ -79,6 +79,7 @@ class PriceUpdate extends Command
         }
 
         $this->comment("Результаты:");
+        $this->info("Товаров на сайте: ".ProductPrices::count());
         $this->info("Найдено: ".$exist);
         $this->info("Не найдено: ".$no_exist);
 
