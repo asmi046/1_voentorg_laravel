@@ -36,8 +36,11 @@ class PriceUpdate extends Command
 
         for  ($i = 0; $i < count($xmlObject->Каталог->Товары->Товар); $i++)
         {
-            if (isset($xmlObject->Каталог->Товары->Товар[$i]->Ид))
+            if (isset($xmlObject->Каталог->Товары->Товар[$i]->Ид)) {
+                $this->info($i." - ".(string)$xmlObject->Каталог->Товары->Товар[$i]->Штрихкод);
                 $uid_barcod[(string)$xmlObject->Каталог->Товары->Товар[$i]->Ид] = (string)$xmlObject->Каталог->Товары->Товар[$i]->Штрихкод;
+            }
+
         }
 
         $this->info("Найдено: ".count($xmlObject->Каталог->Товары->Товар));
