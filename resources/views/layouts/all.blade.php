@@ -16,6 +16,7 @@
 
 	<meta charset="UTF-8">
 	<meta name="format-detection" content="telephone=no">
+    <meta name="yandex-verification" content="3f07ef072807ffb9" />
 
     <link rel="icon" type="image/png" href="{{asset('/images/favicons/icon256.png')}}" sizes="256x256">
     <link rel="icon" type="image/png" href="{{asset('/images/favicons/icon128.png')}}" sizes="128x128">
