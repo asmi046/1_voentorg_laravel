@@ -56,6 +56,14 @@ class ShopEditFields extends Rows
                 ->title('Телефон')
                 ->horizontal(),
 
+            Input::make('shop.phone_2')
+                ->title('Телефон 2')
+                ->horizontal(),
+
+            Input::make('shop.phone_3')
+                ->title('Телефон 3')
+                ->horizontal(),
+
             Input::make('shop.email')
                 ->title('E-mail')
                 ->horizontal(),

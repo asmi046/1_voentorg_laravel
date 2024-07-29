@@ -21,6 +21,14 @@
                         </span>
                     </li>
                     <li><a class="callback__phone" href="tel:+7{{phone_format($item->phone)}}">{{ $item->phone }}</a></li>
+                    @if ($item->phone_2)
+                        <li><a class="callback__phone" href="tel:+7{{phone_format($item->phone_2)}}">{{ $item->phone_2 }}</a></li>
+                    @endif
+
+                    @if ($item->phone_3)
+                        <li><a class="callback__phone" href="tel:+7{{phone_format($item->phone_3)}}">{{ $item->phone_3 }}</a></li>
+                    @endif
+
                 </ul>
             @endforeach
 

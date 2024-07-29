@@ -72,7 +72,7 @@ class ShopEditScreen extends Screen
 
     public function save_info(Request $request) {
 
-        $this->category->fill($request->get('shop'))->save();
+        $this->shop->fill($request->get('shop'))->save();
 
         Toast::info("Запись сохранена");
     }

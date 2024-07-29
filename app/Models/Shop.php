@@ -18,6 +18,8 @@ class Shop extends Model
         'geo',
         'orientir',
         'phone',
+        'phone_2',
+        'phone_3',
         'email',
         'time_work',
     ];
