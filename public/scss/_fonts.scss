@@ -1,1 +1,54 @@
-@import url("https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap");
+// @import url("https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap");
+
+@font-face {
+    font-family: 'Jost';
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src: local('Jost* Light'),
+    local('Jost-Light'),
+    url(../fonts/jost-VF.woff) format("woff-variations"),
+    url(../fonts/jost-VF.woff2) format("woff2-variations"),
+    url(../fonts/Jost-300-Light.woff) format('woff'),
+    url(../fonts/Jost-300-Light.woff2) format('woff2');
+}
+
+@font-face {
+    font-family: 'Jost';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local('Jost* Book'),
+    local('Jost-Book'),
+    url(../fonts/jost-VF.woff) format("woff-variations"),
+    url(../fonts/jost-VF.woff2) format("woff2-variations"),
+    url(../fonts/Jost-400-Book.woff) format('woff'),
+    url(../fonts/Jost-400-Book.woff2) format('woff2');
+}
+
+
+@font-face {
+    font-family: 'Jost';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: local('Jost* Medium'),
+    local('Jost-Medium'),
+    url(../fonts/jost-VF.woff) format("woff-variations"),
+    url(../fonts/jost-VF.woff2) format("woff2-variations"),
+    url(../fonts/Jost-500-Medium.woff) format('woff'),
+    url(../fonts/Jost-500-Medium.woff2) format('woff2');
+}
+
+@font-face {
+    font-family: 'Jost';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: local('Jost* Semi'),
+    local('Jost-Semi'),
+    url(../fonts/jost-VF.woff) format("woff-variations"),
+    url(../fonts/jost-VF.woff2) format("woff2-variations"),
+    url(../fonts/Jost-600-Semi.woff) format('woff'),
+    url(../fonts/Jost-600-Semi.woff2) format('woff2');
+}
