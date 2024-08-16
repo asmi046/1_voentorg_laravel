@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\FeedController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\SearchController;
@@ -40,3 +41,5 @@ Route::get('/sitemap.xml', [SiteMapController::class, "index"])->name('sitemap')
 
 Route::get('/search_pds', [SearchController::class, 'search_pds'])->name('search_pds');
 Route::get('/search', [SearchController::class, 'show_search_page'])->name('show_search_page');
+
+Route::get('/yml-feed/{slug}', [FeedController::class, "yml_actegory"])->name('yml_actegory');
