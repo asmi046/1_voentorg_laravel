@@ -50,7 +50,11 @@
                         <oldprice>{{$price_item->price_old}}</oldprice>
                     @endif
 
-                    <description>{{$item->description}}</description>
+                    <description>
+                        <![CDATA[
+                            {{$item->description}}
+                        ]]>
+                    </description>
                     <currencyId>RUR</currencyId>
 
                     <categoryId>{{ $cat }}</categoryId>
