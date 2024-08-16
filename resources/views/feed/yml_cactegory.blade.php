@@ -52,7 +52,7 @@
 
                     <description>
                         <![CDATA[
-                            {{$item->description}}
+                            {!! $item->description !!}
                         ]]>
                     </description>
                     <currencyId>RUR</currencyId>
