@@ -3,6 +3,7 @@
             <div class="blk_line">
                 <ul>
                     <li><a href="{{route('catalog')}}">Каталог</a></li>
+                    <li><a href="{{ route('news')}}">Новости</a></li>
                 </ul>
 
                 <div class="left_panel">

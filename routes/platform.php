@@ -33,6 +33,10 @@ use App\Orchid\Screens\Banner\BannerCreateScreen;
 use App\Orchid\Screens\Banner\BannerEditScreen;
 use App\Orchid\Screens\Banner\BannerListScreen;
 
+use App\Orchid\Screens\News\NewsCreateScreen;
+use App\Orchid\Screens\News\NewsEditScreen;
+use App\Orchid\Screens\News\NewsListScreen;
+
 use App\Orchid\Screens\Vedomstvo\VedomstvoCreateScreen;
 use App\Orchid\Screens\Vedomstvo\VedomstvoEditScreen;
 use App\Orchid\Screens\Vedomstvo\VedomstvoListScreen;
@@ -125,6 +129,22 @@ Route::screen('/banner/create', BannerCreateScreen::class)
     ->name('platform.banner_create')->breadcrumbs(fn (Trail $trail) => $trail
     ->parent('platform.banner')
     ->push(__('Добавление Баннера'), route('platform.banner_create')));
+
+// Новости
+Route::screen('/news', NewsListScreen::class)
+    ->name('platform.news')->breadcrumbs(fn (Trail $trail) => $trail
+    ->parent('platform.index')
+    ->push(__('Новости'), route('platform.news')));
+
+Route::screen('/news/{id}/edit', NewsEditScreen::class)
+    ->name('platform.news_edit')->breadcrumbs(fn (Trail $trail, $id) => $trail
+    ->parent('platform.news')
+    ->push(__('Редактирование Новости'), route('platform.news_edit', $id)));
+
+Route::screen('/news/create', NewsCreateScreen::class)
+    ->name('platform.news_create')->breadcrumbs(fn (Trail $trail) => $trail
+    ->parent('platform.news')
+    ->push(__('Добавление Новости'), route('platform.news_create')));
 
 
 // Товары

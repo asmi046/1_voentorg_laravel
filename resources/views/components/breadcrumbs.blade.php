@@ -13,6 +13,13 @@
             <span class="sep"> / </span> <span class="finish">{{$vedomstvo->title}}</span>
         @endif
 
+
+
+        @if (Request::route()->named('news_page'))
+            <span class="sep"> / </span> <a href="{{route("news")}}">Новости</a>
+            <span class="sep"> / </span> <span class="finish">{{ $news->title}}</span>
+        @endif
+
         {{-- @if (Request::route()->named('product'))
             <span class="sep"> / </span> <a href="{{route('category', $category->slug)}}">{{$category->name}}</a>
             <span class="sep"> / </span> <span class="finish">{{$tovar['title']}}</span>
@@ -36,8 +43,6 @@
         @if (isset($napravlenie))
             <span class="sep"> / <a href="{{route("work")}}">Направления деятельности</a> / <span>{{$napravlenie}}</span>
         @endif
-        @if (isset($news))
-            <span class="sep"> / <a href="{{route("news")}}">Новости</a> / <span>{{$news}}</span>
-        @endif
+
      </div>
 </div>

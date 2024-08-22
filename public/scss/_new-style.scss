@@ -225,7 +225,14 @@ ul {
     .cat_navigation {
         margin-right: 0;
         width:unset;
+        margin-bottom: 20px;
+    }
+
+    .dop_mobile_menu {
         margin-bottom: 55px;
+        li a {
+            margin: 7px 0 7px 20px;
+        }
     }
 
     .cat_product_wrapper .cat_navigation {
@@ -287,6 +294,7 @@ ul {
     background-color: var(--menu-color);
     color: white;
     padding: 0;
+
     .blk_line {
         display: flex;
         width: 100%;
@@ -295,15 +303,12 @@ ul {
 
     ul {
         display: flex;
-        justify-content:  space-between;
-        max-width: 150px;
-        min-width: 150px;
+        justify-content:  start;
         li {
             flex-grow: 2;
 
             a{
-                padding:  8px 0;
-                width: 100%;
+                padding:  8px 20px;
                 display: inline-block;
                 text-align: center;
             }
@@ -328,9 +333,14 @@ ul {
 }
 
 
+.header-menu ul li:first-child a {
+    padding-left: 50px;
+}
+
 .header-menu ul li:first-child a:hover::before{
     content: "\e911";
     color: white;
+
 }
 
 .header-menu ul li:first-child a:hover{
@@ -342,7 +352,7 @@ ul {
     font-family: 'shop';
     color: var(--catalog-color);
     position: absolute;
-    left: 20px;
+    left: 15px;
     width:20px;
     height:20px;
     top:calc(50% - 12px);
