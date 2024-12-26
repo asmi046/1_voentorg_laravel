@@ -37,5 +37,6 @@ class BascetSend extends Mailable
             ->with([
             "formData" => $this->formData
         ]);
+
     }
 }
