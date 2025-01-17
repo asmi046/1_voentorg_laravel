@@ -28,7 +28,7 @@ class PriceUpdate extends Command
     {
         $this->info("Составляем таблицу соответствия UID и Штрихкода...");
 
-        $patch = public_path('/shopbase/import0_1.xml');
+        $patch = public_path('/shopbase/webdata/import0_1.xml');
         $xmlFile = file_get_contents($patch);
         $xmlObject = simplexml_load_string($xmlFile);
 
@@ -45,7 +45,7 @@ class PriceUpdate extends Command
 
         $this->info("Найдено: ".count($xmlObject->Каталог->Товары->Товар));
 
-        $patch = public_path('/shopbase/offers0_1.xml');
+        $patch = public_path('/shopbase/webdata/offers0_1.xml');
         $xmlFile = file_get_contents($patch);
         $xmlObject = simplexml_load_string($xmlFile);
 
