@@ -67,6 +67,9 @@ class PriceUpdate extends Command
                 {
                     $this->info("Найден продукт: ".$product->product_info->title);
                     $exist++;
+
+                    $product->price = $xmlObject->ПакетПредложений->Предложения->Предложение[$i]->Цены->Цена->ЦенаЗаЕдиницу;
+                    $product->save();
                 }
 
                 else
