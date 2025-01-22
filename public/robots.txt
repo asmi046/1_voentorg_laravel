@@ -1,2 +1,5 @@
 User-agent: *
 Disallow:
+
+Clean-param: search_str
+Clean-param: s
