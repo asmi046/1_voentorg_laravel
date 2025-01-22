@@ -8,7 +8,7 @@
 		<h4>{{$item->title}}</h4>
 		<span class="spacer__vendor">Артикул: {{$item->sku}}</span>
 		<div class="prod-card__price d-flex">
-            @if ($item->product_prices || issetr($item->product_prices[0]->old_price))
+            @if (isset($item->product_prices) || issetr($item->product_prices[0]->old_price))
                 <p class='prod-card__price-old'> {{$item->product_prices[0]->old_price}} руб.</p>
 			@endif
 
