@@ -1,9 +1,5 @@
 User-agent: *
-<<<<<<< HEAD
-Disallow:
+Disallow: /public/
 
 Clean-param: search_str
 Clean-param: s
-=======
-Disallow: /public/
->>>>>>> 4ccafa692b5442136c258b8e4c5b18bc464a7cfd
