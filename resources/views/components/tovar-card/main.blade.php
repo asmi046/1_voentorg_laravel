@@ -8,11 +8,12 @@
 		<h4>{{$item->title}}</h4>
 		<span class="spacer__vendor">Артикул: {{$item->sku}}</span>
 		<div class="prod-card__price d-flex">
-            @if (!isset($item->product_prices[0]->old_price))
+            @if (isset($item->product_prices[0]->old_price))
                 <p class='prod-card__price-old'> {{$item->product_prices[0]->old_price}} руб.</p>
-			@endif
+
 
             <p class="prod-card__price-new">{{$item->product_prices[0]->price}} руб.</p>
+            @endif
 		</div>
     </div>
 
