@@ -63,7 +63,6 @@ class CartController extends Controller
             'position_count' => $request->input('count'),
             'session_id' => session()->getId(),
             'user_id' => ($request->user())?$request->user()->id:0,
-
         ]);
 
 
@@ -78,7 +77,7 @@ class CartController extends Controller
             $order->orderCart()->create($item);
         }
 
-        $order->orderProducts()->sync(array_column($request->input('tovars'), "id"));
+        // $order->orderProducts()->sync(array_column($request->input('tovars'), "id"));
 
         Mail::to(config('cart.send_to'))->send(new BascetSend($request));
 
