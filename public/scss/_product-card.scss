@@ -97,6 +97,26 @@
 
 }
 
+.page_manager_info {
+    position: relative;
+    padding: 0 0 0 30px;
+    a {
+        color:$red_color;
+    }
+
+    p::before {
+        content: "\e930";
+        font-family: "shop";
+        color: $red_color;
+        position: absolute;
+        left: 0;
+        width: 20px;
+        height: 20px;
+        top: 3px;
+        font-size: 20px;
+    }
+}
+
 
 @media (max-width: 768px) {
     .product_card_wrapper.c_3 .prod_card,
