@@ -41,7 +41,7 @@
     ])
 
 
-    <meta name="yandex-verification" content="b4ee04063d8fdee2" />
+
 
     <!-- Yandex.Metrika counter -->
     <script type="text/javascript" >
