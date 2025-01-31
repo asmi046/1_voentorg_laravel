@@ -66,7 +66,7 @@ $description = !empty($product->seo_description)?$product->seo_description:$prod
                 <page-to-cart sku="{{$product->sku}}" :prices="{{json_encode($product->product_prices)}}"></page-to-cart>
 
                 <div class="page_manager_info">
-                    <p>Уточнить цену и наличие товара вы можете по телефону <br><a href="tel:+79510849233">+7 (951) 084-92-33</a></p>
+                    <p>Уточнить цену и наличие товара вы можете по телефону <br><a href="tel:+79510849233">+7 (951) 084-92-33</a> Пн. - Пт. с 9 до 18.00 по МСК</p>
                 </div>
 
                 @if (count($category) > 0)

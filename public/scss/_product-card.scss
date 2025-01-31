@@ -104,6 +104,12 @@
         color:$red_color;
     }
 
+    &.in_cart {
+        font-size: 12px;
+        br {
+            display: none;
+        }
+    }
     p::before {
         content: "\e930";
         font-family: "shop";

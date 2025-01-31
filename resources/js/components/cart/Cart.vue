@@ -115,7 +115,9 @@
                     <li v-for="item in errorList" :key="item">{{item}}</li>
                 </ul>
 
-
+                <div class="page_manager_info in_cart">
+                    <p>Уточнить цену и наличие товара вы можете по телефону <br><a href="tel:+79510849233">+7 (951) 084-92-33</a> Пн. - Пт. с 9 до 18.00 по МСК</p>
+                </div>
 
                 <button @click.prevent="sendBascet()" class="button" type="submit">Оформить</button> <span :class="{active: loadet }" class="btnLoaderCart shoved"></span>
                 <p class="policy">Заполняя данную форму и отправляя заказ вы соглашаетесь с <a href="/policy">политикой конфиденциальности</a></p>
