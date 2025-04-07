@@ -65,9 +65,15 @@ $description = !empty($product->seo_description)?$product->seo_description:$prod
 
                 <page-to-cart sku="{{$product->sku}}" :prices="{{json_encode($product->product_prices)}}"></page-to-cart>
 
+
                 <div class="page_manager_info">
-                    <p>Уточнить цену и наличие товара вы можете по телефону <br><a href="tel:+79510849233">+7 (951) 084-92-33</a> Пн. - Пт. с 9 до 18.00 по МСК</p>
+                    <p>Уточнить цену и наличие товара вы можете по телефону <br><a href="tel:+79510849233">+7 (951) 084-92-33</a> Пн. - Пт. с 9 до 18.00 по МСК<br>Или по электронной почте: <a href="mailto:1voentorg@bk.ru">1voentorg@bk.ru</a> </p>
                 </div>
+
+                @if ( $product->product_prices && ($product->product_prices[0]->price < config('cart.min_price')) )
+                    <x-min-price></x-min-price>
+                @endif
+
 
                 @if (count($category) > 0)
                     <h3>Товар из категорий:</h3>

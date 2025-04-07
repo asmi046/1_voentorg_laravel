@@ -205,6 +205,9 @@ export default {
 
             this.errorList = []
 
+            if (this.subtotal < 5000)
+                this.errorList.push("Минимальная сумма заказа 5000 р.");
+
             if (this.bascetInfo.fio == "")
                 this.errorList.push("Поле 'Имя' не заполнено");
 

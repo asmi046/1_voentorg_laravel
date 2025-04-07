@@ -35,6 +35,8 @@
                             </div>
                         </article>
 
+                        <x-min-price></x-min-price>
+
                         {{-- <article class="products">
                             <h2>Популярные товары</h2>
                             <div class="product_card_wrapper c_3">

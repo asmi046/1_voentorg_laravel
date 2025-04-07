@@ -7,4 +7,5 @@ return [
     'subject' => 'Заказ через корзину на сайте',
     'reply_to' => '1voentorg@bk.ru',
     'reply_to_text' => 'Магазин Военторг46',
+    'min_price' => 5000
 ];

@@ -45,6 +45,27 @@ section {
     height: 300px;
 }
 
+.min_price {
+    background-color: $main_color;
+    color:white;
+    padding: 10px 30px;
+    margin: 20px 0;
+    display: flex;
+    flex-wrap: wrap;
+    span {
+        margin: auto auto auto 20px;
+        flex: 1;
+        line-height: 1.1;
+    }
+    .info_icon {
+        width:40px;
+        height: 40px;
+        background-image: url(../images/icons/info.svg);
+        background-repeat: no-repeat;
+        background-size:  cover;
+    }
+}
+
 @import "pagination";
 @import "header-line";
 @import "main-banner";
