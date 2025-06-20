@@ -35,6 +35,13 @@ class VedomstvoEditFields extends Rows
     {
         return [
 
+            Input::make('category.order')
+                ->title('Порядок вывода')
+                ->type('number')
+                ->help('Порядок вывода')
+                ->required()
+                ->horizontal(),
+
             Input::make('category.title')
                 ->title('Заголовок')
                 ->help('Заголовок категории')

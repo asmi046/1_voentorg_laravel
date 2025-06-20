@@ -17,6 +17,7 @@ class Vedomstvo extends Model
     use Filterable;
 
     public $fillable = [
+        "order",
         "title",
         "title_mini",
         "slug",
