@@ -35,6 +35,12 @@ class CategoryEditFields extends Rows
     {
         return [
 
+            Input::make('category.order')
+                ->title('Порядок сортировки')
+                ->help('Порядок сортировки')
+                ->required()
+                ->horizontal(),
+
             Input::make('category.title')
                 ->title('Заголовок')
                 ->help('Заголовок категории')

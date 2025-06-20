@@ -19,11 +19,25 @@ class SearchController extends Controller
 
         $request->request->flash();
 
-        $tovars = Product::where('title', 'LIKE', "%".$search_str."%")
-        ->orWhere('description', 'LIKE', "%".$search_str."%")
-        // ->orWhere('product_prices.sku', 'LIKE', "%".$search_str."%")
-        ->filter($request)
-        ->paginate(15)->withQueryString();
+        // $tovars = Product::where('title', 'LIKE', "%".$search_str."%")
+        // ->orWhere('description', 'LIKE', "%".$search_str."%")
+        // // ->orWhere('product_prices.sku', 'LIKE', "%".$search_str."%")
+        // ->filter($request)
+        // ->paginate(15)->withQueryString();
+
+        $searchTerms = explode(' ',  $search_str);
+        $query = Product::query();
+
+        foreach ($searchTerms as $term) {
+            $query->where(function($q) use ($term) {
+                $q->whereRaw("MATCH(title, description, specification) AGAINST(? IN BOOLEAN MODE)", [$term.'*'])
+                ->orWhere('title', 'like', '%'.$term.'%')
+                ->orWhere('specification', 'like', '%'.$term.'%')
+                ->orWhere('description', 'like', '%'.$term.'%');
+            });
+        }
+
+        $tovars = $query->filter($request)->paginate(15)->withQueryString();
 
         return view('search', ['tovars' => $tovars, 'search_str' => $search_str]);
     }

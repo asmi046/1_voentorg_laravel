@@ -31,7 +31,7 @@ class IndexController extends Controller
 
         $news = Product::where("new", 1)->take(10)->get();
 
-        $category = Category::where("parent", 0)->orWhere("parent", NULL) ->get();
+        $category = Category::where("parent", 0)->orWhere("parent", NULL)->orderBy('order', 'ASC')->get();
 
 
         $vedomstva = Vedomstvo::select("*")->orderBy('order', 'ASC')->take(10)->get();
