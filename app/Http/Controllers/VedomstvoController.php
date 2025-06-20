@@ -20,7 +20,7 @@ class VedomstvoController extends Controller
     }
 
     public function index() {
-        $all_vedomstva = Vedomstvo::select('*')->orderBy('order', "ASC");
+        $all_vedomstva = Vedomstvo::select('*')->orderBy('order', "ASC")->get();
 
         return view('vedomstva', ['vedomstva' => $all_vedomstva]);
     }
