@@ -11,7 +11,6 @@
 @section('content')
 
 
-
     <section>
         <div class="container">
             <div class="cat_product_wrapper">

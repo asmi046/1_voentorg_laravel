@@ -1,0 +1,4 @@
+[20-Jun-2025 10:35:05 UTC] PHP Fatal error:  Uncaught Error: Class "App\Http\Controllers\Controller" not found in C:\Users\asmi\Documents\GitHub\1_voentorg_laravel\app\Http\Controllers\IndexController.php:15
+Stack trace:
+#0 {main}
+  thrown in C:\Users\asmi\Documents\GitHub\1_voentorg_laravel\app\Http\Controllers\IndexController.php on line 15

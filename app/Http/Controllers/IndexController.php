@@ -33,7 +33,8 @@ class IndexController extends Controller
 
         $category = Category::where("parent", 0)->orWhere("parent", NULL) ->get();
 
-        $vedomstva = Vedomstvo::select("*")->take(10)->get();
+
+        $vedomstva = Vedomstvo::select("*")->orderBy('order', 'ASC')->take(10)->get();
         // dd($all_product, $sales_liders,  $sales);
 
         $banners = Banner::all();
