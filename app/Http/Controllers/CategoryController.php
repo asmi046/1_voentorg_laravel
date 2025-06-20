@@ -27,8 +27,10 @@ class CategoryController extends Controller
 
         $product = $category_info
                     ->category_tovars()
+
                     ->filter($request)
                     ->paginate(16)->withQueryString();
+
         return view("category", [
             'category_info' => $category_info,
             'sub_category' => $sub_category,

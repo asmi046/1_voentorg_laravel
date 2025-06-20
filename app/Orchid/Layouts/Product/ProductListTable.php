@@ -42,6 +42,7 @@ class ProductListTable extends Table
                 }
             )->width("10%"),
             TD::make('sku', 'Артикул')->width("15%")->sort(),
+            TD::make('order', 'Порядок')->width("10%")->sort(),
             TD::make('category', 'Категории')->render(function($element) {
                 $rstr = "";
                 foreach($element->tovar_categories()->get() as $item) {
@@ -49,10 +50,10 @@ class ProductListTable extends Table
                 }
 
                 return $rstr;
-            })->width("25%"),
+            })->width("20%"),
 
 
-            TD::make('title', 'Заголовок')->width("50%")->sort(),
+            TD::make('title', 'Заголовок')->width("45%")->sort(),
             TD::make('new', 'Новинка')->width("10%")->sort()->render(
                 function($element) {
                     return ($element->new)?"Да":"Нет";

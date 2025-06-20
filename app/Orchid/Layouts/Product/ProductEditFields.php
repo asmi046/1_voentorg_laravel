@@ -37,6 +37,12 @@ class ProductEditFields extends Rows
     {
         return [
 
+            Input::make('product.order')
+                ->title('Порядок вывода')
+                ->type('number')
+                ->required()
+                ->horizontal(),
+
             Input::make('product.title')
                 ->title('Заголовок')
                 ->required()

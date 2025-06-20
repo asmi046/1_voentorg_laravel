@@ -9,20 +9,21 @@ class ProductFilter extends QueryFilter {
 
     public function sort($sort) {
         if (!empty($sort)) {
-            $direction = "DESC";
-            $field = "id";
+            $direction = "ASC";
+            $field = "order";
             if ($sort === "Сначала дешевые"){
-                $direction = "ASC";
-                $field = "price";
-            }
-
-            if ($sort === "Сначала дорогие"){
                 $direction = "DESC";
                 $field = "price";
             }
 
-            if ($field === 'id' ) {
-                $this->builder->orderBy('id', $direction);
+            if ($sort === "Сначала дорогие"){
+                $direction = "ASC";
+                $field = "price";
+            }
+
+            if ($field === "order" ) {
+
+                $this->builder->orderBy('order', $direction);
             } else {
                 $this->builder
                     ->join('product_prices', 'product_prices.id', '=', 'products.id')

@@ -25,6 +25,7 @@ class Product extends Model
 
     public $fillable = [
         'sku',
+        'order',
         'group',
         'title',
         'slug',
@@ -43,6 +44,7 @@ class Product extends Model
     protected $allowedSorts = [
         'id',
         'sku',
+        'order',
         'new',
         'title'
     ];
