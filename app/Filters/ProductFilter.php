@@ -11,6 +11,17 @@ class ProductFilter extends QueryFilter {
         if (!empty($sort)) {
             $direction = "ASC";
             $field = "order";
+
+            if ($sort === "Актуальные"){
+                $direction = "ASC";
+                $field = "order";
+            }
+
+            if ($sort === "Новые"){
+                $direction = "DESC";
+                $field = "created_at";
+            }
+
             if ($sort === "Сначала дешевые"){
                 $direction = "DESC";
                 $field = "price";
