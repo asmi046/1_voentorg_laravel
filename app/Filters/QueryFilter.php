@@ -38,7 +38,7 @@ class QueryFilter
         }
 
         if (!$sort_exist)
-            $this->builder->orderBy('order', "ASC");
+            $this->builder->orderBy('created_at', "DESC");
 
         return $this->builder;
     }

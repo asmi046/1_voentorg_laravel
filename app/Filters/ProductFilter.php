@@ -33,7 +33,6 @@ class ProductFilter extends QueryFilter {
             }
 
             if ($field === "order" ) {
-
                 $this->builder->orderBy('order', $direction);
             } else {
                 $this->builder
