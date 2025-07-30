@@ -9,8 +9,8 @@ class ProductFilter extends QueryFilter {
 
     public function sort($sort) {
         if (!empty($sort)) {
-            $direction = "ASC";
-            $field = "order";
+            $direction = "DESC";
+            $field = "created_at"; //новые по умолчанию
 
             if ($sort === "Актуальные"){
                 $direction = "ASC";
