@@ -6,15 +6,15 @@
 
     ymaps.ready(init);
 
-    function init () {
-        let centerMap =[51.08150249746985,37.88732998300776]
+    function init() {
+        let centerMap = [51.08150249746985, 37.88732998300776]
         var myMap = new ymaps.Map("map_page", {
             // Координаты центра карты
             center: centerMap,
             // Масштаб карты
             zoom: 7,
             // Выключаем все управление картой
-            controls: ['geolocationControl','zoomControl']
+            controls: ['geolocationControl', 'zoomControl']
         });
 
         var myGeoObjects = [];
@@ -27,15 +27,13 @@
         });
 
         shops.forEach(element => {
-            myGeoObjects = new ymaps.Placemark(element.geo.split(','),
-            {
-                                        hintContent: '<div class="map-hint">'+element.name+'</div>',
-                                        balloonContent: '<div class="map-hint"><b>'+element.name+'</b> <br/> '+element.adress+'<br/> '+element.phone+' </div>',
-                                        }
-                                        ,{
-                                            color:'#65B965'
-                                        }
-                    );
+            myGeoObjects = new ymaps.Placemark(element.geo.split(','), {
+                hintContent: '<div class="map-hint">' + element.name + '</div>',
+                balloonContent: '<div class="map-hint"><b>' + element.name + '</b> <br/> ' + element
+                    .adress + '<br/> ' + element.phone + ' </div>',
+            }, {
+                color: '#65B965'
+            });
             clusterer.add(myGeoObjects);
         });
 
@@ -48,12 +46,11 @@
         myMap.behaviors.disable('scrollZoom');
 
     }
-
 </script>
 
 <section class="map_comment">
     <div class="container">
-        <h2>Посетите сеть наших рознечных магазинов:</h2>
+        <h2>Посетите сеть наших розничных магазинов:</h2>
     </div>
 </section>
 
