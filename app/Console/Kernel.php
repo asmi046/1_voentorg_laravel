@@ -13,12 +13,12 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command('price:update')->dailyAt('01:00');
-        $schedule->command('test:random-string')
-            ->everySecond()
-            ->when(function () {
-                return ((int) now()->format('s')) % 3 === 0;
-            })
-            ->appendOutputTo(storage_path('logs/test-random-string.log'));
+        // $schedule->command('test:random-string')
+        //     ->everySecond()
+        //     ->when(function () {
+        //         return ((int) now()->format('s')) % 3 === 0;
+        //     })
+        //     ->appendOutputTo(storage_path('logs/test-random-string.log'));
     }
 
     /**
