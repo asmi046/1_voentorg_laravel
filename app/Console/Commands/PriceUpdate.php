@@ -26,6 +26,8 @@ class PriceUpdate extends Command
      */
     public function handle()
     {
+        ini_set('memory_limit', '1G');
+
         $this->info("Составляем таблицу соответствия UID и Штрихкода...");
 
         $patch = public_path('/shopbase/webdata/import0_1.xml');
