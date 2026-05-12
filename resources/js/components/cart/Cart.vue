@@ -165,7 +165,7 @@
                     placeholder="Комментарий"
                 ></textarea>
 
-                <h3>Промокод</h3>
+                <h3 class="cart_h3">Промокод</h3>
                 <input
                     v-model="bascetInfo.promo"
                     name="promo"

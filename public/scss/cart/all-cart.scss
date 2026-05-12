@@ -1,4 +1,4 @@
-$main_color: #65B965;
+$main_color: #65b965;
 $sub_color: #ffcb00e6;
 
 @import "cart_table_in_page";
@@ -7,6 +7,10 @@ $sub_color: #ffcb00e6;
 
 .cart_icon {
     fill: $main_color;
+}
+
+.cart_h3 {
+    margin: 0;
 }
 
 .cart_icon_loader {
