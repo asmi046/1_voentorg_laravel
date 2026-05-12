@@ -85,8 +85,8 @@
                                             parseFloat(item.price),
                                     ).toLocaleString("ru-RU")
                                 }}
-                                <span class="rub_symbol"></span
-                            ></span>
+                                <span class="rub_symbol">₽</span></span
+                            >
                         </div>
                         <div class="tovar_all_blk dll_blk">
                             <span
@@ -108,30 +108,38 @@
                         <span class="razd"></span>
                         <span class="p_price rub price_formator"
                             >{{ Number(subtotal).toLocaleString("ru-RU") }}
-                            <span class="rub_symbol"></span
-                        ></span>
+                            <span class="rub_symbol">₽</span>
+                        </span>
                     </div>
 
                     <div v-if="deliveryPrice != 0" class="itogo_row">
                         <span class="text">Доставка</span>
                         <span class="razd"></span>
                         <span class="p_price rub price_formator"
-                            >{{ Number(deliveryPrice).toLocaleString("ru-RU") }}
-                            <span class="rub_symbol"></span
-                        ></span>
+                            >{{
+                                Number(deliveryPrice).toLocaleString("ru-RU")
+                            }}₽ <span class="rub_symbol">₽</span>
+                        </span>
+                    </div>
+
+                    <div v-if="promoApplied" class="itogo_row">
+                        <span class="text">Скидка по промокоду</span>
+                        <span class="razd"></span>
+                        <span class="p_price rub price_formator"
+                            >-{{
+                                Number(promoDiscount).toLocaleString("ru-RU")
+                            }}
+                            <span class="rub_symbol">₽</span>
+                        </span>
                     </div>
 
                     <div class="itogo_row itogo_row_final">
-                        <span class="text">Итого</span>
+                        <span class="text">Итого</span>1
                         <span class="razd"></span>
                         <span class="p_price rub price_formator"
-                            >{{
-                                Number(subtotal + deliveryPrice).toLocaleString(
-                                    "ru-RU",
-                                )
-                            }}
-                            <span class="rub_symbol"></span
-                        ></span>
+                            >{{ Number(finalTotal).toLocaleString("ru-RU") }}
+                            <span class="rub_symbol">₽</span>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -167,18 +175,25 @@
 
                 <h3 class="cart_h3">Промокод</h3>
                 <input
-                    v-model="bascetInfo.promo"
+                    v-model="bascetInfo.promokod"
                     name="promo"
                     type="text"
                     placeholder="Введите промокод"
                 />
                 <button
-                    @click.prevent="sendBascet()"
+                    @click.prevent="applyPromocode()"
                     class="button"
                     type="submit"
                 >
                     Применить
                 </button>
+
+                <p
+                    v-if="promoMessage"
+                    :class="['promo_message', promoMessageType]"
+                >
+                    {{ promoMessage }}
+                </p>
 
                 <!--
                 <h2>Адрес доставки</h2>
@@ -241,7 +256,7 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, ref } from "vue";
+import { computed, onMounted, reactive, ref, watch } from "vue";
 
 const noPhotoUrl = "img/noPhoto.jpg";
 const bascetList = ref([]);
@@ -253,6 +268,11 @@ const payType = ref(1);
 const deliveryMethod = ref("");
 const deliveryPrice = ref(0);
 const errorList = ref([]);
+const promoApplied = ref(false);
+const promoDiscount = ref(0);
+const promoMessage = ref("");
+const promoMessageType = ref("");
+const appliedPromoCode = ref("");
 const bascetInfo = reactive({
     fio: "",
     email: "",
@@ -266,6 +286,13 @@ const bascetInfo = reactive({
     promokod: "",
 });
 
+const finalTotal = computed(() => {
+    return Math.max(
+        subtotal.value + deliveryPrice.value - promoDiscount.value,
+        0,
+    );
+});
+
 const token = document.querySelector('meta[name="_token"]')?.content || "";
 
 const syncCounterInHeader = () => {
@@ -273,6 +300,24 @@ const syncCounterInHeader = () => {
     for (const elem of bascetCounter) {
         elem.innerHTML = count.value;
     }
+};
+
+const resetPromocode = () => {
+    promoApplied.value = false;
+    promoDiscount.value = 0;
+    appliedPromoCode.value = "";
+    promoMessage.value = "";
+    promoMessageType.value = "";
+};
+
+const showPromoSuccess = (message) => {
+    promoMessage.value = message;
+    promoMessageType.value = "success";
+};
+
+const showPromoError = (message) => {
+    promoMessage.value = message;
+    promoMessageType.value = "error";
 };
 
 const updateBascet = () => {
@@ -283,6 +328,70 @@ const updateBascet = () => {
         count.value += Number(item.quentity);
         subtotal.value += Number(item.quentity) * Number(item.price);
     }
+
+    syncCounterInHeader();
+
+    if (count.value === 0) {
+        resetPromocode();
+        return;
+    }
+
+    if (promoApplied.value && appliedPromoCode.value) {
+        recalculatePromocode();
+    }
+};
+
+const applyPromocode = () => {
+    const promoCode = (bascetInfo.promokod || "").trim();
+
+    if (promoCode === "") {
+        resetPromocode();
+        showPromoError("Введите промокод.");
+        return;
+    }
+
+    axios
+        .post("/promocod/verify", {
+            _token: token,
+            promocode: promoCode,
+            cart_sum: subtotal.value,
+        })
+        .then((response) => {
+            promoApplied.value = true;
+            promoDiscount.value = Number(response.data.discount || 0);
+            appliedPromoCode.value = response.data.promo_code || promoCode;
+            showPromoSuccess("Промокод успешно применен.");
+        })
+        .catch((error) => {
+            resetPromocode();
+            showPromoError(
+                error?.response?.data?.message ||
+                    "Не удалось применить промокод.",
+            );
+        });
+};
+
+const recalculatePromocode = () => {
+    axios
+        .post("/promocod/verify", {
+            _token: token,
+            promocode: appliedPromoCode.value,
+            cart_sum: subtotal.value,
+        })
+        .then((response) => {
+            promoApplied.value = true;
+            promoDiscount.value = Number(response.data.discount || 0);
+            appliedPromoCode.value =
+                response.data.promo_code || appliedPromoCode.value;
+            showPromoSuccess("Скидка по промокоду пересчитана.");
+        })
+        .catch((error) => {
+            resetPromocode();
+            showPromoError(
+                error?.response?.data?.message ||
+                    "Промокод больше не действует.",
+            );
+        });
 };
 
 const calcDeliveryPrice = () => {
@@ -353,7 +462,9 @@ const sendBascet = () => {
             adress: bascetInfo.adress,
             comment: bascetInfo.comment,
             count: count.value,
-            amount: subtotal.value + deliveryPrice.value,
+            promo_code: appliedPromoCode.value,
+            promo_code_discount: promoDiscount.value,
+            amount: subtotal.value + deliveryPrice.value - promoDiscount.value,
             delivery: deliveryMethod.value,
             pay: payType.value == 1 ? "Ю-касса" : "Перевод на карту",
             tovars: bascetList.value,
@@ -401,6 +512,7 @@ const clearBascet = () => {
             subtotal.value = 0;
             bascetList.value = [];
             show_bascet.value = true;
+            resetPromocode();
             syncCounterInHeader();
         })
         .catch((error) => console.log(error));
@@ -418,10 +530,22 @@ const deleteElement = (item, index) => {
             item.quentity = 0;
             bascetList.value.splice(index, 1);
             updateBascet();
-            syncCounterInHeader();
         })
         .catch((error) => console.log(error));
 };
+
+watch(
+    () => bascetInfo.promokod,
+    (newValue) => {
+        if (promoApplied.value && newValue.trim() !== appliedPromoCode.value) {
+            resetPromocode();
+
+            if (newValue.trim() !== "") {
+                showPromoError("Промокод изменен, примените его заново.");
+            }
+        }
+    },
+);
 
 onMounted(() => {
     show_bascet.value = false;

@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             // CategorySeeder::class,
             CategorySeederArray::class,
             ProductSeeder::class,
+            PromocodSeeder::class,
 
         ]);
         // \App\Models\User::factory(10)->create();

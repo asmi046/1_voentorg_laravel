@@ -13,6 +13,12 @@ class BascetToTextAction {
         $rez_text .= "<strong>Телефон:</strong> ".$request->input("phone")."\n\r";
         $rez_text .= "<strong>E-mail:</strong> ".$request->input("email")."\n\r";
 
+        if ($request->input("promo_code")) {
+            $rez_text .= "<strong>Промокод:</strong> ".$request->input("promo_code")."\n\r";
+            $rez_text .= "<strong>Скидка по промокоду:</strong> ".$request->input("promo_code_discount")."\n\r";
+        }
+
+
 
         $rez_text .= "\n\r\n\r<b>Состав заказа</b>\n\r\n\r";
 

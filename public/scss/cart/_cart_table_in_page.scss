@@ -212,6 +212,9 @@
 
 .tovar_list .tovar .couint_blk input {
     width: 100%;
+    height: 30px;
+    margin: 0;
+    line-height: 30px;
 }
 
 .tovar_list .tovar .summ_blk {
@@ -326,10 +329,12 @@
 .number_wrapper .number_btn {
     background-color: #f2f3f5;
     height: 100%;
+    width: 20px;
     display: block;
     padding: 0 5px;
     line-height: 30px;
     cursor: pointer;
+    text-align: center;
 }
 
 .number_wrapper .number_btn:hover {

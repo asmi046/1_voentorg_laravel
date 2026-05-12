@@ -3,6 +3,11 @@
 <p><strong>Телефон:</strong> {{$formData['phone']}}</p>
 <p><strong>E-mail:</strong> {{$formData['email']}}</p>
 
+@if ()
+    <p><strong>Промокод:</strong> {{$formData['promo_code']}}</p>
+    <p><strong>Скидка по промокоду:</strong> {{$formData['promo_code_discount']}}</p>
+@endif
+
 <p><strong>Комментарий:</strong> {{$formData['comment']}}</p>
 <table style="width:100%; border-top:1px solid black; border-left:1px solid black; border-spacing: 0;">
     <thead style="text-align:left;">
