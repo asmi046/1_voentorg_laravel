@@ -65,13 +65,21 @@
                         <div class="tovar_all_blk couint_blk">
                             <div class="number_wrapper">
                                 <span
-                                    @click="changeItemQuantity(item, -1)"
+                                    @click="
+                                        item.quentity--;
+                                        updateBascet();
+                                        updateItem(item);
+                                    "
                                     class="number_btn val_down"
                                     >-</span
                                 >
                                 <input type="number" :value="item.quentity" />
                                 <span
-                                    @click="changeItemQuantity(item, 1)"
+                                    @click="
+                                        item.quentity++;
+                                        updateBascet();
+                                        updateItem(item);
+                                    "
                                     class="number_btn val_upp"
                                     >+</span
                                 >
@@ -165,21 +173,6 @@
                     placeholder="Комментарий"
                 ></textarea>
 
-                <h3>Промокод</h3>
-                <input
-                    v-model="bascetInfo.promo"
-                    name="promo"
-                    type="text"
-                    placeholder="Введите промокод"
-                />
-                <button
-                    @click.prevent="sendBascet()"
-                    class="button"
-                    type="submit"
-                >
-                    Применить
-                </button>
-
                 <!--
                 <h2>Адрес доставки</h2>
                 <input @change="calcDeliveryPrice" v-model="bascetInfo.city" name="city" type="text" placeholder="Город*">
@@ -240,202 +233,204 @@
     </div>
 </template>
 
-<script setup>
-import { onMounted, reactive, ref } from "vue";
+<script>
+import PaySelector from "./PaySelector.vue";
+export default {
+    components: { PaySelector },
+    data() {
+        return {
+            noPhotoUrl: "img/noPhoto.jpg",
+            bascetList: [],
+            loadet: false,
+            count: 0,
+            subtotal: 0,
+            show_bascet: false,
+            payType: 1,
+            deliveryMethod: "",
+            deliveryPrice: 0,
+            errorList: [],
+            bascetInfo: {
+                fio: "",
+                email: "",
+                phone: "",
+                adress: "",
+                city: "",
+                street: "",
+                home: "",
+                postindex: "",
+                comment: "",
+            },
+        };
+    },
 
-const noPhotoUrl = "img/noPhoto.jpg";
-const bascetList = ref([]);
-const loadet = ref(false);
-const count = ref(0);
-const subtotal = ref(0);
-const show_bascet = ref(false);
-const payType = ref(1);
-const deliveryMethod = ref("");
-const deliveryPrice = ref(0);
-const errorList = ref([]);
-const bascetInfo = reactive({
-    fio: "",
-    email: "",
-    phone: "",
-    adress: "",
-    city: "",
-    street: "",
-    home: "",
-    postindex: "",
-    comment: "",
-    promokod: "",
-});
-
-const token = document.querySelector('meta[name="_token"]')?.content || "";
-
-const syncCounterInHeader = () => {
-    const bascetCounter = document.querySelectorAll(".bascet_counter");
-    for (const elem of bascetCounter) {
-        elem.innerHTML = count.value;
-    }
-};
-
-const updateBascet = () => {
-    count.value = 0;
-    subtotal.value = 0;
-
-    for (const item of bascetList.value) {
-        count.value += Number(item.quentity);
-        subtotal.value += Number(item.quentity) * Number(item.price);
-    }
-};
-
-const calcDeliveryPrice = () => {
-    if (
-        bascetInfo.city != "" &&
-        bascetInfo.street != "" &&
-        bascetInfo.home != "" &&
-        bascetInfo.postindex != ""
-    ) {
-        if (subtotal.value > 3000) {
-            deliveryPrice.value = 0;
-            return;
-        }
-
+    mounted: function () {
+        this.show_bascet = false;
         axios
-            .get("/delivery_calc", {
-                params: {
-                    city: bascetInfo.city,
-                    street: bascetInfo.street,
-                    home: bascetInfo.home,
-                    postindex: bascetInfo.postindex,
-                    price: subtotal.value,
-                },
-            })
+            .get("/bascet/get")
             .then((response) => {
-                deliveryPrice.value = parseFloat(response.data.pricing_total);
-                console.log(deliveryPrice.value);
-                console.log(response.data);
+                this.bascetList = response.data.position;
+                console.log(this.bascetList);
+                this.updateBascet();
+                this.show_bascet = true;
             })
             .catch((error) => console.log(error));
-    }
+    },
+
+    methods: {
+        calcDeliveryPrice() {
+            if (
+                this.bascetInfo.city != "" &&
+                this.bascetInfo.street != "" &&
+                this.bascetInfo.home != "" &&
+                this.bascetInfo.postindex != ""
+            ) {
+                if (this.subtotal > 3000) {
+                    this.deliveryPrice = 0;
+                    return;
+                }
+
+                axios
+                    .get("/delivery_calc", {
+                        params: {
+                            city: this.bascetInfo.city,
+                            street: this.bascetInfo.street,
+                            home: this.bascetInfo.home,
+                            postindex: this.bascetInfo.postindex,
+                            price: this.subtotal,
+                        },
+                    })
+                    .then((response) => {
+                        this.deliveryPrice = parseFloat(
+                            response.data.pricing_total,
+                        );
+                        console.log(this.deliveryPrice);
+                        console.log(response.data);
+                    })
+                    .catch((error) => console.log(error));
+            }
+        },
+        sendBascet() {
+            console.log(this.deliveryMethod);
+
+            this.errorList = [];
+
+            if (this.subtotal < 500)
+                this.errorList.push("Минимальная сумма заказа 500 р.");
+
+            if (this.bascetInfo.fio == "")
+                this.errorList.push("Поле 'Имя' не заполнено");
+
+            if (this.bascetInfo.phone == "")
+                this.errorList.push("Поле 'Телефон' не заполнено");
+
+            // if (this.bascetInfo.city == "")
+            //     this.errorList.push("Поле 'Город' не заполнено");
+
+            // if (this.bascetInfo.street == "")
+            //     this.errorList.push("Поле 'Улица' не заполнено");
+
+            // if (this.bascetInfo.home == "")
+            //     this.errorList.push("Поле 'Дом' не заполнено");
+
+            // if (this.bascetInfo.postindex == "")
+            //     this.errorList.push("Поле 'Почтовый индекс' не заполнено");
+
+            if (this.errorList.length != 0) return;
+
+            this.loadet = true;
+            axios
+                .post("/bascet/send", {
+                    _token: document.querySelector('meta[name="_token"]')
+                        .content,
+                    fio: this.bascetInfo.fio,
+                    email: this.bascetInfo.email,
+                    phone: this.bascetInfo.phone,
+                    adress: this.bascetInfo.adress,
+                    comment: this.bascetInfo.comment,
+                    count: this.count,
+                    amount: this.subtotal + this.deliveryPrice,
+                    delivery: this.deliveryMethod,
+                    pay: this.payType == 1 ? "Ю-касса" : "Перевод на карту",
+                    tovars: this.bascetList,
+                })
+                .then((response) => {
+                    console.log(response);
+                    this.loadet = false;
+
+                    // if (this.payType == 1)
+                    //     document.location.href=response.data.pay_url
+                    // else
+                    //     document.location.href="/bascet/thencs"
+
+                    document.location.href = "/bascet/thencs";
+                })
+                .catch((error) => console.log(error));
+        },
+
+        updateItem(item) {
+            axios
+                .post("/bascet/update", {
+                    _token: document.querySelector('meta[name="_token"]')
+                        .content,
+                    product_id: item.product_id,
+                    count: item.quentity,
+                })
+                .then(() => {
+                    let bascet_counter =
+                        document.querySelectorAll(".bascet_counter");
+                    for (let elem of bascet_counter) {
+                        elem.innerHTML = this.count;
+                    }
+                })
+                .catch((error) => console.log(error));
+        },
+
+        updateBascet() {
+            if (this.bascetList.length == 0) return;
+
+            this.count = 0;
+            this.subtotal = 0;
+            for (let i = 0; i < this.bascetList.length; i++) {
+                this.count += this.bascetList[i].quentity;
+                this.subtotal +=
+                    parseFloat(this.bascetList[i].quentity) *
+                    parseFloat(this.bascetList[i].price);
+            }
+        },
+
+        clearBascet() {
+            axios
+                .delete("/bascet/clear", {
+                    _token: document.querySelector('meta[name="_token"]')
+                        .content,
+                })
+                .then(() => {
+                    this.count = 0;
+                    this.subtotal = 0;
+                    this.bascetList = [];
+                    this.show_bascet = true;
+                })
+                .catch((error) => console.log(error));
+        },
+
+        deleteElement(item, index) {
+            axios
+                .delete("/bascet/delete", {
+                    data: {
+                        _token: document.querySelector('meta[name="_token"]')
+                            .content,
+                        product_id: item.product_id,
+                    },
+                })
+                .then(() => {
+                    item.quentity = 0;
+                    this.bascetList.splice(index, 1);
+                    this.updateBascet();
+                })
+                .catch((error) => console.log(error));
+        },
+    },
 };
-
-const sendBascet = () => {
-    console.log(deliveryMethod.value);
-
-    errorList.value = [];
-
-    if (subtotal.value < 500)
-        errorList.value.push("Минимальная сумма заказа 500 р.");
-
-    if (bascetInfo.fio == "") errorList.value.push("Поле 'Имя' не заполнено");
-
-    if (bascetInfo.phone == "")
-        errorList.value.push("Поле 'Телефон' не заполнено");
-
-    // if (bascetInfo.city == "")
-    //     errorList.value.push("Поле 'Город' не заполнено");
-
-    // if (bascetInfo.street == "")
-    //     errorList.value.push("Поле 'Улица' не заполнено");
-
-    // if (bascetInfo.home == "")
-    //     errorList.value.push("Поле 'Дом' не заполнено");
-
-    // if (bascetInfo.postindex == "")
-    //     errorList.value.push("Поле 'Почтовый индекс' не заполнено");
-
-    if (errorList.value.length != 0) return;
-
-    loadet.value = true;
-    axios
-        .post("/bascet/send", {
-            _token: token,
-            fio: bascetInfo.fio,
-            email: bascetInfo.email,
-            phone: bascetInfo.phone,
-            adress: bascetInfo.adress,
-            comment: bascetInfo.comment,
-            count: count.value,
-            amount: subtotal.value + deliveryPrice.value,
-            delivery: deliveryMethod.value,
-            pay: payType.value == 1 ? "Ю-касса" : "Перевод на карту",
-            tovars: bascetList.value,
-        })
-        .then((response) => {
-            console.log(response);
-            loadet.value = false;
-
-            // if (payType.value == 1)
-            //     document.location.href=response.data.pay_url
-            // else
-            //     document.location.href="/bascet/thencs"
-
-            document.location.href = "/bascet/thencs";
-        })
-        .catch((error) => console.log(error));
-};
-
-const updateItem = (item) => {
-    axios
-        .post("/bascet/update", {
-            _token: token,
-            product_id: item.product_id,
-            count: item.quentity,
-        })
-        .then(() => {
-            syncCounterInHeader();
-        })
-        .catch((error) => console.log(error));
-};
-
-const changeItemQuantity = (item, delta) => {
-    item.quentity = Math.max(1, Number(item.quentity) + delta);
-    updateBascet();
-    updateItem(item);
-};
-
-const clearBascet = () => {
-    axios
-        .delete("/bascet/clear", {
-            _token: token,
-        })
-        .then(() => {
-            count.value = 0;
-            subtotal.value = 0;
-            bascetList.value = [];
-            show_bascet.value = true;
-            syncCounterInHeader();
-        })
-        .catch((error) => console.log(error));
-};
-
-const deleteElement = (item, index) => {
-    axios
-        .delete("/bascet/delete", {
-            data: {
-                _token: token,
-                product_id: item.product_id,
-            },
-        })
-        .then(() => {
-            item.quentity = 0;
-            bascetList.value.splice(index, 1);
-            updateBascet();
-            syncCounterInHeader();
-        })
-        .catch((error) => console.log(error));
-};
-
-onMounted(() => {
-    show_bascet.value = false;
-    axios
-        .get("/bascet/get")
-        .then((response) => {
-            bascetList.value = response.data.position;
-            console.log(bascetList.value);
-            updateBascet();
-            show_bascet.value = true;
-            syncCounterInHeader();
-        })
-        .catch((error) => console.log(error));
-});
 </script>
 
 <style></style>
