@@ -35,6 +35,7 @@ Route::get('/katalog/{slug}', [CategoryController::class, "category"])->name('ca
 Route::get('/product/{slug}', [ProductController::class, "show"])->name('product');
 
 Route::get('/kontakty', [EasyPageController::class, "kontakty"])->name('kontakty');
+Route::get('/oplata-i-dostavka', [EasyPageController::class, "oplata_i_dostavka"])->name('oplata-i-dostavka');
 Route::get('/proizvodstvo', [EasyPageController::class, "proizvodstvo"])->name('proizvodstvo');
 Route::get('/optovye-postavki', [EasyPageController::class, "optovye_postavki"])->name('optovye-postavki');
 

@@ -32,4 +32,8 @@ class EasyPageController extends Controller
     public function product() {
         return view('product');
     }
+
+    public function oplata_i_dostavka() {
+        return view('oplata-i-dostavka');
+    }
 }

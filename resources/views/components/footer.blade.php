@@ -2,7 +2,9 @@
     <div class="container">
         <div class="footer-block">
 
-            <div class="footer-title"><h2>Контакты</h2></div>
+            <div class="footer-title">
+                <h2>Контакты</h2>
+            </div>
 
             @foreach ($shops as $item)
                 <ul>
@@ -20,13 +22,16 @@
 
                         </span>
                     </li>
-                    <li><a class="callback__phone" href="tel:+7{{phone_format($item->phone)}}">{{ $item->phone }}</a></li>
+                    <li><a class="callback__phone" href="tel:+7{{ phone_format($item->phone) }}">{{ $item->phone }}</a>
+                    </li>
                     @if ($item->phone_2)
-                        <li><a class="callback__phone" href="tel:+7{{phone_format($item->phone_2)}}">{{ $item->phone_2 }}</a></li>
+                        <li><a class="callback__phone"
+                                href="tel:+7{{ phone_format($item->phone_2) }}">{{ $item->phone_2 }}</a></li>
                     @endif
 
                     @if ($item->phone_3)
-                        <li><a class="callback__phone" href="tel:+7{{phone_format($item->phone_3)}}">{{ $item->phone_3 }}</a></li>
+                        <li><a class="callback__phone"
+                                href="tel:+7{{ phone_format($item->phone_3) }}">{{ $item->phone_3 }}</a></li>
                     @endif
 
                 </ul>
@@ -35,16 +40,27 @@
         </div>
 
         <div class="footer-block">
-        <div class="footer-title"><h2>Информация</h2></div>
-        <ul>
-            <x-smile-menu-puncts></x-smile-menu-puncts>
-        </ul>
-      </div>
+            <div class="footer-title">
+                <h2>Информация</h2>
+            </div>
+            <ul>
+                <x-smile-menu-puncts></x-smile-menu-puncts>
+            </ul>
+        </div>
 
-      <div class="footer-block">
-          <div class="footer-title"><h2>Мы в соцсетях</h2></div>
-          <x-social-icon></x-social-icon>
-      </div>
+        <div class="footer-block">
+            <div class="footer-title">
+                <h2>Мы в соцсетях</h2>
+            </div>
+            <x-social-icon></x-social-icon>
+
+            <div class="footer-title">
+                <h2>Юридическая информация</h2>
+            </div>
+            <p>ИП Коллесников Ю.П.</p>
+            <p>ИНН: 461100006342</p>
+            <p>ОГРНИП: 311463226400032</p>
+        </div>
 
     </div>
-  </footer>
+</footer>
