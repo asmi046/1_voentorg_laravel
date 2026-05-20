@@ -24,5 +24,15 @@ class PromocodSeeder extends Seeder
             'fixed_discount_amount' => 0,
             'minimum_cart_amount' => 0,
         ]);
+
+        Promocod::create([
+            'promo_type' => 'Регулярный',
+            'promo_code' => 'ОЗОН',
+            'valid_from' => null,
+            'valid_to' => null,
+            'discount_percent' => 10,
+            'fixed_discount_amount' => 0,
+            'minimum_cart_amount' => 0,
+        ]);
     }
 }
