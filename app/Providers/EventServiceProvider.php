@@ -7,9 +7,9 @@ use App\Listeners\SendBascetMailListener;
 use App\Listeners\SendBascetToTelegramListener;
 use App\Listeners\UploadFileListener;
 use Illuminate\Auth\Events\Registered;
-use Orchid\Platform\Events\UploadFileEvent;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Orchid\Platform\Events\UploadFileEvent;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -31,6 +31,7 @@ class EventServiceProvider extends ServiceProvider
             SendBascetToTelegramListener::class,
             SendBascetMailListener::class,
         ],
+
     ];
 
     /**

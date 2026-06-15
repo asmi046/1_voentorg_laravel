@@ -473,12 +473,19 @@ const sendBascet = () => {
             console.log(response);
             loadet.value = false;
 
-            // if (payType.value == 1)
-            //     document.location.href=response.data.pay_url
-            // else
-            //     document.location.href="/bascet/thencs"
+            if (
+                response.data.pay_info != null &&
+                response.data.pay_info.confirmation.confirmation_url !==
+                    undefined
+            ) {
+                console.log(response.data.pay_info);
 
-            document.location.href = "/bascet/thencs";
+                document.location.href =
+                    response.data.pay_info.confirmation.confirmation_url;
+            } else {
+                console.log(response.data.pay_info);
+                // document.location.href = "/bascet/thencs";
+            }
         })
         .catch((error) => console.log(error));
 };

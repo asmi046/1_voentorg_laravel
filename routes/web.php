@@ -1,17 +1,17 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-
-use App\Http\Controllers\FeedController;
-use App\Http\Controllers\NewsController;
-use App\Http\Controllers\TestController;
-use App\Http\Controllers\IndexController;
-use App\Http\Controllers\SearchController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\SiteMapController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EasyPageController;
+use App\Http\Controllers\FeedController;
+use App\Http\Controllers\IndexController;
+use App\Http\Controllers\NewsController;
+use App\Http\Controllers\PayController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\SiteMapController;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\VedomstvoController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,3 +48,6 @@ Route::get('/news', [NewsController::class, 'index'])->name('news');
 Route::get('/news/{slug}', [NewsController::class, 'news_page'])->name('news_page');
 
 Route::get('/yml-feed/{slug}', [FeedController::class, "yml_actegory"])->name('yml_actegory');
+
+Route::post('/pay_hook', [PayController::class, "pay_hook"])->name("pay_hook");
+

@@ -58,6 +58,12 @@ return [
             'ignore_exceptions' => false,
         ],
 
+        'pay' => [
+            'driver' => 'single',
+            'ignore_exceptions' => false,
+            'path' => storage_path('logs/pay.log'),
+        ],
+
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),

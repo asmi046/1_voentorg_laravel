@@ -98,7 +98,7 @@ class YooKassaService
 
         foreach ($tovars as $product) {
             $receipt['items'][] = [
-                'description' => $product['tovar_data']['title'],
+                'description' => $product['tovar_content']['title'],
                 'quantity' => $product['quentity'],
                 'vat_code' => 1,
                 'payment_subject' => 'commodity',
