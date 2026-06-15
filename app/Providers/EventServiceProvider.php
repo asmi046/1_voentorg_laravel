@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Events\BascetOrderCreated;
+use App\Listeners\SendBascetMailListener;
+use App\Listeners\SendBascetToTelegramListener;
 use App\Listeners\UploadFileListener;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use Orchid\Platform\Events\UploadFileEvent;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -23,6 +25,11 @@ class EventServiceProvider extends ServiceProvider
 
         UploadFileEvent::class => [
             UploadFileListener::class,
+        ],
+
+        BascetOrderCreated::class => [
+            SendBascetToTelegramListener::class,
+            SendBascetMailListener::class,
         ],
     ];
 

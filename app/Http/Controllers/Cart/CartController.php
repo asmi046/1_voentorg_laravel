@@ -7,14 +7,9 @@ use Illuminate\Http\Request;
 
 use App\Models\Cart;
 use App\Models\Order;
-use App\Models\OrderProduct;
 
-use Illuminate\Support\Facades\Mail;
-use App\Mail\Cart\BascetSend;
+use App\Events\BascetOrderCreated;
 use App\Http\Requests\Cart\BascetForm;
-
-use App\Actions\BascetToTextAction;
-use App\Actions\TelegramSendAction;
 
 class CartController extends Controller
 {
@@ -65,21 +60,13 @@ class CartController extends Controller
             'user_id' => ($request->user())?$request->user()->id:0,
         ]);
 
-
-        // отправка заказа в Telegram
-        $to_text = new BascetToTextAction();
-        $tgsender = new TelegramSendAction();
-
-        $to_text = $to_text->handle($request, $order->id);
-        $tgsender->handle($to_text);
-
         foreach ($request->input('tovars') as $item) {
             $order->orderCart()->create($item);
         }
 
         // $order->orderProducts()->sync(array_column($request->input('tovars'), "id"));
 
-        Mail::to(config('cart.send_to'))->send(new BascetSend($request));
+        event(new BascetOrderCreated($order->id, $request->all()));
 
         return ['send' => true];
     }
