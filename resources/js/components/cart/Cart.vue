@@ -301,6 +301,8 @@ const sendBascet = async () => {
             count: count.value,
             promo_code: appliedPromoCode.value,
             promo_code_discount: promoDiscount.value,
+            base_summ: subtotal.value,
+            discount_summ: promoDiscount.value,
             amount: subtotal.value + deliveryPrice.value - promoDiscount.value,
             delivery: deliveryMethod.value,
             pay: payType.value == 1 ? "Ю-касса" : "Перевод на карту",

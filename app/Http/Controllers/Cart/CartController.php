@@ -55,6 +55,8 @@ class CartController extends Controller
             'phone' => $request->input('phone'),
             'adress' => $request->input('adress'),
             'amount' => $request->input('amount'),
+            'base_summ' => $request->input('base_summ'),
+            'discount_summ' => $request->input('discount_summ'),
             'comment' => $request->input('comment'),
             'position_count' => $request->input('count'),
             'session_id' => session()->getId(),
@@ -73,7 +75,13 @@ class CartController extends Controller
 
         $resPay = null;
         try {
-            $resPay = $pay->registerOrder($order, $request->input('tovars'));
+            $normalizedTovars = $this->normalizeTovarsForPayment(
+                $request->input('tovars', []),
+                (float) $request->input('base_summ', 0),
+                (float) $request->input('discount_summ', 0)
+            );
+
+            $resPay = $pay->registerOrder($order, $normalizedTovars);
 
             if (! empty($resPay) && isset($resPay['id'])) {
                 Order::update_order_pay_id($order->id, $resPay['id']);
@@ -92,5 +100,85 @@ class CartController extends Controller
     public function thencs() {
         Cart::cart_clear();
         return view("cart.thencs");
+    }
+
+    /**
+     * Нормализует позиции для платежной системы так, чтобы сумма товаров
+     * совпала с целевой суммой (base_summ - discount_summ).
+     *
+     * Возвращает позиции в формате quantity=1, чтобы избежать ошибок округления
+     * на строках с количеством > 1.
+     */
+    private function normalizeTovarsForPayment(array $tovars, float $baseSumm, float $discountSumm): array
+    {
+        if (empty($tovars)) {
+            return $tovars;
+        }
+
+        $discount = max((int) round($discountSumm), 0);
+        if ($discount <= 0) {
+            return $tovars;
+        }
+
+        $base = max((int) round($baseSumm), 0);
+        $targetSum = max($base - $discount, 0);
+
+        $units = [];
+        foreach ($tovars as $item) {
+            $quantity = max((int) ($item['quentity'] ?? 1), 1);
+            $unitPrice = max((int) round((float) ($item['price'] ?? 0)), 0);
+
+            for ($i = 0; $i < $quantity; $i++) {
+                $units[] = [
+                    'item' => $item,
+                    'base_price' => $unitPrice,
+                ];
+            }
+        }
+
+        if (empty($units)) {
+            return $tovars;
+        }
+
+        $baseUnitsSum = array_sum(array_column($units, 'base_price'));
+        if ($baseUnitsSum <= 0) {
+            return $tovars;
+        }
+
+        // Largest remainder method: гарантирует точную итоговую сумму в рублях.
+        $allocated = [];
+        $remainders = [];
+        $allocatedSum = 0;
+
+        foreach ($units as $index => $unit) {
+            $rawValue = ($unit['base_price'] * $targetSum) / $baseUnitsSum;
+            $floorValue = (int) floor($rawValue);
+
+            $allocated[$index] = $floorValue;
+            $remainders[$index] = $rawValue - $floorValue;
+            $allocatedSum += $floorValue;
+        }
+
+        $leftToDistribute = max($targetSum - $allocatedSum, 0);
+        arsort($remainders);
+
+        foreach (array_keys($remainders) as $index) {
+            if ($leftToDistribute <= 0) {
+                break;
+            }
+
+            $allocated[$index] += 1;
+            $leftToDistribute--;
+        }
+
+        $normalized = [];
+        foreach ($units as $index => $unit) {
+            $normalizedItem = $unit['item'];
+            $normalizedItem['quentity'] = 1;
+            $normalizedItem['price'] = $allocated[$index];
+            $normalized[] = $normalizedItem;
+        }
+
+        return $normalized;
     }
 }

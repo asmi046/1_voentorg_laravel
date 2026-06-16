@@ -26,6 +26,8 @@ class Order extends Model
         'user_id',
         'position_count',
         'amount',
+        'base_summ',
+        'discount_summ',
         'pay',
         'delivery',
     ];
