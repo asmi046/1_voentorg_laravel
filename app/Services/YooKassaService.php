@@ -15,6 +15,7 @@ class YooKassaService
     {
 
         try {
+            Log::channel('pay')->info('Пришел запрос на фиксацию оплаты');
             $source = file_get_contents('php://input');
             $data = json_decode($source, true);
 
