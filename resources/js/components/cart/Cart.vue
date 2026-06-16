@@ -9,242 +9,35 @@
     </div>
     <div v-show="bascetList.length != 0" class="bascet__">
         <div class="bascet_tovar">
-            <div class="control">
-                <a
-                    @click.prevent="clearBascet()"
-                    class="clear_bascet_btn"
-                    href="#"
-                >
-                    <svg class="cart_icon cart_icon_loader">
-                        <use xlink:href="#cart_clear"></use>
-                    </svg>
+            <CartItemsList
+                :bascet-list="bascetList"
+                :no-photo-url="noPhotoUrl"
+                @clear-bascet="clearBascet"
+                @change-item-quantity="changeItemQuantity"
+                @delete-element="deleteElement"
+            />
 
-                    <span>Очистить корзину</span>
-                </a>
-            </div>
-
-            <div class="tovar_list">
-                <div
-                    v-for="(item, index) in bascetList"
-                    :key="item.product_id"
-                    class="tovar"
-                >
-                    <div class="tl-side left-side">
-                        <div class="tovar_all_blk picture_blk">
-                            <img
-                                v-if="item.tovar_content.img != ''"
-                                :src="item.tovar_content.img"
-                                alt=""
-                            />
-                            <img v-else else :src="noPhotoUrl" alt="" />
-                        </div>
-                        <div class="tovar_all_blk name_blk">
-                            <h2>
-                                <a
-                                    target="_blank"
-                                    :href="`/product/${item.tovar_content.slug}`"
-                                >
-                                    {{ item.tovar_content.title }}
-                                    {{ item.tovar_data.volume }}
-                                    {{ item.tovar_data.ed_izm }}
-                                </a>
-                            </h2>
-                            <p>
-                                Артикул: {{ item.product_sku }} /
-                                {{ item.product_id }}
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="tl-side right-side">
-                        <div class="tovar_all_blk price_blk">
-                            <span class="rub price_formator">{{
-                                Number(item.price).toLocaleString("ru-RU")
-                            }}</span>
-                        </div>
-                        <div class="tovar_all_blk couint_blk">
-                            <div class="number_wrapper">
-                                <span
-                                    @click="changeItemQuantity(item, -1)"
-                                    class="number_btn val_down"
-                                    >-</span
-                                >
-                                <input type="number" :value="item.quentity" />
-                                <span
-                                    @click="changeItemQuantity(item, 1)"
-                                    class="number_btn val_upp"
-                                    >+</span
-                                >
-                            </div>
-                        </div>
-                        <div class="tovar_all_blk summ_blk">
-                            <span class="rub price_formator"
-                                >{{
-                                    Number(
-                                        parseFloat(item.quentity) *
-                                            parseFloat(item.price),
-                                    ).toLocaleString("ru-RU")
-                                }}
-                                <span class="rub_symbol">₽</span></span
-                            >
-                        </div>
-                        <div class="tovar_all_blk dll_blk">
-                            <span
-                                @click.prevent="deleteElement(item, index)"
-                                title="Удалить товар"
-                            ></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="itogo">
-                <div class="itogo_price_count">
-                    <div class="itogo_row">
-                        <span class="text"
-                            >Товары (<span>{{ count }}</span
-                            >)</span
-                        >
-                        <span class="razd"></span>
-                        <span class="p_price rub price_formator"
-                            >{{ Number(subtotal).toLocaleString("ru-RU") }}
-                            <span class="rub_symbol">₽</span>
-                        </span>
-                    </div>
-
-                    <div v-if="deliveryPrice != 0" class="itogo_row">
-                        <span class="text">Доставка</span>
-                        <span class="razd"></span>
-                        <span class="p_price rub price_formator"
-                            >{{
-                                Number(deliveryPrice).toLocaleString("ru-RU")
-                            }}₽ <span class="rub_symbol">₽</span>
-                        </span>
-                    </div>
-
-                    <div v-if="promoApplied" class="itogo_row">
-                        <span class="text">Скидка по промокоду</span>
-                        <span class="razd"></span>
-                        <span class="p_price rub price_formator"
-                            >-{{
-                                Number(promoDiscount).toLocaleString("ru-RU")
-                            }}
-                            <span class="rub_symbol">₽</span>
-                        </span>
-                    </div>
-
-                    <div class="itogo_row itogo_row_final">
-                        <span class="text">Итого</span>1
-                        <span class="razd"></span>
-                        <span class="p_price rub price_formator"
-                            >{{ Number(finalTotal).toLocaleString("ru-RU") }}
-                            <span class="rub_symbol">₽</span>
-                        </span>
-                    </div>
-                </div>
-            </div>
+            <CartOrderSummary
+                :count="count"
+                :subtotal="subtotal"
+                :delivery-price="deliveryPrice"
+                :promo-applied="promoApplied"
+                :promo-discount="promoDiscount"
+                :final-total="finalTotal"
+            />
         </div>
 
-        <div class="bascet_form">
-            <h2>Контактные данные</h2>
-            <form action="GET">
-                <input
-                    v-model="bascetInfo.fio"
-                    name="fio"
-                    type="text"
-                    placeholder="Фамилия, Имя*"
-                />
-                <input
-                    v-model="bascetInfo.email"
-                    name="email"
-                    type="email"
-                    placeholder="e-mail"
-                />
-                <input
-                    v-model="bascetInfo.phone"
-                    v-mask="{ mask: '+N (NNN) NNN-NN-NN', model: 'cpf' }"
-                    name="phone"
-                    type="text"
-                    placeholder="Телефон*"
-                />
-                <textarea
-                    v-model="bascetInfo.comment"
-                    name="comment"
-                    placeholder="Комментарий"
-                ></textarea>
-
-                <h3 class="cart_h3">Промокод</h3>
-                <input
-                    v-model="bascetInfo.promokod"
-                    name="promo"
-                    type="text"
-                    placeholder="Введите промокод"
-                />
-                <button
-                    @click.prevent="applyPromocode()"
-                    class="button"
-                    type="submit"
-                >
-                    Применить
-                </button>
-
-                <p
-                    v-if="promoMessage"
-                    :class="['promo_message', promoMessageType]"
-                >
-                    {{ promoMessage }}
-                </p>
-
-                <!--
-                <h2>Адрес доставки</h2>
-                <input @change="calcDeliveryPrice" v-model="bascetInfo.city" name="city" type="text" placeholder="Город*">
-                <input @change="calcDeliveryPrice" v-model="bascetInfo.street" name="street" type="text" placeholder="Улица*">
-                <input @change="calcDeliveryPrice" v-model="bascetInfo.home" name="home" type="text" placeholder="Дом*">
-                <input @change="calcDeliveryPrice" v-model="bascetInfo.postindex" name="postindex" type="text" placeholder="Почтовый индекс*">
-                -->
-
-                <!-- <textarea v-model="bascetInfo.adress" name="adress" placeholder="Адрес"></textarea> -->
-
-                <!-- <select v-model="deliveryMethod" name="delivery_method" >
-                    <option value="" selected disabled>Выберите спопоб доставки</option>
-                    <option value="Почта России">Почта России</option>
-                    <option value="Курьером до двери">Курьером до двери</option>
-                    <option value="Транспортной компантей до пункта выдачи">Транспортной компантей до пункта выдачи</option>
-                </select> -->
-
-                <!-- <h2>Способ оплаты</h2>
-                <pay-selector v-model="payType"></pay-selector>
-                -->
-
-                <ul v-show="errorList.length != 0" class="errors_list">
-                    <li v-for="item in errorList" :key="item">{{ item }}</li>
-                </ul>
-
-                <div class="page_manager_info in_cart">
-                    <p>
-                        Уточнить цену и наличие товара вы можете по телефону
-                        <br /><a href="tel:+79510849233">+7 (951) 084-92-33</a>
-                        Пн. - Пт. с 9 до 18.00 по МСК
-                    </p>
-                </div>
-
-                <button
-                    @click.prevent="sendBascet()"
-                    class="button"
-                    type="submit"
-                >
-                    Оформить
-                </button>
-                <span
-                    :class="{ active: loadet }"
-                    class="btnLoaderCart shoved"
-                ></span>
-                <p class="policy">
-                    Заполняя данную форму и отправляя заказ вы соглашаетесь с
-                    <a href="/policy">политикой конфиденциальности</a>
-                </p>
-            </form>
-        </div>
+        <CartCheckoutForm
+            :bascet-info="bascetInfo"
+            :promo-message="promoMessage"
+            :promo-message-type="promoMessageType"
+            :promo-dirty="promoDirty"
+            :promo-applied="promoApplied"
+            :error-list="errorList"
+            :loadet="loadet"
+            @apply-promocode="applyPromocode"
+            @submit-order="sendBascet"
+        />
     </div>
     <div class="empty_bascet" v-show="show_bascet && bascetList.length == 0">
         <svg class="cart_icon">
@@ -257,6 +50,9 @@
 
 <script setup>
 import { computed, onMounted, reactive, ref, watch } from "vue";
+import CartCheckoutForm from "./CartCheckoutForm.vue";
+import CartItemsList from "./CartItemsList.vue";
+import CartOrderSummary from "./CartOrderSummary.vue";
 
 const noPhotoUrl = "img/noPhoto.jpg";
 const bascetList = ref([]);
@@ -273,6 +69,9 @@ const promoDiscount = ref(0);
 const promoMessage = ref("");
 const promoMessageType = ref("");
 const appliedPromoCode = ref("");
+const promoDirty = ref(false);
+const promoRecalcTimer = ref(null);
+const promoRequestId = ref(0);
 const bascetInfo = reactive({
     fio: "",
     email: "",
@@ -303,11 +102,17 @@ const syncCounterInHeader = () => {
 };
 
 const resetPromocode = () => {
+    if (promoRecalcTimer.value) {
+        clearTimeout(promoRecalcTimer.value);
+        promoRecalcTimer.value = null;
+    }
+
     promoApplied.value = false;
     promoDiscount.value = 0;
     appliedPromoCode.value = "";
     promoMessage.value = "";
     promoMessageType.value = "";
+    promoDirty.value = false;
 };
 
 const showPromoSuccess = (message) => {
@@ -318,6 +123,59 @@ const showPromoSuccess = (message) => {
 const showPromoError = (message) => {
     promoMessage.value = message;
     promoMessageType.value = "error";
+};
+
+const verifyPromocode = (promoCode, successMessage) => {
+    const requestId = ++promoRequestId.value;
+
+    return axios
+        .post("/promocod/verify", {
+            _token: token,
+            promocode: promoCode,
+            cart_sum: subtotal.value,
+        })
+        .then((response) => {
+            if (requestId !== promoRequestId.value) {
+                return false;
+            }
+
+            promoApplied.value = true;
+            promoDiscount.value = Number(response.data.discount || 0);
+            appliedPromoCode.value = response.data.promo_code || promoCode;
+            promoDirty.value = false;
+            showPromoSuccess(successMessage);
+
+            return true;
+        })
+        .catch((error) => {
+            if (requestId !== promoRequestId.value) {
+                return false;
+            }
+
+            resetPromocode();
+            showPromoError(
+                error?.response?.data?.message ||
+                    "Не удалось применить промокод.",
+            );
+
+            return false;
+        });
+};
+
+const schedulePromocodeRecalculation = () => {
+    if (!promoApplied.value || !appliedPromoCode.value) {
+        return;
+    }
+
+    promoDirty.value = true;
+
+    if (promoRecalcTimer.value) {
+        clearTimeout(promoRecalcTimer.value);
+    }
+
+    promoRecalcTimer.value = setTimeout(() => {
+        recalculatePromocode();
+    }, 700);
 };
 
 const updateBascet = () => {
@@ -337,7 +195,7 @@ const updateBascet = () => {
     }
 
     if (promoApplied.value && appliedPromoCode.value) {
-        recalculatePromocode();
+        schedulePromocodeRecalculation();
     }
 };
 
@@ -350,48 +208,18 @@ const applyPromocode = () => {
         return;
     }
 
-    axios
-        .post("/promocod/verify", {
-            _token: token,
-            promocode: promoCode,
-            cart_sum: subtotal.value,
-        })
-        .then((response) => {
-            promoApplied.value = true;
-            promoDiscount.value = Number(response.data.discount || 0);
-            appliedPromoCode.value = response.data.promo_code || promoCode;
-            showPromoSuccess("Промокод успешно применен.");
-        })
-        .catch((error) => {
-            resetPromocode();
-            showPromoError(
-                error?.response?.data?.message ||
-                    "Не удалось применить промокод.",
-            );
-        });
+    verifyPromocode(promoCode, "Промокод успешно применен.");
 };
 
 const recalculatePromocode = () => {
-    axios
-        .post("/promocod/verify", {
-            _token: token,
-            promocode: appliedPromoCode.value,
-            cart_sum: subtotal.value,
-        })
-        .then((response) => {
-            promoApplied.value = true;
-            promoDiscount.value = Number(response.data.discount || 0);
-            appliedPromoCode.value =
-                response.data.promo_code || appliedPromoCode.value;
-            showPromoSuccess("Скидка по промокоду пересчитана.");
-        })
-        .catch((error) => {
-            resetPromocode();
-            showPromoError(
-                error?.response?.data?.message ||
-                    "Промокод больше не действует.",
-            );
-        });
+    if (!appliedPromoCode.value) {
+        return Promise.resolve(false);
+    }
+
+    return verifyPromocode(
+        appliedPromoCode.value,
+        "Скидка по промокоду пересчитана.",
+    );
 };
 
 const calcDeliveryPrice = () => {
@@ -425,10 +253,18 @@ const calcDeliveryPrice = () => {
     }
 };
 
-const sendBascet = () => {
+const sendBascet = async () => {
     console.log(deliveryMethod.value);
 
     errorList.value = [];
+
+    if (promoApplied.value && promoDirty.value && appliedPromoCode.value) {
+        const promoValid = await recalculatePromocode();
+
+        if (!promoValid) {
+            return;
+        }
+    }
 
     if (subtotal.value < 500)
         errorList.value.push("Минимальная сумма заказа 500 р.");
@@ -453,8 +289,9 @@ const sendBascet = () => {
     if (errorList.value.length != 0) return;
 
     loadet.value = true;
-    axios
-        .post("/bascet/send", {
+
+    try {
+        const response = await axios.post("/bascet/send", {
             _token: token,
             fio: bascetInfo.fio,
             email: bascetInfo.email,
@@ -468,26 +305,27 @@ const sendBascet = () => {
             delivery: deliveryMethod.value,
             pay: payType.value == 1 ? "Ю-касса" : "Перевод на карту",
             tovars: bascetList.value,
-        })
-        .then((response) => {
-            console.log(response);
-            loadet.value = false;
+        });
 
-            if (
-                response.data.pay_info != null &&
-                response.data.pay_info.confirmation.confirmation_url !==
-                    undefined
-            ) {
-                console.log(response.data.pay_info);
+        console.log(response);
 
-                document.location.href =
-                    response.data.pay_info.confirmation.confirmation_url;
-            } else {
-                console.log(response.data.pay_info);
-                // document.location.href = "/bascet/thencs";
-            }
-        })
-        .catch((error) => console.log(error));
+        if (
+            response.data.pay_info != null &&
+            response.data.pay_info.confirmation.confirmation_url !== undefined
+        ) {
+            console.log(response.data.pay_info);
+
+            document.location.href =
+                response.data.pay_info.confirmation.confirmation_url;
+        } else {
+            console.log(response.data.pay_info);
+            document.location.href = "/bascet/thencs";
+        }
+    } catch (error) {
+        console.log(error);
+    } finally {
+        loadet.value = false;
+    }
 };
 
 const updateItem = (item) => {
@@ -512,7 +350,9 @@ const changeItemQuantity = (item, delta) => {
 const clearBascet = () => {
     axios
         .delete("/bascet/clear", {
-            _token: token,
+            data: {
+                _token: token,
+            },
         })
         .then(() => {
             count.value = 0;
@@ -545,6 +385,11 @@ watch(
     () => bascetInfo.promokod,
     (newValue) => {
         if (promoApplied.value && newValue.trim() !== appliedPromoCode.value) {
+            if (promoRecalcTimer.value) {
+                clearTimeout(promoRecalcTimer.value);
+                promoRecalcTimer.value = null;
+            }
+
             resetPromocode();
 
             if (newValue.trim() !== "") {
