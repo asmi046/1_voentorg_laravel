@@ -3,8 +3,10 @@
 namespace App\Services;
 
 use App\Actions\TelegramSendAction;
+use App\Mail\Cart\PaymentStatusSend;
 use App\Models\Order;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use YooKassa\Client;
 use YooKassa\Model\Notification\NotificationEventType;
 use YooKassa\Model\Notification\NotificationFactory;
@@ -67,6 +69,13 @@ class YooKassaService
                     $pay_text .= '<b>Сумма: </b>'.floatval($paymentInfo['amount']['value'])." ₽\n\r";
                     $tgsender = new TelegramSendAction;
                     $tgsender->handle($pay_text);
+
+                    Mail::to(config('cart.send_to'))->send(new PaymentStatusSend(
+                        $order->id,
+                        $someData['paymentId'],
+                        $orderStatusText,
+                        floatval($paymentInfo['amount']['value'])
+                    ));
 
                     Log::channel('pay')->info('Order status updated info: '.print_r($paymentInfo, true));
                     Log::channel('pay')->info('Order status updated: '.$order->id);
