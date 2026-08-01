@@ -27,6 +27,11 @@
                 placeholder="Комментарий"
             ></textarea>
 
+            <!-- <DeliverySelector
+                v-model="deliveryType"
+                @change="onDeliveryChange"
+            /> -->
+
             <h3 class="cart_h3">Промокод</h3>
             <input
                 v-model="bascetInfo.promokod"
@@ -61,7 +66,7 @@
                 </p>
             </div> -->
 
-            <div class="pay_information">
+            <!-- <div class="pay_information">
                 <p>
                     После оформления вы автоматически перейдете на страницу
                     оплаты сервиса ЮKassa, где сможете выбрать удобный способ
@@ -81,7 +86,7 @@
                         alt="pay icons"
                     />
                 </div>
-            </div>
+            </div> -->
 
             <button
                 @click.prevent="$emit('submit-order')"
@@ -103,6 +108,9 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
+import DeliverySelector from "./DeliverySelector.vue";
+
 defineProps({
     bascetInfo: {
         type: Object,
@@ -136,7 +144,17 @@ defineProps({
 const assetUrl = window.Laravel?.assetUrl || "/";
 const storageUrl = window.Laravel?.storageUrl || "/storage/";
 
-defineEmits(["apply-promocode", "submit-order"]);
+const deliveryType = ref("pickup");
+
+const onDeliveryChange = (payload) => {
+    emit("delivery-change", payload);
+};
+
+const emit = defineEmits([
+    "apply-promocode",
+    "submit-order",
+    "delivery-change",
+]);
 </script>
 
 <style></style>
