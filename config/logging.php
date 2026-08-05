@@ -64,6 +64,12 @@ return [
             'path' => storage_path('logs/pay.log'),
         ],
 
+        'sdek' => [
+            'driver' => 'single',
+            'ignore_exceptions' => false,
+            'path' => storage_path('logs/sdek.log'),
+        ],
+
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),

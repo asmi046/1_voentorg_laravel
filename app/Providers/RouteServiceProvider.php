@@ -44,6 +44,9 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware('web')
                 ->group(base_path('routes/asmi_promocod.php'));
+
+            Route::middleware('web')
+                ->group(base_path('routes/asmi_cdek.php'));
         });
     }
 }

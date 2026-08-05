@@ -17,8 +17,15 @@ class DatabaseSeeder extends Seeder
             OptionSeeder::class,
             // CategorySeeder::class,
             CategorySeederArray::class,
-            ProductSeeder::class,
             PromocodSeeder::class,
+            CitySeeder::class,
+            NewsSeeder::class,
+            ShopSeeder::class,
+            VedomstvoSeeder::class,
+            ProductSqlSeeder::class,
+
+            // ProductSeeder::class,
+
 
         ]);
         // \App\Models\User::factory(10)->create();

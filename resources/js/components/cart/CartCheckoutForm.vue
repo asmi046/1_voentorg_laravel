@@ -27,10 +27,10 @@
                 placeholder="Комментарий"
             ></textarea>
 
-            <!-- <DeliverySelector
+            <DeliverySelector
                 v-model="deliveryType"
                 @change="onDeliveryChange"
-            /> -->
+            />
 
             <h3 class="cart_h3">Промокод</h3>
             <input
@@ -66,7 +66,7 @@
                 </p>
             </div> -->
 
-            <!-- <div class="pay_information">
+            <div class="pay_information">
                 <p>
                     После оформления вы автоматически перейдете на страницу
                     оплаты сервиса ЮKassa, где сможете выбрать удобный способ
@@ -86,14 +86,18 @@
                         alt="pay icons"
                     />
                 </div>
-            </div> -->
+            </div>
+
+            <!-- <br />
+            <hr />
+            <br /> -->
 
             <button
                 @click.prevent="$emit('submit-order')"
                 class="button"
                 type="submit"
             >
-                Оформить
+                Оформить заказ
             </button>
             <span
                 :class="{ active: loadet }"

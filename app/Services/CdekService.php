@@ -30,13 +30,13 @@ class CdekService
                 'client_secret' => config('cdek.password'),
             ]);
         } catch (ConnectionException $e) {
-            Log::channel('pay')->error('CDEK auth connection error: '.$e->getMessage());
+            Log::channel('sdek')->error('CDEK auth connection error: '.$e->getMessage());
 
             return null;
         }
 
         if (! $response->successful()) {
-            Log::channel('pay')->error('CDEK auth failed: '.$response->body());
+            Log::channel('sdek')->error('CDEK auth failed: '.$response->body());
 
             return null;
         }
@@ -63,7 +63,7 @@ class CdekService
             $response = Http::withToken($token)
                 ->get($this->baseUrl().'/location/cities', $params);
         } catch (ConnectionException $e) {
-            Log::channel('pay')->error('CDEK cities connection error: '.$e->getMessage());
+            Log::channel('sdek')->error('CDEK cities connection error: '.$e->getMessage());
 
             return null;
         }
@@ -79,7 +79,116 @@ class CdekService
         }
 
         if (! $response->successful()) {
-            Log::channel('pay')->error('CDEK cities failed: '.$response->body());
+            Log::channel('sdek')->error('CDEK cities failed: '.$response->body());
+
+            return null;
+        }
+
+        return $response->json();
+    }
+
+    public function getDeliveryPoints(array $params = []): ?array
+    {
+        $token = $this->getAccessToken();
+        if (! $token) {
+            return null;
+        }
+
+        try {
+            $response = Http::withToken($token)
+                ->get($this->baseUrl().'/deliverypoints', $params);
+        } catch (ConnectionException $e) {
+            Log::channel('sdek')->error('CDEK delivery points connection error: '.$e->getMessage());
+
+            return null;
+        }
+
+        if ($response->status() === 401) {
+            $token = $this->getAccessToken(true);
+            if (! $token) {
+                return null;
+            }
+
+            $response = Http::withToken($token)
+                ->get($this->baseUrl().'/delivery-points', $params);
+        }
+
+        if (! $response->successful()) {
+            Log::channel('sdek')->error('CDEK delivery points failed: '.$response->body());
+
+            return null;
+        }
+
+        return $response->json();
+    }
+
+    public function getAvailableTariffs(array $data): ?array
+    {
+        $token = $this->getAccessToken();
+        if (! $token) {
+            return null;
+        }
+
+        try {
+            $response = Http::withToken($token)
+                ->acceptJson()
+                ->post($this->baseUrl().'/calculator/tarifflist', $data);
+        } catch (ConnectionException $e) {
+            Log::channel('sdek')->error('CDEK available tariffs connection error: '.$e->getMessage());
+
+            return null;
+        }
+
+        if ($response->status() === 401) {
+            $token = $this->getAccessToken(true);
+            if (! $token) {
+                return null;
+            }
+
+            $response = Http::withToken($token)
+                ->acceptJson()
+                ->post($this->baseUrl().'/calculator/tarifflist', $data);
+        }
+
+        if (! $response->successful()) {
+            Log::channel('sdek')->error('CDEK available tariffs failed: '.$response->body());
+
+            return null;
+        }
+
+        return $response->json();
+    }
+
+    public function getAllTariffs(array $params = []): ?array
+    {
+        $token = $this->getAccessToken();
+        if (! $token) {
+            return null;
+        }
+
+        try {
+            $response = Http::withToken($token)
+                ->acceptJson()
+                ->get($this->baseUrl().'/calculator/alltariffs', $params);
+        } catch (ConnectionException $e) {
+            Log::channel('sdek')->error('CDEK all tariffs connection error: '.$e->getMessage());
+
+            return null;
+        }
+
+        if ($response->status() === 401) {
+            $token = $this->getAccessToken(true);
+            if (! $token) {
+                return null;
+            }
+
+            $response = Http::withToken($token)
+                ->acceptJson()
+                ->get($this->baseUrl().'/calculator/alltariffs', $params);
+        }
+
+        if (! $response->successful()) {
+            Log::channel('sdek')->error('CDEK all tariffs failed: '.$response->body());
 
             return null;
         }

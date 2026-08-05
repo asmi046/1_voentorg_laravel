@@ -36,7 +36,7 @@ class CdekCities extends Command
 
         $this->info('Получено записей: '.count($cities));
 
-        $headers = ['code', 'city', 'region', 'country_code', 'postal_code'];
+        $headers = ['code', 'city', 'region', 'country_code', 'postal_code', 'latitude', 'longitude'];
         $rows = [];
         foreach ($cities as $city) {
             $rows[] = [
@@ -45,6 +45,8 @@ class CdekCities extends Command
                 $city['region'] ?? '',
                 $city['country_code'] ?? '',
                 $city['postal_code'] ?? '',
+                $city['latitude'] ?? '',
+                $city['longitude'] ?? '',
             ];
         }
 
