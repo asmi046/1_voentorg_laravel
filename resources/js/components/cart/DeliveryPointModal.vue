@@ -29,26 +29,15 @@
                 </div>
 
                 <div class="delivery_point_modal__city">
-                    <select
+                    <SearchableCombobox
                         v-model="selectedCity"
-                        :disabled="citiesLoading"
+                        :items="cities"
+                        :loading="citiesLoading"
+                        placeholder="Начните вводить город"
+                        loading-placeholder="Загрузка городов..."
+                        empty-text="Ничего не найдено"
                         @change="onCityChange"
-                    >
-                        <option value="" disabled>
-                            {{
-                                citiesLoading
-                                    ? "Загрузка городов..."
-                                    : "Выберите город"
-                            }}
-                        </option>
-                        <option
-                            v-for="city in cities"
-                            :key="city.code"
-                            :value="city.code"
-                        >
-                            {{ city.name }}
-                        </option>
-                    </select>
+                    />
                 </div>
 
                 <div class="delivery_point_modal__body">
@@ -101,6 +90,7 @@
 
 <script setup>
 import { nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
+import SearchableCombobox from "./SearchableCombobox.vue";
 
 const props = defineProps({
     modelValue: {
@@ -372,13 +362,26 @@ const initMap = async () => {
 };
 
 const onCityChange = () => {
+    if (!selectedCity.value) {
+        return;
+    }
+
     selectedPoint.value = null;
     fetchPickupPoints(selectedCity.value);
 };
 
+const getSelectedCity = () => {
+    return (
+        cities.value.find((city) => city.code === selectedCity.value) || null
+    );
+};
+
 const selectPoint = (point) => {
     selectedPoint.value = point;
-    emit("select", point);
+    emit("select", {
+        point,
+        city: getSelectedCity(),
+    });
     close();
 };
 
@@ -428,5 +431,3 @@ watch(
     },
 );
 </script>
-
-<style></style>

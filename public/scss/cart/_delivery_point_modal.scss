@@ -10,9 +10,10 @@
 }
 
 .delivery_point_modal {
-    width: 100%;
-    max-width: 760px;
-    max-height: 90vh;
+    width: 90vw;
+    height: 90vh;
+    max-width: none;
+    max-height: none;
     display: flex;
     flex-direction: column;
     background-color: #fff;
@@ -184,4 +185,159 @@
 
 .delivery_balloon__btn:hover {
     background-color: #4e9e79;
+}
+
+.courier_delivery_modal_overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.courier_delivery_modal {
+    width: 100%;
+    max-width: 760px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.courier_delivery_modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.courier_delivery_modal__title {
+    font-size: 18px;
+    font-weight: 900;
+    margin: 0;
+    text-align: left;
+}
+
+.courier_delivery_modal__close {
+    flex: 0 0 auto;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background-color: transparent;
+    color: #8a929a;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 0;
+    transition:
+        background-color 0.15s ease,
+        color 0.15s ease;
+}
+
+.courier_delivery_modal__close:hover {
+    background-color: #f2f3f5;
+    color: #000;
+}
+
+.courier_delivery_modal__close svg {
+    width: 18px;
+    height: 18px;
+}
+
+.courier_delivery_modal__body {
+    padding: 16px 20px;
+    overflow-y: auto;
+}
+
+.courier_delivery_modal__field {
+    margin-bottom: 14px;
+}
+
+.courier_delivery_modal__label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 12px;
+    color: #8a929a;
+    text-align: left;
+}
+
+.courier_delivery_modal__input {
+    width: 100%;
+    height: 44px;
+    padding: 0 12px;
+    border: 1px solid #e3e6ea;
+    border-radius: 9px;
+    background-color: #fff;
+    font-size: 14px;
+}
+
+.courier_delivery_modal__input:focus {
+    outline: none;
+    border-color: $main_color;
+}
+
+.courier_delivery_modal__price {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 10px 12px;
+    background-color: #f4f8f4;
+    border: 1px solid #e3e6ea;
+    border-radius: 9px;
+    font-size: 14px;
+}
+
+.courier_delivery_modal__price strong {
+    color: $main_color;
+    font-size: 16px;
+}
+
+.courier_delivery_modal__date {
+    margin: 10px 0 0;
+    font-size: 12px;
+    color: #8a929a;
+    text-align: left;
+}
+
+.courier_delivery_modal__error {
+    margin: 10px 0 0;
+    font-size: 12px;
+    color: #cf3e3e;
+    text-align: left;
+}
+
+.courier_delivery_modal__footer {
+    padding: 14px 20px 20px;
+    border-top: 1px solid #eee;
+}
+
+.courier_delivery_modal__submit {
+    width: 100%;
+}
+
+.courier_delivery_modal__submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+@media (max-width: 819px) {
+    .delivery_point_modal_overlay {
+        padding: 0;
+    }
+
+    .delivery_point_modal {
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+    }
 }

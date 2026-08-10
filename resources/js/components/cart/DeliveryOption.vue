@@ -54,4 +54,8 @@ const priceText = computed(() => {
 });
 </script>
 
-<style></style>
+<style scoped>
+.delivery_option__desc {
+    white-space: pre-line;
+}
+</style>

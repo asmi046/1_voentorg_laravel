@@ -1,8 +1,8 @@
 @extends('layouts.all')
 
 @php
-$title = !empty($product->seo_title)?$product->seo_title:$product->title;
-$description = !empty($product->seo_description)?$product->seo_description:$product->title;
+    $title = !empty($product->seo_title) ? $product->seo_title : $product->title;
+    $description = !empty($product->seo_description) ? $product->seo_description : $product->title;
 @endphp
 
 @section('title', $title)
@@ -61,16 +61,22 @@ $description = !empty($product->seo_description)?$product->seo_description:$prod
                 @endauth
 
                 <h1>{{ $product->title }}</h1>
-                <p class="sku_in_page">Артикул: <span>{{ $product->sku}}</span></p>
+                <p class="sku_in_page">Артикул: <span>{{ $product->sku }}</span></p>
 
-                <page-to-cart sku="{{$product->sku}}" :prices="{{json_encode($product->product_prices)}}"></page-to-cart>
+                <page-to-cart sku="{{ $product->sku }}"
+                    :prices="{{ json_encode($product->product_prices) }}"></page-to-cart>
 
 
                 <div class="page_manager_info">
-                    <p>Уточнить цену и наличие товара вы можете по телефону <br><a href="tel:+79510849233">+7 (951) 084-92-33</a> Пн. - Пт. с 9 до 18.00 по МСК<br>Или по электронной почте: <a href="mailto:1voentorg@bk.ru">1voentorg@bk.ru</a> </p>
+                    <p>Уточнить цену и наличие товара вы можете по телефону <br><a href="tel:+79510849233">+7 (951)
+                            084-92-33</a> Пн. - Пт. с 9 до 18.00 по МСК<br>Или по электронной почте: <a
+                            href="mailto:1voentorg@bk.ru">1voentorg@bk.ru</a> </p>
                 </div>
 
-                @if ( $product->product_prices && ($product->product_prices[0]->price < config('cart.min_price')) )
+                @if (
+                    $product->product_prices &&
+                        isset($product->product_prices[0]) &&
+                        $product->product_prices[0]->price < config('cart.min_price'))
                     <x-min-price></x-min-price>
                 @endif
 
@@ -79,14 +85,13 @@ $description = !empty($product->seo_description)?$product->seo_description:$prod
                     <h3>Товар из категорий:</h3>
                     <div class="category_in_page">
                         @foreach ($category as $item)
-                            <a title="Товарв категории {{ $item->title }}" href="{{ route('category', $item->slug) }}">{{ $item->title }}</a>
+                            <a title="Товарв категории {{ $item->title }}"
+                                href="{{ route('category', $item->slug) }}">{{ $item->title }}</a>
                         @endforeach
                     </div>
                 @endif
 
                 @if ($product->description)
-
-
                     <div class="text_decoration">
                         <h2>Описание</h2>
                         {!! $product->description !!}
@@ -98,11 +103,11 @@ $description = !empty($product->seo_description)?$product->seo_description:$prod
         </div>
 
         @if ($product->specification)
-        <div class="tovar_bottom_part text_decoration">
-            <h2>Все характеристики</h2>
+            <div class="tovar_bottom_part text_decoration">
+                <h2>Все характеристики</h2>
 
-            {!! $product->specification !!}
-        </div>
+                {!! $product->specification !!}
+            </div>
         @endif
     </div>
 

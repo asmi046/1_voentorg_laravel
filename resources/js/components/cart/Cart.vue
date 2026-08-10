@@ -35,7 +35,9 @@
             :promo-applied="promoApplied"
             :error-list="errorList"
             :loadet="loadet"
+            :parcel-weight-grams="parcelWeightGrams"
             @apply-promocode="applyPromocode"
+            @delivery-change="onDeliveryChange"
             @submit-order="sendBascet"
         />
     </div>
@@ -63,6 +65,17 @@ const show_bascet = ref(false);
 const payType = ref(1);
 const deliveryMethod = ref("");
 const deliveryPrice = ref(0);
+const parcelWeightGrams = ref(0);
+const deliveryData = ref({
+    deliveryMethod: "Самовывоз",
+    transportCompany: null,
+    deliveryType: "pickup",
+    selectedPickupPoint: null,
+    selectedCity: null,
+    deliveryAddress: "",
+    apartment: "",
+    deliveryPrice: 0,
+});
 const errorList = ref([]);
 const promoApplied = ref(false);
 const promoDiscount = ref(0);
@@ -84,6 +97,8 @@ const bascetInfo = reactive({
     comment: "",
     promokod: "",
 });
+
+console.log(bascetList);
 
 const finalTotal = computed(() => {
     return Math.max(
@@ -181,11 +196,36 @@ const schedulePromocodeRecalculation = () => {
 const updateBascet = () => {
     count.value = 0;
     subtotal.value = 0;
+    parcelWeightGrams.value = 0;
+
+    const DEFAULT_WEIGHT_GRAMS = 300;
+
+    const normalizeWeightToGrams = (weight) => {
+        const numeric = Number(weight);
+
+        if (!Number.isFinite(numeric) || numeric <= 0) {
+            return DEFAULT_WEIGHT_GRAMS;
+        }
+
+        // If weight looks like kilograms (e.g. 0.7, 3), convert to grams.
+        if (numeric < 50) {
+            return Math.round(numeric * 1000);
+        }
+
+        return Math.round(numeric);
+    };
 
     for (const item of bascetList.value) {
-        count.value += Number(item.quentity);
-        subtotal.value += Number(item.quentity) * Number(item.price);
+        const quantity = Number(item.quentity) || 0;
+        const itemWeight = item?.tovar_content?.weight;
+
+        count.value += quantity;
+        subtotal.value += quantity * Number(item.price);
+        parcelWeightGrams.value +=
+            normalizeWeightToGrams(itemWeight) * quantity;
     }
+
+    console.log("Parcel weight (g):", parcelWeightGrams.value);
 
     syncCounterInHeader();
 
@@ -220,6 +260,31 @@ const recalculatePromocode = () => {
         appliedPromoCode.value,
         "Скидка по промокоду пересчитана.",
     );
+};
+
+const onDeliveryChange = (payload) => {
+    deliveryData.value = {
+        deliveryMethod: payload?.deliveryMethod || "",
+        transportCompany: payload?.transportCompany || null,
+        deliveryType: payload?.deliveryType || "",
+        selectedPickupPoint: payload?.selectedPickupPoint || null,
+        selectedCity: payload?.selectedCity || null,
+        deliveryAddress: payload?.deliveryAddress || "",
+        apartment: payload?.apartment || "",
+        deliveryPrice:
+            payload?.deliveryPrice === null ||
+            payload?.deliveryPrice === undefined ||
+            payload?.deliveryPrice === ""
+                ? null
+                : Number(payload.deliveryPrice),
+    };
+
+    deliveryMethod.value = deliveryData.value.deliveryMethod;
+
+    const numericDeliveryPrice = Number(deliveryData.value.deliveryPrice);
+    deliveryPrice.value = Number.isFinite(numericDeliveryPrice)
+        ? numericDeliveryPrice
+        : 0;
 };
 
 const calcDeliveryPrice = () => {
@@ -305,6 +370,7 @@ const sendBascet = async () => {
             discount_summ: promoDiscount.value,
             amount: subtotal.value + deliveryPrice.value - promoDiscount.value,
             delivery: deliveryMethod.value,
+            delivery_info: deliveryData.value,
             pay: payType.value == 1 ? "Ю-касса" : "Перевод на карту",
             tovars: bascetList.value,
         });

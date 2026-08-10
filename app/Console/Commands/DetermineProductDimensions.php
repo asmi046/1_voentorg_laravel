@@ -12,12 +12,14 @@ class DetermineProductDimensions extends Command
     protected $signature = 'products:determine-dimensions
                             {--limit= : Количество товаров для обработки (0 = все)}
                             {--output= : Путь к выходному JSON файлу}
-                            {--sku= : Обработать конкретный товар по SKU}';
+                            {--sku= : Обработать конкретный товар по SKU}
+                            {--force : Принудительно перезаписать существующие данные}';
 
     protected $description = 'Определить вес и габариты товаров через AI (Ollama)';
 
     private string $promptTemplate;
     private array $results = [];
+    private array $processedSkus = [];
 
     public function __construct()
     {
@@ -30,24 +32,33 @@ class DetermineProductDimensions extends Command
         $limit = $this->option('limit') ? (int) $this->option('limit') : 0;
         $sku = $this->option('sku');
         $outputPath = $this->option('output') ?: storage_path('app/product_dimensions.json');
+        $force = $this->option('force');
+
+        $this->loadExistingResults($outputPath, $force);
 
         $query = Product::query();
 
         if ($sku) {
             $query->where('sku', $sku);
-        } elseif ($limit > 0) {
+        } elseif (!empty($this->processedSkus)) {
+            $query->whereNotIn('sku', $this->processedSkus);
+        }
+
+        if ($limit > 0 && !$sku) {
             $query->limit($limit);
         }
 
         $products = $query->get(['id', 'sku', 'title']);
 
         if ($products->isEmpty()) {
-            $this->error('Товары не найдены');
+            $this->info('Нет товаров для обработки');
+            $this->info('Всего записей в файле: ' . count($this->results));
 
-            return self::FAILURE;
+            return self::SUCCESS;
         }
 
-        $this->info("Найдено товаров: {$products->count()}");
+        $this->info("Товаров для обработки: {$products->count()}");
+        $this->info("Уже обработано: " . count($this->processedSkus));
 
         $bar = $this->output->createProgressBar($products->count());
         $bar->start();
@@ -63,6 +74,7 @@ class DetermineProductDimensions extends Command
                     'dimensions' => $dimensions,
                     'determined_at' => now()->toIso8601String(),
                 ];
+                $this->processedSkus[] = $product->sku;
             }
 
             $bar->advance();
@@ -72,12 +84,47 @@ class DetermineProductDimensions extends Command
         $bar->finish();
         $this->newLine(2);
 
-        file_put_contents($outputPath, json_encode($this->results, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+        $this->saveResults($outputPath);
 
         $this->info("Результаты сохранены в: {$outputPath}");
-        $this->info("Обработано товаров: " . count($this->results));
+        $this->info("Всего записей: " . count($this->results));
+        $this->info("Обработано в этом запуске: {$products->count()}");
 
         return self::SUCCESS;
+    }
+
+    private function loadExistingResults(string $filePath, bool $force): void
+    {
+        if ($force) {
+            $this->results = [];
+            $this->processedSkus = [];
+
+            return;
+        }
+
+        if (file_exists($filePath)) {
+            $content = file_get_contents($filePath);
+            $this->results = json_decode($content, true) ?? [];
+
+            foreach (array_keys($this->results) as $sku) {
+                $this->processedSkus[] = $sku;
+            }
+
+            $this->info("Загружено существующих записей: " . count($this->results));
+        } else {
+            $this->results = [];
+            $this->processedSkus = [];
+        }
+    }
+
+    private function saveResults(string $filePath): void
+    {
+        $directory = dirname($filePath);
+        if (!is_dir($directory)) {
+            mkdir($directory, 0755, true);
+        }
+
+        file_put_contents($filePath, json_encode($this->results, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
     }
 
     private function getDimensionsFromAI(string $title): ?array

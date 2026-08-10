@@ -159,6 +159,61 @@ class CdekService
         return $response->json();
     }
 
+    public function getBestPickupPointTariff(string|int $toCode, float|int $weight): ?array
+    {
+        return $this->getBestTariffByMode($toCode, $weight, 4);
+    }
+
+    public function getBestTariffByMode(string|int $toCode, float|int $weight, int $deliveryMode): ?array
+    {
+        $normalizedWeight = (float) $weight;
+
+        if ($normalizedWeight <= 0) {
+            $normalizedWeight = 0.3;
+        }
+
+        // Cart sends grams, while the existing tariff command uses kilograms.
+        if ($normalizedWeight > 50) {
+            $normalizedWeight /= 1000;
+        }
+
+        $tariffs = $this->getAvailableTariffs([
+            'from_location' => [
+                'code' => '699',
+            ],
+            'to_location' => [
+                'code' => (string) $toCode,
+            ],
+            'packages' => [
+                [
+                    'weight' => round($normalizedWeight, 3),
+                ],
+            ],
+        ]);
+
+        if (is_null($tariffs)) {
+            return null;
+        }
+
+        $tariffCodes = $tariffs['tariff_codes'] ?? [];
+
+        $filteredTariffs = array_values(array_filter(
+            $tariffCodes,
+            fn ($tariff) => (int) ($tariff['delivery_mode'] ?? 0) === $deliveryMode
+                && isset($tariff['delivery_sum'])
+        ));
+
+        if ($filteredTariffs === []) {
+            return [];
+        }
+
+        usort($filteredTariffs, function ($left, $right) {
+            return (float) $left['delivery_sum'] <=> (float) $right['delivery_sum'];
+        });
+
+        return $filteredTariffs[0];
+    }
+
     public function getAllTariffs(array $params = []): ?array
     {
         $token = $this->getAccessToken();

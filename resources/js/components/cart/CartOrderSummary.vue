@@ -17,7 +17,7 @@
                 <span class="text">Доставка</span>
                 <span class="razd"></span>
                 <span class="p_price rub price_formator"
-                    >{{ Number(deliveryPrice).toLocaleString("ru-RU") }}₽
+                    >{{ Number(deliveryPrice).toLocaleString("ru-RU") }}
                     <span class="rub_symbol">₽</span>
                 </span>
             </div>

@@ -39,6 +39,10 @@ class Product extends Model
         'new',
         'seo_title',
         'seo_description',
+        'weight',
+        'length',
+        'width',
+        'height',
     ];
 
     protected $allowedSorts = [

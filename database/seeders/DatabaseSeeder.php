@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             ShopSeeder::class,
             VedomstvoSeeder::class,
             ProductSqlSeeder::class,
+            ProductDimensionsSeeder::class,
 
             // ProductSeeder::class,
 

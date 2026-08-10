@@ -29,6 +29,7 @@
 
             <DeliverySelector
                 v-model="deliveryType"
+                :parcel-weight-grams="parcelWeightGrams"
                 @change="onDeliveryChange"
             />
 
@@ -142,6 +143,10 @@ defineProps({
     },
     loadet: {
         type: Boolean,
+        required: true,
+    },
+    parcelWeightGrams: {
+        type: Number,
         required: true,
     },
 });

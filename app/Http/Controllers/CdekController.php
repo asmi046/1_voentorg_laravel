@@ -146,4 +146,70 @@ class CdekController extends Controller
             'data' => $tariffs,
         ]);
     }
+
+    public function bestPickupPointTariff(Request $request, CdekService $cdek): JsonResponse
+    {
+        $validated = $request->validate([
+            'to_code' => ['required'],
+            'weight' => ['required', 'numeric'],
+        ]);
+
+        $tariff = $cdek->getBestPickupPointTariff(
+            $validated['to_code'],
+            (float) $validated['weight'],
+        );
+
+        if (is_null($tariff)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Не удалось рассчитать стоимость доставки',
+            ], 500);
+        }
+
+        if ($tariff === []) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Подходящий тариф не найден',
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $tariff,
+        ]);
+    }
+
+    public function bestTariffByMode(Request $request, CdekService $cdek): JsonResponse
+    {
+        $validated = $request->validate([
+            'to_code' => ['required'],
+            'weight' => ['required', 'numeric'],
+            'delivery_mode' => ['required', 'integer'],
+        ]);
+
+        $tariff = $cdek->getBestTariffByMode(
+            $validated['to_code'],
+            (float) $validated['weight'],
+            (int) $validated['delivery_mode'],
+        );
+
+        if (is_null($tariff)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Не удалось рассчитать стоимость доставки',
+            ], 500);
+        }
+
+        if ($tariff === []) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Подходящий тариф не найден',
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $tariff,
+        ]);
+    }
 }
