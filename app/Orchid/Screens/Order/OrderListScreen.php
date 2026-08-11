@@ -3,15 +3,8 @@
 namespace App\Orchid\Screens\Order;
 
 use App\Models\Order;
-use Orchid\Screen\Actions\Link;
+use App\Orchid\Layouts\Order\OrderListLayout;
 use Orchid\Screen\Screen;
-use Orchid\Screen\TD;
-use Orchid\Support\Color;
-use Orchid\Screen\Fields\Label;
-use Orchid\Screen\Layouts\Table;
-use Orchid\Screen\Sight;
-use Orchid\Screen\Layouts\Component;
-use Orchid\Screen\Layouts\Layout;
 
 class OrderListScreen extends Screen
 {
@@ -35,7 +28,7 @@ class OrderListScreen extends Screen
     public function layout(): iterable
     {
         return [
-            Layout::view('platform.orders.list'),
+            new OrderListLayout(),
         ];
     }
 }

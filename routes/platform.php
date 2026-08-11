@@ -55,6 +55,7 @@ use App\Orchid\Screens\Product\ProductPriceEditScreen;
 use App\Orchid\Screens\Options\OptionsList;
 use App\Orchid\Screens\Options\EditOptions;
 use App\Orchid\Screens\Order\OrderListScreen;
+use App\Orchid\Screens\Order\OrderShowScreen;
 
 /*
 |--------------------------------------------------------------------------
@@ -189,6 +190,11 @@ Route::screen('/orders', OrderListScreen::class)
     ->name('platform.orders')->breadcrumbs(fn (Trail $trail) => $trail
         ->parent('platform.index')
         ->push(__('Заказы'), route('platform.orders')));
+
+Route::screen('/orders/{id}', OrderShowScreen::class)
+    ->name('platform.orders.show')->breadcrumbs(fn (Trail $trail, $id) => $trail
+        ->parent('platform.orders')
+        ->push(__('Заказ #' . $id), route('platform.orders.show', $id)));
 
 // Опции
 Route::screen('/options', OptionsList::class)
