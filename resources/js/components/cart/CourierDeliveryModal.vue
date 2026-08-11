@@ -208,7 +208,7 @@ const calculateCourierTariff = async () => {
     tariffError.value = "";
 
     try {
-        const response = await axios.post("/cdek/best-tariff-by-mode", {
+        const response = await axios.post("/cdek/delivery/courier-offers", {
             to_code: selectedCity.value,
             weight: props.parcelWeightGrams,
             delivery_mode: 3,
@@ -218,8 +218,9 @@ const calculateCourierTariff = async () => {
             return;
         }
 
-        selectedTariff.value = response.data?.data || null;
-        const sum = Number(selectedTariff.value?.delivery_sum);
+        const offer = response.data?.data?.best ?? null;
+        selectedTariff.value = offer?.raw || null;
+        const sum = Number(offer?.price ?? offer?.raw?.delivery_sum ?? 0);
         deliveryPrice.value = Number.isFinite(sum) ? sum : 0;
     } catch (error) {
         if (localRequestId !== requestId) {

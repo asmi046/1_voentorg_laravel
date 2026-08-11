@@ -32,7 +32,7 @@
                 :parcel-weight-grams="parcelWeightGrams"
                 @change="onDeliveryChange"
             />
-
+            <br />
             <h3 class="cart_h3">Промокод</h3>
             <input
                 v-model="bascetInfo.promokod"

@@ -54,6 +54,7 @@ use App\Orchid\Screens\Product\ProductPriceEditScreen;
 
 use App\Orchid\Screens\Options\OptionsList;
 use App\Orchid\Screens\Options\EditOptions;
+use App\Orchid\Screens\Order\OrderListScreen;
 
 /*
 |--------------------------------------------------------------------------
@@ -182,6 +183,12 @@ Route::screen('/products/{id}/price/create', ProductPriceCreateScreen::class)
     ->name('platform.product_price_create')->breadcrumbs(fn (Trail $trail, $id) => $trail
     ->parent('platform.product')
     ->push(__('Редактирование ценового предложения'), route('platform.product_price_create', $id)));
+
+// Заказы
+Route::screen('/orders', OrderListScreen::class)
+    ->name('platform.orders')->breadcrumbs(fn (Trail $trail) => $trail
+        ->parent('platform.index')
+        ->push(__('Заказы'), route('platform.orders')));
 
 // Опции
 Route::screen('/options', OptionsList::class)

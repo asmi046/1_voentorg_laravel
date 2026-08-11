@@ -7,7 +7,7 @@ use Illuminate\Console\Command;
 
 class CdekAvailableTariffs extends Command
 {
-    protected $signature = 'php84 artisan cdek:available-tariffs --from_code=699 --to_code=141 --weight=2 --json
+    protected $signature = 'cdek:available-tariffs --from_code=699 --to_code=141 --weight=2 --json
                             {--from_code= : Код города отправления}
                             {--from_lat= : Широта отправления}
                             {--from_lon= : Долгота отправления}

@@ -9,6 +9,11 @@
 @endif
 
 <p><strong>Комментарий:</strong> {{ $formData['comment'] }}</p>
+
+@if (!empty($formData['delivery_text']))
+    <p><strong>Доставка:</strong></p>
+    <p>{!! nl2br(e($formData['delivery_text'])) !!}</p>
+@endif
 <table style="width:100%; border-top:1px solid black; border-left:1px solid black; border-spacing: 0;">
     <thead style="text-align:left;">
         <tr>

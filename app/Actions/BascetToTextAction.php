@@ -11,6 +11,11 @@ class BascetToTextAction {
         $rez_text .= "<strong>Телефон:</strong> ".($formData['phone'] ?? '')."\n\r";
         $rez_text .= "<strong>E-mail:</strong> ".($formData['email'] ?? '')."\n\r";
 
+        if (!empty($formData['delivery_text'])) {
+            $rez_text .= "\n\r<strong>Доставка:</strong>\n\r";
+            $rez_text .= str_replace("\n", "\n\r", $formData['delivery_text'])."\n\r";
+        }
+
         if (!empty($formData['promo_code'])) {
             $rez_text .= "<strong>Промокод:</strong> ".($formData['promo_code'] ?? '')."\n\r";
             $rez_text .= "<strong>Скидка по промокоду:</strong> ".($formData['promo_code_discount'] ?? '')."\n\r";

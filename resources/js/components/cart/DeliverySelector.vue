@@ -86,10 +86,10 @@ const getNumericPrice = (value) => {
 };
 
 const resolvePickupPointPrice = (point) => {
-    if (pickupPointTariff.value?.delivery_sum !== undefined) {
-        const tariffPrice = getNumericPrice(
-            pickupPointTariff.value.delivery_sum,
-        );
+    const rawTariff = pickupPointTariff.value?.raw || pickupPointTariff.value;
+
+    if (rawTariff?.delivery_sum !== undefined) {
+        const tariffPrice = getNumericPrice(rawTariff.delivery_sum);
 
         if (tariffPrice !== null) {
             return tariffPrice;
@@ -121,12 +121,41 @@ const resolvePickupPointPrice = (point) => {
     return null;
 };
 
-const formatDeliveryDateRange = (range) => {
-    if (!range?.min || !range?.max) {
+const formatDeliveryDate = (value) => {
+    if (!value) {
         return "";
     }
 
-    return `Срок доставки: ${range.min} - ${range.max}`;
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+        return String(value);
+    }
+
+    return date.toLocaleDateString("ru-RU", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+    });
+};
+
+const formatDeliveryDateRange = (range) => {
+    if (!range) {
+        return "";
+    }
+
+    const min = range.min ?? range.period_min ?? range.calendar_min ?? null;
+    const max = range.max ?? range.period_max ?? range.calendar_max ?? null;
+
+    if (!min && !max) {
+        return "";
+    }
+
+    if (min && max) {
+        return `Срок доставки: ${formatDeliveryDate(min)} - ${formatDeliveryDate(max)}`;
+    }
+
+    return `Срок доставки: ${formatDeliveryDate(min ?? max)}`;
 };
 
 const calculateDeliveryPriceStub = async (deliveryType, city = null) => {
@@ -143,7 +172,7 @@ const calculateDeliveryPriceStub = async (deliveryType, city = null) => {
         const requestId = ++pickupPointTariffRequestId.value;
 
         try {
-            const response = await axios.post("/cdek/best-tariff-by-mode", {
+            const response = await axios.post("/cdek/delivery/courier-offers", {
                 to_code: city.code,
                 weight: props.parcelWeightGrams,
                 delivery_mode: 4,
@@ -153,7 +182,7 @@ const calculateDeliveryPriceStub = async (deliveryType, city = null) => {
                 return null;
             }
 
-            pickupPointTariff.value = response.data?.data || null;
+            pickupPointTariff.value = response.data?.data?.best?.raw || null;
 
             return resolvePickupPointPrice(null);
         } catch (error) {
@@ -188,7 +217,9 @@ const pickupPointDescription = computed(() => {
 
     const lines = [`Доставка в пункт выдачи СДЭК - ${cityName}, ${pointText}`];
     const deliveryDateText = formatDeliveryDateRange(
-        pickupPointTariff.value?.delivery_date_range,
+        pickupPointTariff.value?.delivery_date_range ||
+            pickupPointTariff.value?.raw?.delivery_date_range ||
+            null,
     );
 
     if (deliveryDateText) {
@@ -212,7 +243,9 @@ const courierDescription = computed(() => {
     }
 
     const deliveryDateText = formatDeliveryDateRange(
-        selectedCourier.value.tariff?.delivery_date_range,
+        selectedCourier.value.tariff?.delivery_date_range ||
+            selectedCourier.value.tariff?.raw?.delivery_date_range ||
+            null,
     );
 
     if (deliveryDateText) {
@@ -270,6 +303,20 @@ const buildDeliveryPayload = (option, overrides = {}) => {
             option.type === "courier" ? courier?.address || "" : "",
         apartment: option.type === "courier" ? courier?.apartment || "" : "",
         deliveryPrice: getNumericPrice(optionPrice),
+        deliveryDateRange:
+            option.type === "pickup_point"
+                ? pickupPointTariff.value?.delivery_date_range ||
+                  pickupPointTariff.value?.raw?.delivery_date_range ||
+                  null
+                : option.type === "courier"
+                  ? selectedCourier.value?.tariff?.delivery_date_range ||
+                    selectedCourier.value?.tariff?.raw?.delivery_date_range ||
+                    null
+                  : null,
+        tariff:
+            option.type === "courier"
+                ? selectedCourier.value?.tariff || null
+                : null,
     };
 };
 

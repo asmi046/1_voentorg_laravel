@@ -164,6 +164,10 @@ const extractPoints = (payload) => {
         return payload;
     }
 
+    if (payload && Array.isArray(payload.points)) {
+        return payload.points;
+    }
+
     if (payload && Array.isArray(payload.delivery_points)) {
         return payload.delivery_points;
     }
@@ -172,26 +176,28 @@ const extractPoints = (payload) => {
 };
 
 const mapPoint = (point) => {
-    const phones = Array.isArray(point.phones)
-        ? point.phones
+    const raw = point?.raw ?? point ?? {};
+    const phones = Array.isArray(raw.phones)
+        ? raw.phones
               .map((phone) => phone?.number)
               .filter((value) => value !== undefined && value !== "")
         : [];
 
-    const lat = point.location?.latitude ?? point.location?.lat ?? null;
-    const lon = point.location?.longitude ?? point.location?.lon ?? null;
+    const lat = raw.location?.latitude ?? raw.location?.lat ?? null;
+    const lon = raw.location?.longitude ?? raw.location?.lon ?? null;
 
     return {
-        code: String(point.code ?? ""),
-        name: point.name ?? "",
+        code: String(point?.id ?? raw.code ?? ""),
+        name: raw.name ?? point?.label ?? "",
         address:
-            point.location?.address_full ||
-            point.full_address ||
-            point.location?.address ||
-            point.address ||
+            raw.location?.address_full ||
+            raw.full_address ||
+            raw.location?.address ||
+            raw.address ||
+            point?.label ||
             "",
-        addressComment: point.address_comment ?? "",
-        workTime: point.work_time ?? "",
+        addressComment: raw.address_comment ?? "",
+        workTime: raw.work_time ?? "",
         phones,
         lat: lat != null ? Number(lat) : null,
         lon: lon != null ? Number(lon) : null,
@@ -202,8 +208,9 @@ const fetchPickupPoints = async (city) => {
     mapState.value = "loading";
 
     try {
-        const response = await axios.get("/cdek/delivery-points", {
-            params: { city_code: city, type_code: DELIVERY_POINT_TYPES },
+        const response = await axios.post("/cdek/delivery/pickup-points", {
+            city_code: city,
+            type_code: DELIVERY_POINT_TYPES,
         });
 
         pickupPoints.value = extractPoints(response.data?.data).map(mapPoint);

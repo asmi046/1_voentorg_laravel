@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/cdek/cities', [CdekController::class, 'cities'])->name('cdek_cities');
 Route::get('/cdek/delivery-points', [CdekController::class, 'deliveryPoints'])->name('cdek_delivery_points');
+Route::post('/cdek/delivery/pickup-points', [CdekController::class, 'pickupPointsCoordinator'])->name('cdek_delivery_pickup_points');
+Route::post('/cdek/delivery/courier-offers', [CdekController::class, 'courierOffersCoordinator'])->name('cdek_delivery_courier_offers');
 Route::post('/cdek/available-tariffs', [CdekController::class, 'availableTariffs'])->name('cdek_available_tariffs');
 Route::post('/cdek/best-pickup-point-tariff', [CdekController::class, 'bestPickupPointTariff'])->name('cdek_best_pickup_point_tariff');
 Route::post('/cdek/best-tariff-by-mode', [CdekController::class, 'bestTariffByMode'])->name('cdek_best_tariff_by_mode');

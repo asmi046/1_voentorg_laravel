@@ -30,6 +30,15 @@ class Order extends Model
         'discount_summ',
         'pay',
         'delivery',
+        'delivery_type',
+        'delivery_price',
+        'delivery_info',
+        'delivery_date_range',
+    ];
+
+    protected $casts = [
+        'delivery_info' => 'array',
+        'delivery_price' => 'decimal:2',
     ];
 
     protected $allowedSorts = [

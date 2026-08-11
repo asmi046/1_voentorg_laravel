@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Cart\BascetForm;
 use App\Models\Cart;
 use App\Models\Order;
+use App\Services\DeliveryInfoService;
 use App\Services\YooKassaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -48,7 +49,10 @@ class CartController extends Controller
         return Cart::delete_tovar($product_id);
     }
 
-    public function send(YooKassaService $pay, BascetForm $request) {
+    public function send(YooKassaService $pay, BascetForm $request, DeliveryInfoService $deliveryInfoService) {
+        $deliveryPayload = $request->input('delivery_info', []);
+        $normalizedDelivery = $deliveryInfoService->normalizeForOrder($deliveryPayload);
+
         $order = Order::create([
             'name' => $request->input('fio'),
             'email' => $request->input('email'),
@@ -61,6 +65,11 @@ class CartController extends Controller
             'position_count' => $request->input('count'),
             'session_id' => session()->getId(),
             'user_id' => ($request->user())?$request->user()->id:0,
+            'delivery' => $normalizedDelivery['delivery'] ?? null,
+            'delivery_type' => $normalizedDelivery['delivery_type'] ?? null,
+            'delivery_price' => $normalizedDelivery['delivery_price'] ?? 0,
+            'delivery_info' => $normalizedDelivery['delivery_info'] ?? null,
+            'delivery_date_range' => $normalizedDelivery['delivery_date_range'] ? json_encode($normalizedDelivery['delivery_date_range']) : null,
         ]);
 
         foreach ($request->input('tovars') as $item) {
@@ -69,7 +78,11 @@ class CartController extends Controller
 
         // $order->orderProducts()->sync(array_column($request->input('tovars'), "id"));
 
-        event(new BascetOrderCreated($order->id, $request->all()));
+        $eventPayload = $request->all();
+        $eventPayload['delivery_info'] = $normalizedDelivery['delivery_info'] ?? [];
+        $eventPayload['delivery_text'] = $normalizedDelivery['delivery_text'] ?? '';
+
+        event(new BascetOrderCreated($order->id, $eventPayload));
 
         $order_number = '№'.$order->id.'_S'.rand(100, 999);
 
