@@ -1,8 +1,12 @@
 @extends('layouts.all')
 
 @php
-    $title = isset($options["seo_title_main"])?$options["seo_title_main"]:"Служивый 46 - Тактическое снаряжение, берцы, Юнармия, ВКБО";
-    $description = isset($options["seo_description_main"])?$options["seo_description_main"]:"Служивый46 тактическое снаряжение, форма ВКБО ВКПО, тактические костюмы, форма Юнармии, берцы (LOWA, Лова, Бизон), Горка, форменная одежда полиции, МЧС, кадетов.";
+    $title = isset($options['seo_title_main'])
+        ? $options['seo_title_main']
+        : 'Служивый 46 - Тактическое снаряжение, берцы, Юнармия, ВКБО';
+    $description = isset($options['seo_description_main'])
+        ? $options['seo_description_main']
+        : 'Служивый46 тактическое снаряжение, форма ВКБО ВКПО, тактические костюмы, форма Юнармии, берцы (LOWA, Лова, Бизон), Горка, форменная одежда полиции, МЧС, кадетов.';
 @endphp
 
 @section('title', $title)
@@ -30,11 +34,12 @@
                             </div>
 
                             <div class="section_btn_wrapper">
-                                <a class="btn" href="{{ route("vedomstva") }}">Все подразделения и ведомства</a>
+                                <a class="btn" href="{{ route('vedomstva') }}">Все подразделения и ведомства</a>
                             </div>
                         </article>
 
                         <x-min-price></x-min-price>
+                        <x-test-magaz-message></x-test-magaz-message>
 
                         {{-- <article class="products">
                             <h2>Популярные товары</h2>

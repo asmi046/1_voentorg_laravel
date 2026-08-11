@@ -26,12 +26,6 @@ return new class extends Migration
             $table->string('pay_order')->nullable()->comment("id оплаты СБЕР");
             $table->integer('pay_status')->nullable()->comment("Статус оплаты СБЕР");
             $table->string('pay_status_text')->nullable()->comment("Статус оплаты СБЕР Комеентарий");
-            $table->string('delivery')->nullable();
-            $table->string('delivery_type')->nullable();
-            $table->decimal('delivery_price', 10, 2)->nullable();
-            $table->json('delivery_info')->nullable();
-            $table->string('delivery_date_range')->nullable();
-        });
         });
 
         Schema::create('order_product', function (Blueprint $table) {

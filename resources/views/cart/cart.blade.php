@@ -15,8 +15,9 @@
     </div>
 
     <section>
-        <script src="//api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+
         <div id="cart_app" class="container">
+            <x-test-magaz-message></x-test-magaz-message>
             <cart></cart>
         </div>
     </section>
