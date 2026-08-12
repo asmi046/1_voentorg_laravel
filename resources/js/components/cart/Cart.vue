@@ -70,6 +70,7 @@ const deliveryData = ref({
     deliveryMethod: "Самовывоз",
     transportCompany: null,
     deliveryType: "pickup",
+    deliveryDateRange: null,
     selectedPickupPoint: null,
     selectedCity: null,
     deliveryAddress: "",
@@ -263,9 +264,11 @@ const recalculatePromocode = () => {
 };
 
 const onDeliveryChange = (payload) => {
+    console.log("Delivery change payload:", payload);
     deliveryData.value = {
         deliveryMethod: payload?.deliveryMethod || "",
         transportCompany: payload?.transportCompany || null,
+        deliveryDateRange: payload?.deliveryDateRange || null,
         deliveryType: payload?.deliveryType || "",
         selectedPickupPoint: payload?.selectedPickupPoint || null,
         selectedCity: payload?.selectedCity || null,
@@ -356,7 +359,7 @@ const sendBascet = async () => {
     loadet.value = true;
 
     try {
-        const response = await axios.post("/bascet/send", {
+        var formData = {
             _token: token,
             fio: bascetInfo.fio,
             email: bascetInfo.email,
@@ -373,9 +376,12 @@ const sendBascet = async () => {
             delivery_info: deliveryData.value,
             pay: payType.value == 1 ? "Ю-касса" : "Перевод на карту",
             tovars: bascetList.value,
-        });
+        };
 
-        console.log(response);
+        console.log(formData);
+        return;
+
+        const response = await axios.post("/bascet/send", formData);
 
         if (
             response.data.pay_info != null &&

@@ -131,7 +131,7 @@ const fetchCities = async () => {
     citiesLoading.value = true;
 
     try {
-        const response = await axios.get("/cdek/cities", {
+        const response = await axios.get("/delivery/cities", {
             params: { country_codes: "RU" },
         });
 
@@ -208,7 +208,7 @@ const fetchPickupPoints = async (city) => {
     mapState.value = "loading";
 
     try {
-        const response = await axios.post("/cdek/delivery/pickup-points", {
+        const response = await axios.post("/delivery/pickup-points", {
             city_code: city,
             type_code: DELIVERY_POINT_TYPES,
         });

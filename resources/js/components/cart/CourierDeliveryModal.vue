@@ -175,7 +175,7 @@ const fetchCities = async () => {
     citiesLoading.value = true;
 
     try {
-        const response = await axios.get("/cdek/cities", {
+        const response = await axios.get("/delivery/cities", {
             params: { country_codes: "RU" },
         });
 
@@ -208,7 +208,7 @@ const calculateCourierTariff = async () => {
     tariffError.value = "";
 
     try {
-        const response = await axios.post("/cdek/delivery/courier-offers", {
+        const response = await axios.post("/delivery/courier-offers", {
             to_code: selectedCity.value,
             weight: props.parcelWeightGrams,
             delivery_mode: 3,

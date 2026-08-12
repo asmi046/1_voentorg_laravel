@@ -46,7 +46,10 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/asmi_promocod.php'));
 
             Route::middleware('web')
-                ->group(base_path('routes/asmi_cdek.php'));
+                ->group(base_path('routes/delivery.php'));
+
+            Route::middleware('web')
+                ->group(base_path('routes/shop.php'));
         });
     }
 }

@@ -172,7 +172,7 @@ const calculateDeliveryPriceStub = async (deliveryType, city = null) => {
         const requestId = ++pickupPointTariffRequestId.value;
 
         try {
-            const response = await axios.post("/cdek/delivery/courier-offers", {
+            const response = await axios.post("/delivery/courier-offers", {
                 to_code: city.code,
                 weight: props.parcelWeightGrams,
                 delivery_mode: 4,
