@@ -94,6 +94,7 @@ import SearchableCombobox from "../shared/SearchableCombobox.vue";
 import * as deliveryApi from "@/api/delivery";
 import { useDeliveryCities } from "@/composables/useDeliveryCities";
 import { useYandexMap } from "@/composables/useYandexMap";
+import { getDeliveryPinOptions } from "@/composables/useDeliveryPins";
 
 const props = defineProps({
     modelValue: {
@@ -183,6 +184,7 @@ const mapPoint = (point) => {
         addressComment: raw.address_comment ?? "",
         workTime: raw.work_time ?? "",
         phones,
+        provider: point?.provider ?? raw.provider ?? "unknown",
         lat: lat != null ? Number(lat) : null,
         lon: lon != null ? Number(lon) : null,
     };
@@ -273,13 +275,15 @@ const addPlacemarks = () => {
             continue;
         }
 
+        const pinOptions = getDeliveryPinOptions(point.provider);
+        console.log(pinOptions);
         const placemark = new window.ymaps.Placemark(
             [point.lat, point.lon],
             {
                 hintContent: point.name || point.address,
                 balloonContent: buildBalloonContent(point),
             },
-            { preset: "islands#greenIcon" },
+            pinOptions,
         );
 
         mapInstance.geoObjects.add(placemark);

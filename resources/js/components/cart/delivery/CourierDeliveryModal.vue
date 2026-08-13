@@ -40,6 +40,7 @@
                             placeholder="Начните вводить город"
                             loading-placeholder="Загрузка городов..."
                             empty-text="Ничего не найдено"
+                            @change="scheduleRecalculation"
                         />
                     </div>
 
@@ -52,6 +53,7 @@
                             type="text"
                             class="courier_delivery_modal__input"
                             placeholder="Улица, дом"
+                            @blur="scheduleRecalculation"
                         />
                     </div>
 
@@ -104,7 +106,7 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import SearchableCombobox from "../shared/SearchableCombobox.vue";
 import * as deliveryApi from "@/api/delivery";
 import { useDeliveryCities } from "@/composables/useDeliveryCities";
-import { formatPrice } from "@/composables/useDeliveryFormatters";
+import { formatPrice, formatDeliveryDateRange } from "@/composables/useDeliveryFormatters";
 
 const props = defineProps({
     modelValue: {
@@ -149,13 +151,7 @@ const canSelect = computed(
 const formattedDeliveryPrice = computed(() => formatPrice(deliveryPrice.value));
 
 const deliveryDateText = computed(() => {
-    const range = selectedTariff.value?.delivery_date_range;
-
-    if (!range?.min || !range?.max) {
-        return "";
-    }
-
-    return `Срок доставки: ${range.min} - ${range.max}`;
+    return formatDeliveryDateRange(selectedTariff.value?.delivery_date_range);
 });
 
 const clearTariffResult = () => {
@@ -251,7 +247,9 @@ watch(
             await fetchCities();
         }
 
-        scheduleRecalculation();
+        if (hasRequiredFields.value) {
+            scheduleRecalculation();
+        }
     },
 );
 
