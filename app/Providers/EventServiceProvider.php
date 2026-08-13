@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Events\BascetOrderCreated;
 use App\Events\ShopOrderCreated;
+use App\Listeners\RegisterCdekOrder;
 use App\Listeners\SendBascetMailListener;
 use App\Listeners\SendBascetToTelegramListener;
 use App\Listeners\SendShopOrderMailListener;
@@ -36,6 +37,7 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         ShopOrderCreated::class => [
+            RegisterCdekOrder::class,
             SendShopOrderToTelegramListener::class,
             SendShopOrderMailListener::class,
         ],

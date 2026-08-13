@@ -250,4 +250,41 @@ class CdekService
 
         return $response->json();
     }
+
+    public function registerOrder(array $payload): ?array
+    {
+        $token = $this->getAccessToken();
+        if (! $token) {
+            return null;
+        }
+
+        try {
+            $response = Http::withToken($token)
+                ->acceptJson()
+                ->post($this->baseUrl().'/orders', $payload);
+        } catch (ConnectionException $e) {
+            Log::channel('sdek')->error('CDEK register order connection error: '.$e->getMessage());
+
+            return null;
+        }
+
+        if ($response->status() === 401) {
+            $token = $this->getAccessToken(true);
+            if (! $token) {
+                return null;
+            }
+
+            $response = Http::withToken($token)
+                ->acceptJson()
+                ->post($this->baseUrl().'/orders', $payload);
+        }
+
+        if (! $response->successful()) {
+            Log::channel('sdek')->error('CDEK register order failed: '.$response->body());
+
+            return null;
+        }
+
+        return $response->json();
+    }
 }
