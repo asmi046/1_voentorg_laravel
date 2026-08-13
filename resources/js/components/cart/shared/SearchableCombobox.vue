@@ -9,6 +9,9 @@
             autocomplete="off"
             @focus="openDropdown"
             @input="onInput"
+            @keyup="onKeyup"
+            @compositionstart="onCompositionStart"
+            @compositionend="onCompositionEnd"
             @keydown.down.prevent="moveHighlight(1)"
             @keydown.up.prevent="moveHighlight(-1)"
             @keydown.enter.prevent="selectHighlighted"
@@ -85,6 +88,7 @@ const root = ref(null);
 const query = ref("");
 const isDropdownOpen = ref(false);
 const highlightedIndex = ref(-1);
+const isComposing = ref(false);
 
 const isDisabled = computed(() => props.disabled || props.loading);
 
@@ -135,6 +139,23 @@ const closeDropdown = () => {
 };
 
 const onInput = () => {
+    if (!isComposing.value) {
+        openDropdown();
+    }
+};
+
+const onKeyup = () => {
+    if (!isComposing.value) {
+        openDropdown();
+    }
+};
+
+const onCompositionStart = () => {
+    isComposing.value = true;
+};
+
+const onCompositionEnd = () => {
+    isComposing.value = false;
     openDropdown();
 };
 

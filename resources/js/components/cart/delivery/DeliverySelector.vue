@@ -31,7 +31,10 @@ import DeliveryOption from "./DeliveryOption.vue";
 import CourierDeliveryModal from "./CourierDeliveryModal.vue";
 import DeliveryPointModal from "./DeliveryPointModal.vue";
 import * as deliveryApi from "@/api/delivery";
-import { toNumber, formatDeliveryDateRange } from "@/composables/useDeliveryFormatters";
+import {
+    toNumber,
+    formatDeliveryDateRange,
+} from "@/composables/useDeliveryFormatters";
 
 const props = defineProps({
     modelValue: {
@@ -58,7 +61,7 @@ const BASE_OPTIONS = [
     {
         type: "pickup",
         title: "Самовывоз",
-        description: "Из нашего магазина",
+        description: "Из нашего магазина - г. Курск, ул. Верхняя Луговая, 6",
         icon: "delivery_pickup",
         price: 0,
     },
@@ -188,7 +191,11 @@ const pickupPointDescription = computed(() => {
 });
 
 const courierDescription = computed(() => {
-    if (!selectedCourier.value?.city || !selectedCourier.value?.street || !selectedCourier.value?.house) {
+    if (
+        !selectedCourier.value?.city ||
+        !selectedCourier.value?.street ||
+        !selectedCourier.value?.house
+    ) {
         return "Доставка курьером до двери";
     }
 
@@ -274,8 +281,9 @@ const buildDeliveryPayload = (option, overrides = {}) => {
         tariff:
             option.type === "courier"
                 ? selectedCourier.value?.tariff || null
-                : option.type === "pickup_point" ? pickupPointTariff.value || null
-                : null,
+                : option.type === "pickup_point"
+                  ? pickupPointTariff.value || null
+                  : null,
     };
 };
 

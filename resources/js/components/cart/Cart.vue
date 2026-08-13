@@ -375,10 +375,12 @@ const sendBascet = async () => {
                 delivery_date_range:
                     deliveryData.value.deliveryDateRange || undefined,
                 city:
-                    selectedCity.name ||
-                    selectedCity.city ||
-                    selectedCity ||
-                    undefined,
+                    deliveryData.value.deliveryType === "pickup"
+                        ? "Курск"
+                        : selectedCity.name ||
+                          selectedCity.city ||
+                          selectedCity ||
+                          undefined,
                 pickup_point_id:
                     selectedPoint.id || selectedPoint.code || undefined,
                 pickup_point_address: selectedPoint.address || undefined,
