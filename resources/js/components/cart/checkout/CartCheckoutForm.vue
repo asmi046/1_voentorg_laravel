@@ -55,10 +55,6 @@
                 Сумма корзины изменилась, скидка будет пересчитана.
             </p>
 
-            <ul v-show="errorList.length != 0" class="errors_list">
-                <li v-for="item in errorList" :key="item">{{ item }}</li>
-            </ul>
-
             <!-- <div class="page_manager_info in_cart">
                 <p>
                     Уточнить цену и наличие товара вы можете по телефону
@@ -89,10 +85,12 @@
                 </div>
             </div>
 
-            <!-- <br />
+            <br />
             <hr />
-            <br /> -->
-
+            <br />
+            <ul v-show="errorList.length != 0" class="errors_list">
+                <li v-for="item in errorList" :key="item">{{ item }}</li>
+            </ul>
             <button
                 @click.prevent="$emit('submit-order')"
                 class="button"

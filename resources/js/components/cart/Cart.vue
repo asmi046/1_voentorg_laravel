@@ -219,7 +219,7 @@ const updateBascet = () => {
     };
 
     for (const item of bascetList.value) {
-        const quantity = Number(item.quantity ?? item.quentity) || 0;
+        const quantity = Number(item.quentity ?? item.quantity) || 0;
         const itemWeight = item?.tovar_content?.weight;
 
         count.value += quantity;
@@ -407,6 +407,21 @@ const sendBascet = async () => {
             // document.location.href = "/bascet/thencs";
         }
     } catch (error) {
+        if (error?.response?.data?.errors) {
+            const backendErrors = error.response.data.errors;
+            for (const fieldMessages of Object.values(backendErrors)) {
+                if (Array.isArray(fieldMessages)) {
+                    errorList.value.push(...fieldMessages);
+                } else if (typeof fieldMessages === 'string') {
+                    errorList.value.push(fieldMessages);
+                }
+            }
+        } else if (error?.response?.data?.message) {
+            errorList.value.push(error.response.data.message);
+        } else {
+            errorList.value.push('Произошла ошибка при оформлении заказа.');
+        }
+
         console.log(error);
     } finally {
         loadet.value = false;
@@ -417,8 +432,8 @@ const updateItem = (item) => {
     cartApi
         .updateCartItem({
             _token: token,
-            product_id: item.product_id,
-            count: item.quentity,
+            product_sku: item.product_sku,
+            quantity: Number(item.quentity),
         })
         .then(() => {
             syncCounterInHeader();
@@ -450,7 +465,7 @@ const deleteElement = (item, index) => {
     cartApi
         .deleteCartItem({
             _token: token,
-            product_id: item.product_id,
+            product_sku: item.product_sku,
         })
         .then(() => {
             item.quentity = 0;
