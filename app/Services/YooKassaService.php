@@ -153,29 +153,71 @@ class YooKassaService
                 'payment_mode' => 'full_prepayment',
                 'country_of_origin_code' => 'RU',
                 'amount' => [
-                    'value' => $this->getItemPrice($product).'.00',
+                    'value' => number_format((float) $this->getItemPrice($product), 2, '.', ''),
                     'currency' => 'RUB',
                 ],
             ];
         }
 
-        $deliveryPrice = (float) $this->getOrderField($order, 'delivery_price', 0);
+        $deliveryPrice = $this->resolveDeliveryPrice($order);
+        $deliveryCity = $this->resolveDeliveryCity($order);
+
         if ($deliveryPrice > 0) {
             $receipt['items'][] = [
-                'description' => 'Доставка: '.$this->getOrderField($order, 'delivery_info.city', ''),
+                'description' => 'Доставка: '.$deliveryCity,
                 'quantity' => 1,
                 'vat_code' => 1,
                 'payment_subject' => 'service',
                 'payment_mode' => 'full_prepayment',
                 'country_of_origin_code' => 'RU',
                 'amount' => [
-                    'value' => $deliveryPrice.'.00',
+                    'value' => number_format((float) $deliveryPrice, 2, '.', ''),
                     'currency' => 'RUB',
                 ],
             ];
         }
 
         return $receipt;
+    }
+
+    private function resolveDeliveryPrice($order): float
+    {
+        if ($order instanceof \App\Models\ShopOrder && $order->relationLoaded('delivery') && $order->delivery) {
+            return (float) $order->delivery->price;
+        }
+
+        if ($order instanceof \App\Models\ShopOrder && method_exists($order, 'delivery')) {
+            $delivery = $order->delivery()->first();
+
+            if ($delivery) {
+                return (float) $delivery->price;
+            }
+        }
+
+        return (float) $this->getOrderField($order, 'delivery_price', 0);
+    }
+
+    private function resolveDeliveryCity($order): string
+    {
+        if ($order instanceof \App\Models\ShopOrder && $order->relationLoaded('delivery') && $order->delivery) {
+            return (string) ($order->delivery->city ?? '');
+        }
+
+        if ($order instanceof \App\Models\ShopOrder && method_exists($order, 'delivery')) {
+            $delivery = $order->delivery()->first();
+
+            if ($delivery && $delivery->city) {
+                return (string) $delivery->city;
+            }
+        }
+
+        $deliveryInfo = $this->getOrderField($order, 'delivery_info', []);
+
+        if (is_array($deliveryInfo) && isset($deliveryInfo['city'])) {
+            return (string) $deliveryInfo['city'];
+        }
+
+        return '';
     }
 
     public function getOrderStatus(string $pay_id)

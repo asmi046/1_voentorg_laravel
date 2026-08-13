@@ -274,7 +274,8 @@ const onDeliveryChange = (payload) => {
         deliveryType: payload?.deliveryType || "",
         selectedPickupPoint: payload?.selectedPickupPoint || null,
         selectedCity: payload?.selectedCity || null,
-        deliveryAddress: payload?.deliveryAddress || "",
+        street: payload?.street || "",
+        house: payload?.house || "",
         apartment: payload?.apartment || "",
         deliveryPrice:
             payload?.deliveryPrice === null ||
@@ -360,6 +361,7 @@ const sendBascet = async () => {
             phone: bascetInfo.phone,
             comment: bascetInfo.comment,
             promo_code: appliedPromoCode.value || undefined,
+            discount: promoApplied.value ? promoDiscount.value || undefined : undefined,
             delivery: {
                 provider: deliveryData.value.transportCompany || undefined,
                 method: deliveryData.value.deliveryType || undefined,
@@ -382,6 +384,8 @@ const sendBascet = async () => {
                 pickup_point_address: selectedPoint.address || undefined,
                 delivery_address:
                     deliveryData.value.deliveryAddress || undefined,
+                street: deliveryData.value.street || undefined,
+                house: deliveryData.value.house || undefined,
                 apartment: deliveryData.value.apartment || undefined,
                 raw_data: deliveryData.value,
             },

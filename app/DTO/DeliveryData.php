@@ -14,6 +14,8 @@ final readonly class DeliveryData
         public ?string $pickup_point_id,
         public ?string $pickup_point_address,
         public ?string $delivery_address,
+        public ?string $street,
+        public ?string $house,
         public ?string $apartment,
         public ?array $raw_data,
     ) {}
@@ -33,6 +35,8 @@ final readonly class DeliveryData
             pickup_point_id: $data['pickup_point_id'] ?? null,
             pickup_point_address: $data['pickup_point_address'] ?? null,
             delivery_address: $data['delivery_address'] ?? null,
+            street: $data['street'] ?? null,
+            house: $data['house'] ?? null,
             apartment: $data['apartment'] ?? null,
             raw_data: $data['raw_data'] ?? null,
         );
@@ -53,6 +57,8 @@ final readonly class DeliveryData
             'pickup_point_id' => $this->pickup_point_id,
             'pickup_point_address' => $this->pickup_point_address,
             'delivery_address' => $this->delivery_address,
+            'street' => $this->street,
+            'house' => $this->house,
             'apartment' => $this->apartment,
             'raw_data' => $this->raw_data,
         ];

@@ -196,7 +196,7 @@ class ShopCartServiceTest extends TestCase
         $this->assertSame('+79991234567', $order->phone);
         $this->assertSame('PROMO10', $order->promo_code);
         $this->assertSame(2000.0, (float) $order->cart_summ); // 1000 * 2
-        $this->assertSame(2000.0, (float) $order->total_summ);
+        $this->assertSame(2350.0, (float) $order->total_summ); // 2000 + delivery 350
         $this->assertSame(self::SESSION_ID, $order->session_id);
 
         // Проверка доставки

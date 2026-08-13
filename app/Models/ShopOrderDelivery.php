@@ -23,6 +23,8 @@ class ShopOrderDelivery extends Model
         'pickup_point_id',
         'pickup_point_address',
         'delivery_address',
+        'street',
+        'house',
         'apartment',
         'raw_data',
     ];

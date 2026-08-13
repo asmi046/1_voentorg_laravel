@@ -188,12 +188,12 @@ const pickupPointDescription = computed(() => {
 });
 
 const courierDescription = computed(() => {
-    if (!selectedCourier.value?.city || !selectedCourier.value?.address) {
+    if (!selectedCourier.value?.city || !selectedCourier.value?.street || !selectedCourier.value?.house) {
         return "Доставка курьером до двери";
     }
 
     const lines = [
-        `Доставка курьером СДЭК - ${selectedCourier.value.city.name}, ${selectedCourier.value.address}`,
+        `Доставка курьером СДЭК - ${selectedCourier.value.city.name}, ${selectedCourier.value.street}, д. ${selectedCourier.value.house}`,
     ];
 
     if (selectedCourier.value.apartment) {
@@ -257,8 +257,8 @@ const buildDeliveryPayload = (option, overrides = {}) => {
                 : option.type === "courier"
                   ? courier?.city || null
                   : null,
-        deliveryAddress:
-            option.type === "courier" ? courier?.address || "" : "",
+        street: option.type === "courier" ? courier?.street || "" : "",
+        house: option.type === "courier" ? courier?.house || "" : "",
         apartment: option.type === "courier" ? courier?.apartment || "" : "",
         deliveryPrice: getNumericPrice(optionPrice),
         deliveryDateRange:
@@ -274,6 +274,7 @@ const buildDeliveryPayload = (option, overrides = {}) => {
         tariff:
             option.type === "courier"
                 ? selectedCourier.value?.tariff || null
+                : option.type === "pickup_point" ? pickupPointTariff.value || null
                 : null,
     };
 };
@@ -354,7 +355,8 @@ const onPointSelected = (payload) => {
 const onCourierSelected = (payload) => {
     selectedCourier.value = {
         city: payload?.city || null,
-        address: payload?.address || "",
+        street: payload?.street || "",
+        house: payload?.house || "",
         apartment: payload?.apartment || "",
         deliveryPrice: payload?.deliveryPrice ?? null,
         tariff: payload?.tariff || null,

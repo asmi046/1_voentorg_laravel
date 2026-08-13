@@ -46,13 +46,26 @@
 
                     <div class="courier_delivery_modal__field">
                         <label class="courier_delivery_modal__label"
-                            >Адрес доставки</label
+                            >Улица</label
                         >
                         <input
-                            v-model.trim="deliveryAddress"
+                            v-model.trim="street"
                             type="text"
                             class="courier_delivery_modal__input"
-                            placeholder="Улица, дом"
+                            placeholder="Например, Ленина"
+                            @blur="scheduleRecalculation"
+                        />
+                    </div>
+
+                    <div class="courier_delivery_modal__field">
+                        <label class="courier_delivery_modal__label"
+                            >Дом</label
+                        >
+                        <input
+                            v-model.trim="house"
+                            type="text"
+                            class="courier_delivery_modal__input"
+                            placeholder="Например, 10"
                             @blur="scheduleRecalculation"
                         />
                     </div>
@@ -128,7 +141,8 @@ const {
     fetchCities,
     getSelectedCityObject,
 } = useDeliveryCities();
-const deliveryAddress = ref("");
+const street = ref("");
+const house = ref("");
 const apartment = ref("");
 const deliveryPrice = ref(0);
 const selectedTariff = ref(null);
@@ -138,7 +152,7 @@ let recalcTimer = null;
 let requestId = 0;
 
 const hasRequiredFields = computed(
-    () => !!selectedCity.value && !!deliveryAddress.value.trim(),
+    () => !!selectedCity.value && !!street.value.trim() && !!house.value.trim(),
 );
 
 const canSelect = computed(
@@ -217,7 +231,8 @@ const submit = () => {
 
     emit("select", {
         city: getSelectedCityObject(),
-        address: deliveryAddress.value.trim(),
+        street: street.value.trim(),
+        house: house.value.trim(),
         apartment: apartment.value.trim(),
         deliveryPrice: deliveryPrice.value,
         tariff: selectedTariff.value,
@@ -254,7 +269,7 @@ watch(
 );
 
 watch(
-    () => [selectedCity.value, deliveryAddress.value, props.parcelWeightGrams],
+    () => [selectedCity.value, street.value, house.value, props.parcelWeightGrams],
     () => {
         if (!props.modelValue) {
             return;

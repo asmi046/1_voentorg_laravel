@@ -146,6 +146,8 @@ class ShopCartService
             $cart = $this->getCart($data->session_id, $data->user_id)->load('items');
 
             $cartSumm = $this->calculateCartSumm($cart);
+            $deliveryPrice = (float) ($data->delivery->price ?? 0);
+            $discountSumm = (float) ($data->discount ?? 0);
 
             $order = ShopOrder::create([
                 'name' => $data->name,
@@ -154,8 +156,8 @@ class ShopCartService
                 'comment' => $data->comment,
                 'promo_code' => $data->promo_code,
                 'cart_summ' => $cartSumm,
-                'discount_summ' => 0,
-                'total_summ' => $cartSumm,
+                'discount_summ' => $discountSumm,
+                'total_summ' => max($cartSumm - $discountSumm + $deliveryPrice, 0),
                 'session_id' => $data->session_id,
                 'user_id' => $data->user_id,
             ]);
@@ -179,7 +181,7 @@ class ShopCartService
             $normalizedTovars = $yookassa->normalizeTovarsForPayment(
                 $tovars,
                 (float) $cartSumm,
-                0
+                $discountSumm
             );
 
             $payment = $yookassa->registerOrder($order, $normalizedTovars);

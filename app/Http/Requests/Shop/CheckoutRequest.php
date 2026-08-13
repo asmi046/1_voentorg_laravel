@@ -22,6 +22,7 @@ class CheckoutRequest extends FormRequest
 
             // Промокод
             'promo_code' => ['nullable', 'string', 'max:50'],
+            'discount' => ['nullable', 'numeric', 'min:0'],
 
             // Доставка
             'delivery' => ['required', 'array'],
@@ -34,6 +35,8 @@ class CheckoutRequest extends FormRequest
             'delivery.pickup_point_id' => ['nullable', 'string', 'max:100'],
             'delivery.pickup_point_address' => ['nullable', 'string', 'max:500'],
             'delivery.delivery_address' => ['nullable', 'string', 'max:500'],
+            'delivery.street' => ['nullable', 'string', 'max:255'],
+            'delivery.house' => ['nullable', 'string', 'max:20'],
             'delivery.apartment' => ['nullable', 'string', 'max:20'],
             'delivery.raw_data' => ['nullable', 'array'],
 
