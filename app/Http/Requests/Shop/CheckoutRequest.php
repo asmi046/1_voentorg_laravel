@@ -28,7 +28,7 @@ class CheckoutRequest extends FormRequest
             'delivery.provider' => ['nullable', 'string', 'max:50'],
             'delivery.method' => ['required', 'string', 'in:pickup,pickup_point,courier'],
             'delivery.price' => ['nullable', 'numeric', 'min:0'],
-            'delivery.tariff' => ['nullable', 'string', 'max:100'],
+            'delivery.tariff' => ['nullable', 'string', 'max:500'],
             'delivery.delivery_date_range' => ['nullable', 'array'],
             'delivery.city' => ['nullable', 'string', 'max:255'],
             'delivery.pickup_point_id' => ['nullable', 'string', 'max:100'],

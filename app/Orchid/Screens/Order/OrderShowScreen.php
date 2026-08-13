@@ -2,12 +2,14 @@
 
 namespace App\Orchid\Screens\Order;
 
-use App\Models\Order;
+use App\Models\ShopOrder;
 use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Fields\Label;
-use Orchid\Screen\Layouts\Rows;
+use Orchid\Screen\Layouts\Table;
 use Orchid\Screen\Screen;
 use Orchid\Screen\Sight;
+use Orchid\Screen\TD;
 use Orchid\Support\Facades\Layout;
 use Orchid\Support\Color;
 
@@ -17,10 +19,12 @@ class OrderShowScreen extends Screen
 
     public function query(int $id): iterable
     {
-        $this->order = Order::findOrFail($id);
+        $this->order = ShopOrder::with(['delivery', 'items'])->findOrFail($id);
 
         return [
             'order' => $this->order,
+            'delivery' => $this->order->delivery,
+            'items' => $this->order->items,
         ];
     }
 
@@ -37,6 +41,12 @@ class OrderShowScreen extends Screen
     public function commandBar(): iterable
     {
         return [
+            Link::make('Открыть продукт')
+                ->href('https://yookassa.ru/my/orders/' . $this->order->payment_id)
+                ->icon('bs.box-arrow-up-right')
+                ->target('_blank')
+                ->canSee($this->order->payment_id !== null),
+            
             Button::make('Назад к заказам')
                 ->route('platform.orders')
                 ->type(Color::LIGHT()),
@@ -46,45 +56,68 @@ class OrderShowScreen extends Screen
     public function layout(): iterable
     {
         return [
-            Layout::rows([
-                Label::make('order.id')->title('ID заказа')->value(optional($this->order)->id),
-                Label::make('order.name')->title('Клиент')->value(optional($this->order)->name),
-                Label::make('order.email')->title('Email')->value(optional($this->order)->email ?? '—'),
-                Label::make('order.phone')->title('Телефон')->value(optional($this->order)->phone),
-                Label::make('order.amount')->title('Сумма')->value(optional($this->order)->amount ? number_format((float) optional($this->order)->amount, 0, ',', ' ') . ' ₽' : '—'),
-                Label::make('order.created_at')->title('Дата создания')->value(optional($this->order)->created_at ? optional($this->order)->created_at->format('d.m.Y H:i') : '—'),
-            ]),
+            Layout::legend('order', [
+                Sight::make('id', 'ID заказа'),
+                Sight::make('created_at', 'Дата создания')->render(function ($order) {
+                    return $order->created_at ? $order->created_at->format('d.m.Y H:i') : '—';
+                }),
+                Sight::make('user_id', 'Пользователь ID'),
+                Sight::make('name', 'Клиент'),
+                Sight::make('email', 'Email'),
+                Sight::make('phone', 'Телефон'),
+                Sight::make('comment', 'Комментарий')->render(function ($order) {
+                    return $order->comment ?: '—';
+                }),
+                Sight::make('promo_code', 'Промокод')->render(function ($order) {
+                    return $order->promo_code ?: '—';
+                }),
+            ])->title('Информация о заказе'),
 
-            Layout::rows([
-                Label::make('order.delivery')->title('Способ доставки')->value(optional($this->order)->delivery ?: 'Самовывоз'),
-                Label::make('order.delivery_type')->title('Тип доставки')->value(optional($this->order)->delivery_type ?: '—'),
-                Label::make('order.delivery_price')->title('Цена доставки')->value(optional($this->order)->delivery_price ? number_format((float) optional($this->order)->delivery_price, 0, ',', ' ') . ' ₽' : '—'),
-                Label::make('order.delivery_date_range')->title('Диапазон дат')->value(optional($this->order)->delivery_date_range ?: '—'),
+            Layout::split([
+                Layout::legend('order', [
+                    Sight::make('cart_summ', 'Сумма товаров')->render(function ($order) {
+                        return number_format((float) $order->cart_summ, 2, ',', ' ') . ' ₽';
+                    }),
+                    Sight::make('discount_summ', 'Скидка')->render(function ($order) {
+                        return number_format((float) $order->discount_summ, 2, ',', ' ') . ' ₽';
+                    }),
+                    Sight::make('total_summ', 'Итого')->render(function ($order) {
+                        return number_format((float) $order->total_summ, 2, ',', ' ') . ' ₽';
+                    }),
+                ])->title('Суммы'),
+
+                Layout::legend('order', [
+                    Sight::make('payment_id', 'ID платежа')->render(function ($order) {
+                        return $order->payment_id ?: '—';
+                    }),
+                    Sight::make('payment_status', 'Статус оплаты')->render(function ($order) {
+                        return $order->payment_status ?: '—';
+                    }),
+                    Sight::make('payment_status_text', 'Статус (текст)')->render(function ($order) {
+                        return $order->payment_status_text ?: '—';
+                    }),
+                    Sight::make('session_id', 'Сессия')->render(function ($order) {
+                        return $order->session_id ?: '—';
+                    }),
+                ])->title('Платежная информация'),
             ]),
 
             Layout::view('platform.orders.delivery', [
-                'delivery_info' => $this->renderDeliveryInfo(),
+                'delivery' => $this->order->delivery,
             ]),
 
-
+            Layout::table('items', [
+                TD::make('id', '#'),
+                TD::make('product_sku', 'Артикул'),
+                TD::make('product_name', 'Название товара'),
+                TD::make('product_title', 'Заголовок'),
+                TD::make('price', 'Цена')->render(function ($item) {
+                    return number_format((float) $item->price, 2, ',', ' ') . ' ₽';
+                }),
+                TD::make('quantity', 'Количество'),
+                TD::make('weight_grams', 'Вес (гр)'),
+            ])->title('Товары в заказе'),
         ];
     }
 
-    protected function renderDeliveryInfo(): string
-    {
-        if (empty(optional($this->order)->delivery_info)) {
-            return '—';
-        }
-
-        $items = [];
-        foreach ((array) optional($this->order)->delivery_info as $key => $value) {
-            if (is_array($value)) {
-                $value = json_encode($value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-            }
-
-            $items[] = '<strong>' . e($key) . ':</strong> ' . e((string) $value);
-        }
-
-        return implode('<br>', $items);
-    }
 }

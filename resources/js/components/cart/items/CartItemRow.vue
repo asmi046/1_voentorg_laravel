@@ -16,8 +16,6 @@
                         :href="`/product/${item.tovar_content.slug}`"
                     >
                         {{ item.tovar_content.title }}
-                        {{ item.tovar_data.volume }}
-                        {{ item.tovar_data.ed_izm }}
                     </a>
                 </h2>
                 <p>Артикул: {{ item.product_sku }} / {{ item.product_id }}</p>

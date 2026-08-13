@@ -1,4 +1,5 @@
 import { createStore } from 'vuex'
+import * as cartApi from '@/api/cart'
 
 export const store = new createStore({
     state: {
@@ -45,11 +46,10 @@ export const store = new createStore({
     actions: {
 
         initialBascet(context, value) {
-                axios.get('/bascet/get')
-                .then((response) => {
-                    console.log(response.data.count)
-                    context.commit('setCount', response.data.count)
-                    context.commit('setTovars', response.data.position)
+                cartApi.getCart()
+                .then((data) => {
+                    context.commit('setCount', data.count)
+                    context.commit('setTovars', data.position)
                 })
                 .catch(error => console.log(error));
         },

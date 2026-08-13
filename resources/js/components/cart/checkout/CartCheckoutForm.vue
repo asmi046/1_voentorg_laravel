@@ -114,7 +114,7 @@
 
 <script setup>
 import { ref } from "vue";
-import DeliverySelector from "./DeliverySelector.vue";
+import DeliverySelector from "../delivery/DeliverySelector.vue";
 
 defineProps({
     bascetInfo: {

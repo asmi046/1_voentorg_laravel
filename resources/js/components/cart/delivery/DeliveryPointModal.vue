@@ -90,7 +90,10 @@
 
 <script setup>
 import { nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
-import SearchableCombobox from "./SearchableCombobox.vue";
+import SearchableCombobox from "../shared/SearchableCombobox.vue";
+import * as deliveryApi from "@/api/delivery";
+import { useDeliveryCities } from "@/composables/useDeliveryCities";
+import { useYandexMap } from "@/composables/useYandexMap";
 
 const props = defineProps({
     modelValue: {
@@ -101,17 +104,22 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue", "select"]);
 
-const cities = ref([]);
-const citiesLoading = ref(false);
-const selectedCity = ref("");
+const {
+    cities,
+    citiesLoading,
+    selectedCity,
+    fetchCities: fetchCitiesList,
+    getSelectedCityObject,
+} = useDeliveryCities();
+
+const { loadYandexMaps } = useYandexMap();
+
 const pickupPoints = ref([]);
 const selectedPoint = ref(null);
 const mapContainer = ref(null);
 const mapState = ref("loading");
 
 let mapInstance = null;
-
-const YANDEX_MAP_API_KEY = ""; // TODO: вставить API-ключ Яндекс.Карт
 
 const DELIVERY_POINT_TYPES = "PVZ,POSTAMAT";
 
@@ -128,31 +136,7 @@ const getCityCenter = () => {
 };
 
 const fetchCities = async () => {
-    citiesLoading.value = true;
-
-    try {
-        const response = await axios.get("/delivery/cities", {
-            params: { country_codes: "RU" },
-        });
-
-        const list = Array.isArray(response.data?.data)
-            ? response.data.data
-            : [];
-
-        cities.value = list.map((city) => ({
-            code: String(city.code ?? ""),
-            name: city.city ?? "",
-            lat: city.latitude != null ? Number(city.latitude) : null,
-            lon: city.longitude != null ? Number(city.longitude) : null,
-        }));
-
-        const kursk = cities.value.find((city) => city.name === "Курск");
-        selectedCity.value = kursk?.code || cities.value[0]?.code || "";
-    } catch (error) {
-        console.error(error);
-    } finally {
-        citiesLoading.value = false;
-    }
+    await fetchCitiesList();
 
     if (selectedCity.value) {
         await fetchPickupPoints(selectedCity.value);
@@ -208,50 +192,18 @@ const fetchPickupPoints = async (city) => {
     mapState.value = "loading";
 
     try {
-        const response = await axios.post("/delivery/pickup-points", {
+        const points = await deliveryApi.getPickupPoints({
             city_code: city,
             type_code: DELIVERY_POINT_TYPES,
         });
 
-        pickupPoints.value = extractPoints(response.data?.data).map(mapPoint);
+        pickupPoints.value = extractPoints(points).map(mapPoint);
     } catch (error) {
         console.error(error);
         pickupPoints.value = [];
     }
 
     await initMap();
-};
-
-let yandexApiPromise = null;
-
-const loadYandexMaps = () => {
-    if (window.ymaps) {
-        return Promise.resolve();
-    }
-
-    if (yandexApiPromise) {
-        return yandexApiPromise;
-    }
-
-    // const scriptSrc = `https://api-maps.yandex.ru/2.1/?lang=ru_RU${
-    //     YANDEX_MAP_API_KEY ? `&apikey=${YANDEX_MAP_API_KEY}` : ""
-    // }`;
-
-    const scriptSrc = "//api-maps.yandex.ru/2.1/?lang=ru_RU";
-
-    yandexApiPromise = new Promise((resolve, reject) => {
-        const script = document.createElement("script");
-        script.src = scriptSrc;
-        script.async = true;
-        script.onload = () => window.ymaps.ready(() => resolve());
-        script.onerror = () => {
-            yandexApiPromise = null;
-            reject(new Error("Не удалось загрузить Яндекс.Карты"));
-        };
-        document.head.appendChild(script);
-    });
-
-    return yandexApiPromise;
 };
 
 const buildBalloonContent = (point) => {
@@ -377,17 +329,11 @@ const onCityChange = () => {
     fetchPickupPoints(selectedCity.value);
 };
 
-const getSelectedCity = () => {
-    return (
-        cities.value.find((city) => city.code === selectedCity.value) || null
-    );
-};
-
 const selectPoint = (point) => {
     selectedPoint.value = point;
     emit("select", {
         point,
-        city: getSelectedCity(),
+        city: getSelectedCityObject(),
     });
     close();
 };

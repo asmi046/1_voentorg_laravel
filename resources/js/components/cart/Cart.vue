@@ -52,9 +52,11 @@
 
 <script setup>
 import { computed, onMounted, reactive, ref, watch } from "vue";
-import CartCheckoutForm from "./CartCheckoutForm.vue";
-import CartItemsList from "./CartItemsList.vue";
-import CartOrderSummary from "./CartOrderSummary.vue";
+import CartCheckoutForm from "./checkout/CartCheckoutForm.vue";
+import CartItemsList from "./items/CartItemsList.vue";
+import CartOrderSummary from "./items/CartOrderSummary.vue";
+import * as cartApi from "@/api/cart";
+import * as promocodeApi from "@/api/promocode";
 
 const noPhotoUrl = "img/noPhoto.jpg";
 const bascetList = ref([]);
@@ -144,20 +146,20 @@ const showPromoError = (message) => {
 const verifyPromocode = (promoCode, successMessage) => {
     const requestId = ++promoRequestId.value;
 
-    return axios
-        .post("/promocod/verify", {
+    return promocodeApi
+        .verifyPromocode({
             _token: token,
             promocode: promoCode,
             cart_sum: subtotal.value,
         })
-        .then((response) => {
+        .then((data) => {
             if (requestId !== promoRequestId.value) {
                 return false;
             }
 
             promoApplied.value = true;
-            promoDiscount.value = Number(response.data.discount || 0);
-            appliedPromoCode.value = response.data.promo_code || promoCode;
+            promoDiscount.value = Number(data.discount || 0);
+            appliedPromoCode.value = data.promo_code || promoCode;
             promoDirty.value = false;
             showPromoSuccess(successMessage);
 
@@ -217,7 +219,7 @@ const updateBascet = () => {
     };
 
     for (const item of bascetList.value) {
-        const quantity = Number(item.quentity) || 0;
+        const quantity = Number(item.quantity ?? item.quentity) || 0;
         const itemWeight = item?.tovar_content?.weight;
 
         count.value += quantity;
@@ -280,6 +282,7 @@ const onDeliveryChange = (payload) => {
             payload?.deliveryPrice === ""
                 ? null
                 : Number(payload.deliveryPrice),
+        tariff: payload?.tariff || null,
     };
 
     deliveryMethod.value = deliveryData.value.deliveryMethod;
@@ -342,60 +345,66 @@ const sendBascet = async () => {
     if (bascetInfo.phone == "")
         errorList.value.push("Поле 'Телефон' не заполнено");
 
-    // if (bascetInfo.city == "")
-    //     errorList.value.push("Поле 'Город' не заполнено");
-
-    // if (bascetInfo.street == "")
-    //     errorList.value.push("Поле 'Улица' не заполнено");
-
-    // if (bascetInfo.home == "")
-    //     errorList.value.push("Поле 'Дом' не заполнено");
-
-    // if (bascetInfo.postindex == "")
-    //     errorList.value.push("Поле 'Почтовый индекс' не заполнено");
-
     if (errorList.value.length != 0) return;
 
     loadet.value = true;
 
     try {
-        var formData = {
+        const selectedCity = deliveryData.value.selectedCity || {};
+        const selectedPoint = deliveryData.value.selectedPickupPoint || {};
+
+        const formData = {
             _token: token,
-            fio: bascetInfo.fio,
+            name: bascetInfo.fio,
             email: bascetInfo.email,
             phone: bascetInfo.phone,
-            adress: bascetInfo.adress,
             comment: bascetInfo.comment,
-            count: count.value,
-            promo_code: appliedPromoCode.value,
-            promo_code_discount: promoDiscount.value,
-            base_summ: subtotal.value,
-            discount_summ: promoDiscount.value,
-            amount: subtotal.value + deliveryPrice.value - promoDiscount.value,
-            delivery: deliveryMethod.value,
-            delivery_info: deliveryData.value,
-            pay: payType.value == 1 ? "Ю-касса" : "Перевод на карту",
-            tovars: bascetList.value,
+            promo_code: appliedPromoCode.value || undefined,
+            delivery: {
+                provider: deliveryData.value.transportCompany || undefined,
+                method: deliveryData.value.deliveryType || undefined,
+                price: deliveryData.value.deliveryPrice ?? undefined,
+                tariff:
+                    deliveryData.value.tariff != null
+                        ? typeof deliveryData.value.tariff === "string"
+                            ? deliveryData.value.tariff
+                            : JSON.stringify(deliveryData.value.tariff)
+                        : undefined,
+                delivery_date_range:
+                    deliveryData.value.deliveryDateRange || undefined,
+                city:
+                    selectedCity.name ||
+                    selectedCity.city ||
+                    selectedCity ||
+                    undefined,
+                pickup_point_id:
+                    selectedPoint.id || selectedPoint.code || undefined,
+                pickup_point_address: selectedPoint.address || undefined,
+                delivery_address:
+                    deliveryData.value.deliveryAddress || undefined,
+                apartment: deliveryData.value.apartment || undefined,
+                raw_data: deliveryData.value,
+            },
+            items: bascetList.value.map((item) => ({
+                product_sku: item.product_sku,
+                quantity: Number(item.quantity ?? item.quentity) || 1,
+            })),
         };
 
-        console.log(formData);
-        return;
-
-        const response = await axios.post("/bascet/send", formData);
-
+        const response = await cartApi.checkout(formData);
+        console.log(response);
         if (
-            response.data.pay_info != null &&
-            response.data.pay_info.confirmation.confirmation_url !== undefined
+            response.pay_info != null &&
+            response.pay_info.confirmation &&
+            response.pay_info.confirmation.confirmation_url !== undefined
         ) {
-            console.log(response.data.pay_info);
+            console.log(response.pay_info);
 
-            document.location.href = "/bascet/thencs";
-
-            // document.location.href =
-            //     response.data.pay_info.confirmation.confirmation_url;
+            document.location.href =
+                response.pay_info.confirmation.confirmation_url;
         } else {
-            console.log(response.data.pay_info);
-            document.location.href = "/bascet/thencs";
+            console.log(response.pay_info);
+            // document.location.href = "/bascet/thencs";
         }
     } catch (error) {
         console.log(error);
@@ -405,8 +414,8 @@ const sendBascet = async () => {
 };
 
 const updateItem = (item) => {
-    axios
-        .post("/bascet/update", {
+    cartApi
+        .updateCartItem({
             _token: token,
             product_id: item.product_id,
             count: item.quentity,
@@ -424,12 +433,8 @@ const changeItemQuantity = (item, delta) => {
 };
 
 const clearBascet = () => {
-    axios
-        .delete("/bascet/clear", {
-            data: {
-                _token: token,
-            },
-        })
+    cartApi
+        .clearCart({ _token: token })
         .then(() => {
             count.value = 0;
             subtotal.value = 0;
@@ -442,12 +447,10 @@ const clearBascet = () => {
 };
 
 const deleteElement = (item, index) => {
-    axios
-        .delete("/bascet/delete", {
-            data: {
-                _token: token,
-                product_id: item.product_id,
-            },
+    cartApi
+        .deleteCartItem({
+            _token: token,
+            product_id: item.product_id,
         })
         .then(() => {
             item.quentity = 0;
@@ -477,10 +480,10 @@ watch(
 
 onMounted(() => {
     show_bascet.value = false;
-    axios
-        .get("/bascet/get")
-        .then((response) => {
-            bascetList.value = response.data.position;
+    cartApi
+        .getCart()
+        .then((data) => {
+            bascetList.value = data.position;
             console.log(bascetList.value);
             updateBascet();
             show_bascet.value = true;

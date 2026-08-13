@@ -2,16 +2,20 @@
 
 namespace App\Orchid\Screens\Order;
 
-use App\Models\Order;
+use App\Models\ShopOrder;
 use App\Orchid\Layouts\Order\OrderListLayout;
 use Orchid\Screen\Screen;
+use Orchid\Screen\Actions\Link;
 
 class OrderListScreen extends Screen
 {
     public function query(): array
     {
         return [
-            'orders' => Order::latest()->paginate(20),
+            'orders' => ShopOrder::with(['delivery'])
+                ->filters()
+                ->defaultSort('created_at', 'desc')
+                ->paginate(20),
         ];
     }
 

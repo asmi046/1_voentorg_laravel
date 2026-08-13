@@ -116,7 +116,9 @@ class ShopCartController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Корзина очищена.',
+            'data' => [
+                'message' => 'Корзина очищена.',
+            ],
         ]);
     }
 
@@ -127,12 +129,26 @@ class ShopCartController extends Controller
     {
         $data = CheckoutData::fromRequest($request);
 
-        $order = $this->cartService->checkout($data);
+        $result = $this->cartService->checkout($data);
+        $order = $result['order'];
+        $payment = $result['payment'];
+
+        $payInfo = null;
+        if (! empty($payment) && is_object($payment)) {
+            $payInfo = [
+                'id' => $payment->id ?? null,
+                'status' => $payment->status ?? null,
+                'confirmation' => $payment->confirmation ?? null,
+            ];
+        }
 
         return response()->json([
             'success' => true,
             'data' => [
+                'pay_info' => $payInfo,
                 'order_id' => $order->id,
+                'order_number' => '№'.$order->id.'_S'.rand(100, 999),
+                'tovars' => [],
             ],
         ], 201);
     }
@@ -142,13 +158,33 @@ class ShopCartController extends Controller
      */
     private function cartResponse(\App\Models\ShopCart $cart, array $extra = []): JsonResponse
     {
+        $items = $cart->items->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'product_sku' => $item->product_sku,
+                'product_id' => $item->product?->id,
+                'quantity' => $item->quantity,
+                'quentity' => $item->quantity,
+                'price' => $item->price_snapshot ?? $item->productPrice?->price ?? 0,
+                'tovar_content' => $item->product ? [
+                    'img' => $item->product->img,
+                    'slug' => $item->product->slug,
+                    'title' => $item->product->title,
+                    'weight' => $item->product->weight,
+                ] : null,
+                'tovar_data' => [
+                    'price' => $item->productPrice?->price ?? 0,
+                ],
+            ];
+        })->all();
+
         return response()->json(array_merge([
             'success' => true,
             'data' => array_merge([
                 'count' => $this->cartService->getTotalQuantity($cart),
                 'cart_summ' => $this->cartService->calculateCartSumm($cart),
                 'parcel_weight_grams' => $this->cartService->calculateParcelWeight($cart),
-                'items' => $cart->items,
+                'position' => $items,
             ], $extra),
         ], []));
     }

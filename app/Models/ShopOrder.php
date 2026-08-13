@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Orchid\Filters\Filterable;
+use Orchid\Filters\Types\Like;
+use Orchid\Filters\Types\Where;
 use Orchid\Screen\AsSource;
 
 class ShopOrder extends Model
@@ -47,14 +49,14 @@ class ShopOrder extends Model
     ];
 
     protected $allowedFilters = [
-        'id',
-        'name',
-        'email',
-        'phone',
-        'promo_code',
-        'payment_status',
-        'session_id',
-        'user_id',
+        'id'            => Where::class,
+        'name'          => Like::class,
+        'email'         => Like::class,
+        'phone'         => Like::class,
+        'promo_code'    => Like::class,
+        'payment_status'=> Where::class,
+        'session_id'    => Where::class,
+        'user_id'       => Where::class,
     ];
 
     public function delivery(): HasOne

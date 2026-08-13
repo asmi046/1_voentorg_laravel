@@ -30,6 +30,8 @@ import { computed, ref, watch } from "vue";
 import DeliveryOption from "./DeliveryOption.vue";
 import CourierDeliveryModal from "./CourierDeliveryModal.vue";
 import DeliveryPointModal from "./DeliveryPointModal.vue";
+import * as deliveryApi from "@/api/delivery";
+import { toNumber, formatDeliveryDateRange } from "@/composables/useDeliveryFormatters";
 
 const props = defineProps({
     modelValue: {
@@ -76,14 +78,7 @@ const BASE_OPTIONS = [
     },
 ];
 
-const getNumericPrice = (value) => {
-    if (value === null || value === undefined || value === "") {
-        return null;
-    }
-
-    const numeric = Number(value);
-    return Number.isFinite(numeric) ? numeric : null;
-};
+const getNumericPrice = toNumber;
 
 const resolvePickupPointPrice = (point) => {
     const rawTariff = pickupPointTariff.value?.raw || pickupPointTariff.value;
@@ -121,43 +116,6 @@ const resolvePickupPointPrice = (point) => {
     return null;
 };
 
-const formatDeliveryDate = (value) => {
-    if (!value) {
-        return "";
-    }
-
-    const date = new Date(value);
-
-    if (Number.isNaN(date.getTime())) {
-        return String(value);
-    }
-
-    return date.toLocaleDateString("ru-RU", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-    });
-};
-
-const formatDeliveryDateRange = (range) => {
-    if (!range) {
-        return "";
-    }
-
-    const min = range.min ?? range.period_min ?? range.calendar_min ?? null;
-    const max = range.max ?? range.period_max ?? range.calendar_max ?? null;
-
-    if (!min && !max) {
-        return "";
-    }
-
-    if (min && max) {
-        return `Срок доставки: ${formatDeliveryDate(min)} - ${formatDeliveryDate(max)}`;
-    }
-
-    return `Срок доставки: ${formatDeliveryDate(min ?? max)}`;
-};
-
 const calculateDeliveryPriceStub = async (deliveryType, city = null) => {
     if (deliveryType === "pickup") {
         return 0;
@@ -172,7 +130,7 @@ const calculateDeliveryPriceStub = async (deliveryType, city = null) => {
         const requestId = ++pickupPointTariffRequestId.value;
 
         try {
-            const response = await axios.post("/delivery/courier-offers", {
+            const data = await deliveryApi.getCourierOffers({
                 to_code: city.code,
                 weight: props.parcelWeightGrams,
                 delivery_mode: 4,
@@ -182,7 +140,7 @@ const calculateDeliveryPriceStub = async (deliveryType, city = null) => {
                 return null;
             }
 
-            pickupPointTariff.value = response.data?.data?.best?.raw || null;
+            pickupPointTariff.value = data?.best?.raw || null;
 
             return resolvePickupPointPrice(null);
         } catch (error) {

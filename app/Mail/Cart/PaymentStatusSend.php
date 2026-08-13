@@ -2,6 +2,7 @@
 
 namespace App\Mail\Cart;
 
+use App\Models\ShopOrder;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -11,37 +12,25 @@ class PaymentStatusSend extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $orderId;
-    protected $paymentId;
-    protected $orderStatus;
-    protected $amount;
+    protected int $orderId;
+    protected string $paymentId;
+    protected string $orderStatus;
+    protected string $amount;
+    protected ?ShopOrder $shopOrder;
 
-    /**
-     * Create a new message instance.
-     *
-     * @param  int|string  $orderId
-     * @param  string  $paymentId
-     * @param  string  $orderStatus
-     * @param  float  $amount
-     * @return void
-     */
-    public function __construct($orderId, $paymentId, $orderStatus, $amount)
+    public function __construct($orderId, $paymentId, $orderStatus, $amount, ?ShopOrder $shopOrder = null)
     {
-        $this->orderId = $orderId;
-        $this->paymentId = $paymentId;
-        $this->orderStatus = $orderStatus;
-        $this->amount = $amount;
+        $this->orderId = (int) $orderId;
+        $this->paymentId = (string) $paymentId;
+        $this->orderStatus = (string) $orderStatus;
+        $this->amount = number_format((float) $amount, 2, '.', ' ');
+        $this->shopOrder = $shopOrder;
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
     public function build()
     {
         return $this->from(config('cart.send_from'), config('cart.send_from_text'))
-            ->subject('Статус оплаты заказа №' . $this->orderId)
+            ->subject('Статус оплаты заказа №'.$this->orderId)
             ->replyTo(config('cart.reply_to'), config('cart.reply_to_text'))
             ->view('mail.payment_status')
             ->with([
@@ -49,6 +38,7 @@ class PaymentStatusSend extends Mailable
                 'paymentId' => $this->paymentId,
                 'orderStatus' => $this->orderStatus,
                 'amount' => $this->amount,
+                'shopOrder' => $this->shopOrder,
             ]);
     }
 }

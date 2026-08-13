@@ -26,26 +26,29 @@ class OrderListLayout extends Table
     protected function columns(): iterable
     {
         return [
-            TD::make('id', '#')->width('6%'),
-            TD::make('name', 'Клиент')->width('20%')->render(function ($order) {
-                return $order->name . '<br><small>' . e($order->email) . '</small>';
-            }),
-            TD::make('phone', 'Телефон')->width('12%'),
-            TD::make('amount', 'Сумма')->width('10%')->render(function ($order) {
-                return number_format((float) $order->amount, 0, ',', ' ') . ' ₽';
-            }),
-            TD::make('delivery', 'Доставка')->width('15%')->render(function ($order) {
-                return $order->delivery ?: 'Самовывоз';
-            }),
-            TD::make('delivery_price', 'Цена доставки')->width('12%')->render(function ($order) {
-                return $order->delivery_price ? number_format((float) $order->delivery_price, 0, ',', ' ') . ' ₽' : '—';
-            }),
-            TD::make('created_at', 'Дата')->width('12%')->render(function ($order) {
+            TD::make('id', '#')->width('5%')->sort(),
+            TD::make('created_at', 'Дата')->width('10%')->render(function ($order) {
                 return $order->created_at ? $order->created_at->format('d.m.Y H:i') : '—';
+            })->sort(),
+            TD::make('name', 'Клиент')->width('15%')->render(function ($order) {
+                return $order->name . '<br><small>' . e($order->email ?? '') . '</small>';
+            })->filter(),
+            TD::make('phone', 'Телефон')->width('10%')->filter(),
+            TD::make('total_summ', 'Сумма')->width('10%')->render(function ($order) {
+                return number_format((float) $order->total_summ, 2, ',', ' ') . ' ₽';
+            })->sort(),
+            TD::make('delivery.method', 'Доставка')->width('10%')->render(function ($order) {
+                return $order->delivery->method ?? 'Самовывоз';
             }),
+            TD::make('delivery.price', 'Доставка')->width('8%')->render(function ($order) {
+                return $order->delivery && $order->delivery->price ? number_format((float) $order->delivery->price, 2, ',', ' ') . ' ₽' : '—';
+            }),
+            TD::make('payment_status', 'Статус')->width('8%')->render(function ($order) {
+                return $order->payment_status ?: '—';
+            })->filter(),
             TD::make(__('Actions'))
                 ->align(TD::ALIGN_CENTER)
-                ->width('8%')
+                ->width('9%')
                 ->render(fn ($order) => Link::make('Подробнее')
                     ->route('platform.orders.show', $order->id)
                     ->icon('eye')),

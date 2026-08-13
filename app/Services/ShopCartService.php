@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\DTO\CheckoutData;
 use App\DTO\CheckoutItemData;
+use App\Events\ShopOrderCreated;
 use App\Models\Product;
 use App\Models\ProductPrices;
 use App\Models\ShopCart;
@@ -32,7 +33,7 @@ class ShopCartService
     public function getCartWithItems(string $sessionId, ?int $userId = null): ShopCart
     {
         return $this->getCart($sessionId, $userId)
-            ->load(['items']);
+            ->load(['items.productPrice', 'items.product']);
     }
 
     /**
@@ -135,9 +136,11 @@ class ShopCartService
     }
 
     /**
-     * Оформить заказ: создаёт ShopOrder + Delivery + Items в одной транзакции.
+     * Оформить заказ: создаёт ShopOrder + Delivery + Items + платёж YooKassa в одной транзакции.
+     *
+     * @return array{order: ShopOrder, payment: object|null}
      */
-    public function checkout(CheckoutData $data): ShopOrder
+    public function checkout(CheckoutData $data): array
     {
         return DB::transaction(function () use ($data) {
             $cart = $this->getCart($data->session_id, $data->user_id)->load('items');
@@ -163,10 +166,37 @@ class ShopCartService
                 array_map(fn (CheckoutItemData $item) => $this->buildOrderItem($item), $data->items)
             );
 
+            // Регистрируем платёж в YooKassa.
+            $yookassa = app(YooKassaService::class);
+
+            $tovars = $order->items->map(fn ($item) => [
+                'product_title' => $item->product_title,
+                'product_name' => $item->product_name,
+                'quantity' => $item->quantity,
+                'price' => $item->price,
+            ])->all();
+
+            $normalizedTovars = $yookassa->normalizeTovarsForPayment(
+                $tovars,
+                (float) $cartSumm,
+                0
+            );
+
+            $payment = $yookassa->registerOrder($order, $normalizedTovars);
+
+            if (! empty($payment) && isset($payment->id)) {
+                $order->update(['payment_id' => $payment->id]);
+            }
+
             // Очищаем корзину после успешного оформления заказа.
             $this->clearCart($data->session_id, $data->user_id);
 
-            return $order->load(['delivery', 'items']);
+            event(new ShopOrderCreated($order->id, $order));
+
+            return [
+                'order' => $order->load(['delivery', 'items']),
+                'payment' => $payment,
+            ];
         });
     }
 

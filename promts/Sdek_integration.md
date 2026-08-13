@@ -265,3 +265,27 @@ php84 artisan cdek:available-tariffs --from_code=699 --to_code=141 --weight=2 --
 - Переиспользуемый / вспомогательный код так же был вынесен в отдельный модуль/слой
 
 Предложи структуру и архитектурное решение.
+
+---
+
+Смотри есть компоненты:
+
+@resources/js/components/cart/ToBascetBtnPage.vue - на странице товара выводит цену и кнопку для добавления в корзину
+@resources/js/components/cart/PageToCart.vue - кнопка добавления в корзину
+@resources/js/components/cart/CartCounter.vue - отображает сколько товаров в корзине.
+
+Они сейчас переделанны под работу с новым API?
+
+---
+
+В Старой версии API при чекауте происходит создание платежа - @app/Http/Controllers/Cart/CartController.php cnhjrb 97 - 101
+
+Нужно перенести этот же функционал в новую версию API. Как это лучше сделать?
+
+---
+
+Теперь давай займемся тем что переделаем экраны админки orchid:
+@app/Orchid/Screens/Order/OrderListScreen.php
+@app/Orchid/Screens/Order/OrderShowScreen.php
+
+Под новую структуру хранения заказов в базе. Отобрази все связи и поля постарайся максимально раскрыть информацию по заказу на листе просмотра (OrderShowScreen). В листе с таблицей (OrderListScreen) добавь возможность сортировки и поиска заказов.

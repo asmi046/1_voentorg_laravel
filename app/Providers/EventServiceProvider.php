@@ -3,8 +3,11 @@
 namespace App\Providers;
 
 use App\Events\BascetOrderCreated;
+use App\Events\ShopOrderCreated;
 use App\Listeners\SendBascetMailListener;
 use App\Listeners\SendBascetToTelegramListener;
+use App\Listeners\SendShopOrderMailListener;
+use App\Listeners\SendShopOrderToTelegramListener;
 use App\Listeners\UploadFileListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -30,6 +33,11 @@ class EventServiceProvider extends ServiceProvider
         BascetOrderCreated::class => [
             SendBascetToTelegramListener::class,
             SendBascetMailListener::class,
+        ],
+
+        ShopOrderCreated::class => [
+            SendShopOrderToTelegramListener::class,
+            SendShopOrderMailListener::class,
         ],
 
     ];

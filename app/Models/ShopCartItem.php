@@ -29,4 +29,14 @@ class ShopCartItem extends Model
     {
         return $this->belongsTo(ShopCart::class, 'cart_id');
     }
+
+    public function productPrice(): BelongsTo
+    {
+        return $this->belongsTo(ProductPrices::class, 'product_sku', 'sku');
+    }
+
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class, 'product_sku', 'sku');
+    }
 }

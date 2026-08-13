@@ -187,7 +187,8 @@ class ShopCartServiceTest extends TestCase
             user_id: null,
         );
 
-        $order = $this->service->checkout($data);
+        $result = $this->service->checkout($data);
+        $order = $result['order'];
 
         // Проверка заказа
         $this->assertInstanceOf(ShopOrder::class, $order);
@@ -224,7 +225,8 @@ class ShopCartServiceTest extends TestCase
 
         $data = $this->buildMinimalCheckoutData();
 
-        $this->service->checkout($data);
+        $result = $this->service->checkout($data);
+        $order = $result['order'];
 
         $cart = $this->service->getCartWithItems(self::SESSION_ID);
         $this->assertCount(0, $cart->items);

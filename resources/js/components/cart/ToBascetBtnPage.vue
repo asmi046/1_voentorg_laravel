@@ -9,6 +9,7 @@
 
 import { ref, computed, watch } from 'vue'
 import { useStore } from 'vuex'
+import * as cartApi from '@/api/cart'
 export default {
 
 props: {
@@ -33,13 +34,10 @@ setup(props){
     });
 
     const addToBascet = () => {
-        let tiken = document.querySelector('meta[name="_token"]').content;
-
-        axios.post('/bascet/add', {
+        cartApi.addToCart({
             'product_sku': props.sku,
             'product_id': props.skuid,
             'addcount':countToAdd.value,
-            '_token': tiken
         })
         .then(() => {
             store.dispatch('initialBascet')

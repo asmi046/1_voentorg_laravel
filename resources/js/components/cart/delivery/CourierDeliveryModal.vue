@@ -101,7 +101,10 @@
 
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
-import SearchableCombobox from "./SearchableCombobox.vue";
+import SearchableCombobox from "../shared/SearchableCombobox.vue";
+import * as deliveryApi from "@/api/delivery";
+import { useDeliveryCities } from "@/composables/useDeliveryCities";
+import { formatPrice } from "@/composables/useDeliveryFormatters";
 
 const props = defineProps({
     modelValue: {
@@ -116,9 +119,13 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue", "select"]);
 
-const cities = ref([]);
-const citiesLoading = ref(false);
-const selectedCity = ref("");
+const {
+    cities,
+    citiesLoading,
+    selectedCity,
+    fetchCities,
+    getSelectedCityObject,
+} = useDeliveryCities();
 const deliveryAddress = ref("");
 const apartment = ref("");
 const deliveryPrice = ref(0);
@@ -139,15 +146,7 @@ const canSelect = computed(
         selectedTariff.value !== null,
 );
 
-const formattedDeliveryPrice = computed(() => {
-    const numericPrice = Number(deliveryPrice.value);
-
-    if (!Number.isFinite(numericPrice) || numericPrice <= 0) {
-        return "0 ₽";
-    }
-
-    return `${numericPrice.toLocaleString("ru-RU")} ₽`;
-});
+const formattedDeliveryPrice = computed(() => formatPrice(deliveryPrice.value));
 
 const deliveryDateText = computed(() => {
     const range = selectedTariff.value?.delivery_date_range;
@@ -159,42 +158,10 @@ const deliveryDateText = computed(() => {
     return `Срок доставки: ${range.min} - ${range.max}`;
 });
 
-const getSelectedCityObject = () => {
-    return (
-        cities.value.find((city) => city.code === selectedCity.value) || null
-    );
-};
-
 const clearTariffResult = () => {
     selectedTariff.value = null;
     deliveryPrice.value = 0;
     tariffError.value = "";
-};
-
-const fetchCities = async () => {
-    citiesLoading.value = true;
-
-    try {
-        const response = await axios.get("/delivery/cities", {
-            params: { country_codes: "RU" },
-        });
-
-        const list = Array.isArray(response.data?.data)
-            ? response.data.data
-            : [];
-
-        cities.value = list.map((city) => ({
-            code: String(city.code ?? ""),
-            name: city.city ?? "",
-        }));
-
-        const kursk = cities.value.find((city) => city.name === "Курск");
-        selectedCity.value = kursk?.code || cities.value[0]?.code || "";
-    } catch (error) {
-        console.error(error);
-    } finally {
-        citiesLoading.value = false;
-    }
 };
 
 const calculateCourierTariff = async () => {
@@ -208,7 +175,7 @@ const calculateCourierTariff = async () => {
     tariffError.value = "";
 
     try {
-        const response = await axios.post("/delivery/courier-offers", {
+        const data = await deliveryApi.getCourierOffers({
             to_code: selectedCity.value,
             weight: props.parcelWeightGrams,
             delivery_mode: 3,
@@ -218,7 +185,7 @@ const calculateCourierTariff = async () => {
             return;
         }
 
-        const offer = response.data?.data?.best ?? null;
+        const offer = data?.best ?? null;
         selectedTariff.value = offer?.raw || null;
         const sum = Number(offer?.price ?? offer?.raw?.delivery_sum ?? 0);
         deliveryPrice.value = Number.isFinite(sum) ? sum : 0;
