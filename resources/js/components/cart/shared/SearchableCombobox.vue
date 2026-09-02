@@ -1,17 +1,16 @@
 <template>
     <div ref="root" class="searchable_combobox">
         <input
-            v-model="query"
+            ref="input"
             type="text"
             class="searchable_combobox__input"
             :disabled="isDisabled"
             :placeholder="resolvedPlaceholder"
             autocomplete="off"
             @focus="openDropdown"
-            @input="onInput"
-            @keyup="onKeyup"
-            @compositionstart="onCompositionStart"
-            @compositionend="onCompositionEnd"
+            @input="handleInput"
+            @compositionstart="isComposing = true"
+            @compositionend="handleCompositionEnd"
             @keydown.down.prevent="moveHighlight(1)"
             @keydown.up.prevent="moveHighlight(-1)"
             @keydown.enter.prevent="selectHighlighted"
@@ -85,6 +84,7 @@ const props = defineProps({
 const emit = defineEmits(["update:modelValue", "change"]);
 
 const root = ref(null);
+const input = ref(null);
 const query = ref("");
 const isDropdownOpen = ref(false);
 const highlightedIndex = ref(-1);
@@ -122,6 +122,9 @@ const syncQueryWithSelection = () => {
     );
 
     query.value = selected ? getLabel(selected) : "";
+    if (input.value) {
+        input.value.value = query.value;
+    }
 };
 
 const openDropdown = () => {
@@ -138,29 +141,22 @@ const closeDropdown = () => {
     highlightedIndex.value = -1;
 };
 
-const onInput = () => {
-    if (!isComposing.value) {
-        openDropdown();
-    }
+const handleInput = (event) => {
+    query.value = event.target.value;
+    openDropdown();
 };
 
-const onKeyup = () => {
-    if (!isComposing.value) {
-        openDropdown();
-    }
-};
-
-const onCompositionStart = () => {
-    isComposing.value = true;
-};
-
-const onCompositionEnd = () => {
+const handleCompositionEnd = (event) => {
     isComposing.value = false;
+    query.value = event.target.value;
     openDropdown();
 };
 
 const selectItem = (item) => {
     query.value = getLabel(item);
+    if (input.value) {
+        input.value.value = getLabel(item);
+    }
     emit("update:modelValue", getValue(item));
     emit("change", item);
     closeDropdown();

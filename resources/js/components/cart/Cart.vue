@@ -361,7 +361,9 @@ const sendBascet = async () => {
             phone: bascetInfo.phone,
             comment: bascetInfo.comment,
             promo_code: appliedPromoCode.value || undefined,
-            discount: promoApplied.value ? promoDiscount.value || undefined : undefined,
+            discount: promoApplied.value
+                ? promoDiscount.value || undefined
+                : undefined,
             delivery: {
                 provider: deliveryData.value.transportCompany || undefined,
                 method: deliveryData.value.deliveryType || undefined,
@@ -406,11 +408,12 @@ const sendBascet = async () => {
         ) {
             console.log(response.pay_info);
 
-            document.location.href =
-                response.pay_info.confirmation.confirmation_url;
+            // document.location.href =
+            //     response.pay_info.confirmation.confirmation_url;
+            document.location.href = "/bascet/thencs";
         } else {
             console.log(response.pay_info);
-            // document.location.href = "/bascet/thencs";
+            document.location.href = "/bascet/thencs";
         }
     } catch (error) {
         if (error?.response?.data?.errors) {
@@ -418,14 +421,14 @@ const sendBascet = async () => {
             for (const fieldMessages of Object.values(backendErrors)) {
                 if (Array.isArray(fieldMessages)) {
                     errorList.value.push(...fieldMessages);
-                } else if (typeof fieldMessages === 'string') {
+                } else if (typeof fieldMessages === "string") {
                     errorList.value.push(fieldMessages);
                 }
             }
         } else if (error?.response?.data?.message) {
             errorList.value.push(error.response.data.message);
         } else {
-            errorList.value.push('Произошла ошибка при оформлении заказа.');
+            errorList.value.push("Произошла ошибка при оформлении заказа.");
         }
 
         console.log(error);
