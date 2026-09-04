@@ -17,7 +17,7 @@ class ProductSqlSeeder extends Seeder
 
         $sqlFiles = [
             public_path('tmp/products.sql'),
-            public_path('tmp/product_prices.sql')
+            public_path('tmp/product_prices.sql'),
         ];
 
         foreach ($sqlFiles as $file) {
@@ -43,7 +43,7 @@ class ProductSqlSeeder extends Seeder
             DB::statement('SET FOREIGN_KEY_CHECKS=0');
 
             foreach ($tables as $table) {
-                if (!Schema::hasTable($table)) {
+                if (! Schema::hasTable($table)) {
                     continue;
                 }
 
@@ -78,14 +78,15 @@ class ProductSqlSeeder extends Seeder
 
             if ($this->isInsertLikeStatement($statement)) {
                 $this->importInsertStatement($statement);
+
                 continue;
             }
 
             try {
-                DB::unprepared($statement . ';');
+                DB::unprepared($statement.';');
             } catch (\Exception $e) {
                 $this->command->error("Error executing SQL statement: {$e->getMessage()}");
-                $this->command->line('Statement: ' . substr($statement, 0, 120) . '...');
+                $this->command->line('Statement: '.substr($statement, 0, 120).'...');
             }
         }
     }
@@ -145,11 +146,13 @@ class ProductSqlSeeder extends Seeder
 
                 if ($escapeNext) {
                     $escapeNext = false;
+
                     continue;
                 }
 
                 if ($char === '\\') {
                     $escapeNext = true;
+
                     continue;
                 }
 
@@ -170,11 +173,13 @@ class ProductSqlSeeder extends Seeder
 
                 if ($escapeNext) {
                     $escapeNext = false;
+
                     continue;
                 }
 
                 if ($char === '\\') {
                     $escapeNext = true;
+
                     continue;
                 }
 
@@ -186,28 +191,32 @@ class ProductSqlSeeder extends Seeder
             }
 
             if ($char === '-' && $nextChar === '-') {
-                $currentStatement .= $char . $nextChar;
+                $currentStatement .= $char.$nextChar;
                 $i++;
                 $inLineComment = true;
+
                 continue;
             }
 
             if ($char === '/' && $nextChar === '*') {
-                $currentStatement .= $char . $nextChar;
+                $currentStatement .= $char.$nextChar;
                 $i++;
                 $inBlockComment = true;
+
                 continue;
             }
 
             if ($char === "'") {
                 $inSingleQuote = true;
                 $currentStatement .= $char;
+
                 continue;
             }
 
             if ($char === '"') {
                 $inDoubleQuote = true;
                 $currentStatement .= $char;
+
                 continue;
             }
 
@@ -224,7 +233,7 @@ class ProductSqlSeeder extends Seeder
             if ($char === $delimiter && $parenCount === 0) {
                 $statement = trim($currentStatement);
 
-                if (!empty($statement)) {
+                if (! empty($statement)) {
                     $statements[] = rtrim($statement, ';');
                 }
 
@@ -232,7 +241,7 @@ class ProductSqlSeeder extends Seeder
             }
         }
 
-        if (!empty(trim($currentStatement))) {
+        if (! empty(trim($currentStatement))) {
             $statements[] = trim($currentStatement);
         }
 
@@ -250,7 +259,7 @@ class ProductSqlSeeder extends Seeder
     {
         $table = $this->extractTableName($statement);
 
-        if ($table === null || !in_array($table, ['products', 'product_prices'], true)) {
+        if ($table === null || ! in_array($table, ['products', 'product_prices'], true)) {
             return;
         }
 
@@ -325,11 +334,13 @@ class ProductSqlSeeder extends Seeder
 
                 if ($escapeNext) {
                     $escapeNext = false;
+
                     continue;
                 }
 
                 if ($char === '\\') {
                     $escapeNext = true;
+
                     continue;
                 }
 
@@ -350,11 +361,13 @@ class ProductSqlSeeder extends Seeder
 
                 if ($escapeNext) {
                     $escapeNext = false;
+
                     continue;
                 }
 
                 if ($char === '\\') {
                     $escapeNext = true;
+
                     continue;
                 }
 
@@ -368,18 +381,21 @@ class ProductSqlSeeder extends Seeder
             if ($char === "'") {
                 $inSingleQuote = true;
                 $current .= $char;
+
                 continue;
             }
 
             if ($char === '"') {
                 $inDoubleQuote = true;
                 $current .= $char;
+
                 continue;
             }
 
             if ($char === '(') {
                 $depth++;
                 $current .= $char;
+
                 continue;
             }
 
@@ -437,11 +453,13 @@ class ProductSqlSeeder extends Seeder
 
                 if ($escapeNext) {
                     $escapeNext = false;
+
                     continue;
                 }
 
                 if ($char === '\\') {
                     $escapeNext = true;
+
                     continue;
                 }
 
@@ -462,11 +480,13 @@ class ProductSqlSeeder extends Seeder
 
                 if ($escapeNext) {
                     $escapeNext = false;
+
                     continue;
                 }
 
                 if ($char === '\\') {
                     $escapeNext = true;
+
                     continue;
                 }
 
@@ -480,30 +500,35 @@ class ProductSqlSeeder extends Seeder
             if ($char === "'") {
                 $inSingleQuote = true;
                 $current .= $char;
+
                 continue;
             }
 
             if ($char === '"') {
                 $inDoubleQuote = true;
                 $current .= $char;
+
                 continue;
             }
 
             if ($char === '(') {
                 $depth++;
                 $current .= $char;
+
                 continue;
             }
 
             if ($char === ')' && $depth > 0) {
                 $depth--;
                 $current .= $char;
+
                 continue;
             }
 
             if ($char === ',' && $depth === 0) {
                 $values[] = $this->normalizeValueToken(trim($current));
                 $current = '';
+
                 continue;
             }
 

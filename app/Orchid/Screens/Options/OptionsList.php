@@ -2,11 +2,9 @@
 
 namespace App\Orchid\Screens\Options;
 
-use Orchid\Screen\Screen;
-
 use App\Models\Option;
-
 use App\Orchid\Layouts\Options\OptionsTable;
+use Orchid\Screen\Screen;
 
 class OptionsList extends Screen
 {
@@ -18,16 +16,14 @@ class OptionsList extends Screen
     public function query(): iterable
     {
         return [
-            "options" =>Option::paginate(25)
+            'options' => Option::paginate(25),
         ];
     }
 
     /**
      * Display header name.
-     *
-     * @return string|null
      */
-        public function name(): ?string
+    public function name(): ?string
     {
         return 'Основные опции сайта';
     }
@@ -50,7 +46,7 @@ class OptionsList extends Screen
     public function layout(): iterable
     {
         return [
-            OptionsTable::class
+            OptionsTable::class,
         ];
     }
 }

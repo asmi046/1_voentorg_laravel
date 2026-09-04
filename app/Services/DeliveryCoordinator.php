@@ -8,11 +8,9 @@ use Throwable;
 class DeliveryCoordinator
 {
     /**
-     * @param array<int, DeliveryGateway> $gateways
+     * @param  array<int, DeliveryGateway>  $gateways
      */
-    public function __construct(private array $gateways = [])
-    {
-    }
+    public function __construct(private array $gateways = []) {}
 
     public function getPickupPoints(array $context): array
     {

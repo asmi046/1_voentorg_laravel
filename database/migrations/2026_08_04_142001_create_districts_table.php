@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->foreignId('region_id')->nullable();
             $table->timestamps();
-            
+
             $table->unique(['name', 'region_id']);
         });
     }

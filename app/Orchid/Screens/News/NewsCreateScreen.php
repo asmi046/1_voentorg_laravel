@@ -2,17 +2,10 @@
 
 namespace App\Orchid\Screens\News;
 
-use Orchid\Screen\Screen;
-
 use App\Models\News;
-
-use Orchid\Support\Facades\Layout;
-
 use App\Orchid\Layouts\News\NewsEditFields;
-
-
-
 use Illuminate\Http\Request;
+use Orchid\Screen\Screen;
 
 class NewsCreateScreen extends Screen
 {
@@ -21,7 +14,6 @@ class NewsCreateScreen extends Screen
      *
      * @return array
      */
-
     public function query(): iterable
     {
         return [];
@@ -29,8 +21,6 @@ class NewsCreateScreen extends Screen
 
     /**
      * Display header name.
-     *
-     * @return string|null
      */
     public function name(): ?string
     {
@@ -59,7 +49,8 @@ class NewsCreateScreen extends Screen
         ];
     }
 
-    public function save_info(Request $request) {
+    public function save_info(Request $request)
+    {
 
         $new_cat_id = News::create($request->get('news'));
 

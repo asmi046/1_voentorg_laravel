@@ -8,7 +8,9 @@ use Illuminate\Http\Request;
 class QueryFilter
 {
     public $request;
+
     protected $builder;
+
     protected $delimiter = ',';
 
     public function __construct(Request $request)
@@ -34,11 +36,14 @@ class QueryFilter
                 call_user_func_array([$this, $name], array_filter([$value]));
             }
 
-            if ($name == "sort") $sort_exist = true;
+            if ($name == 'sort') {
+                $sort_exist = true;
+            }
         }
 
-        if (!$sort_exist)
-            $this->builder->orderBy('order', "ASC");
+        if (! $sort_exist) {
+            $this->builder->orderBy('order', 'ASC');
+        }
 
         return $this->builder;
     }

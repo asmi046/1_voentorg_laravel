@@ -4,10 +4,10 @@ import * as cartApi from '@/api/cart'
 export const store = new createStore({
     state: {
       cart_count: 0,
-      cart_tovars: {},
+      cart_tovars: [],
 
       favorites_count: 0,
-      favorites_tovars: {}
+      favorites_tovars: []
     },
 
     mutations: {
@@ -16,7 +16,7 @@ export const store = new createStore({
         },
 
         setTovars (state, value) {
-            state.cart_tovars = value
+            state.cart_tovars = Array.isArray(value) ? value : []
         },
 
 
@@ -25,7 +25,7 @@ export const store = new createStore({
         },
 
         setFavorites (state, value) {
-            state.favorites_tovars = value
+            state.favorites_tovars = Array.isArray(value) ? value : []
         },
     },
 

@@ -2,98 +2,216 @@
 
 namespace App\Console\Commands;
 
-use App\Models\ProductPrices;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class PriceUpdate extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'price:update';
+    protected $signature = 'price:update
+                            {xml=public/shopbase/webdata/offers0_1.xml : Путь к offers0_1.xml}
+                            {--skip-parse : Только обновление product_prices из import_offers_data (без парсинга XML)}';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Обновление цен из фалов import0_1.xml, offers0_1.xml';
+    protected $description = 'Обновление цен и остатков из offers0_1.xml через временную таблицу import_offers_data';
 
-    /**
-     * Execute the console command.
-     */
-    public function handle()
+    public function handle(): int
     {
         ini_set('memory_limit', '1G');
 
-        $this->info("Составляем таблицу соответствия UID и Штрихкода...");
-
-        $patch = public_path('/shopbase/webdata/import0_1.xml');
-        $xmlFile = file_get_contents($patch);
-        $xmlObject = simplexml_load_string($xmlFile);
-
-        $uid_barcod = [];
-
-        for  ($i = 0; $i < count($xmlObject->Каталог->Товары->Товар); $i++)
-        {
-            if (isset($xmlObject->Каталог->Товары->Товар[$i]->Ид)) {
-                $this->info($i." - ".(string)$xmlObject->Каталог->Товары->Товар[$i]->Штрихкод);
-                $uid_barcod[(string)$xmlObject->Каталог->Товары->Товар[$i]->Ид] = (string)$xmlObject->Каталог->Товары->Товар[$i]->Штрихкод;
-            }
-
+        $path = (string) $this->argument('xml');
+        if (!$this->option('skip-parse') && !is_file($path)) {
+            $this->error("Файл не найден: {$path}");
+            return self::FAILURE;
         }
 
-        $this->info("Найдено: ".count($xmlObject->Каталог->Товары->Товар));
+        $stats = [
+            'parsed'           => 0,
+            'skipped_no_id'    => 0,
+            'updated'          => 0,
+            'unchanged'        => 0,
+        ];
 
-        $patch = public_path('/shopbase/webdata/offers0_1.xml');
-        $xmlFile = file_get_contents($patch);
-        $xmlObject = simplexml_load_string($xmlFile);
+        if (!$this->option('skip-parse')) {
+            $this->parseOffers($path, $stats);
+        } else {
+            $this->info('Шаг 1: пропущен (--skip-parse)');
+            $this->newLine();
+            $existing = DB::table('import_offers_data')->count();
+            $this->line("  В import_offers_data сейчас: {$existing} записей");
+        }
 
+        $this->updateProductPrices($stats);
 
-        $exist = 0;
-        $no_exist = 0;
+        $this->newLine();
+        $this->info('Итоги:');
+        foreach ($stats as $k => $v) {
+            $this->line("  ".str_pad($k, 18).' : '.$v);
+        }
 
-        for  ($i = 0; $i < count($xmlObject->ПакетПредложений->Предложения->Предложение); $i++)
-        {
-            if (isset($uid_barcod[(string)$xmlObject->ПакетПредложений->Предложения->Предложение[$i]->Ид]))
-            {
-                $this->comment("UID: ".(string)$xmlObject->ПакетПредложений->Предложения->Предложение[$i]->Ид);
-                $this->comment("Штрихкод: ".$uid_barcod[(string)$xmlObject->ПакетПредложений->Предложения->Предложение[$i]->Ид]);
+        return self::SUCCESS;
+    }
 
-                $product = ProductPrices::where('sku', $uid_barcod[(string)$xmlObject->ПакетПредложений->Предложения->Предложение[$i]->Ид])->first();
+    private function parseOffers(string $path, array &$stats): void
+    {
+        $this->info('Шаг 1: подготовка import_offers_data…');
+        DB::table('import_offers_data')->truncate();
+        $this->line('  таблица import_offers_data очищена');
 
+        $this->info('Шаг 2: подсчёт <Предложение> в файле…');
+        $total = $this->countOffers($path);
+        $this->line("  Всего предложений в XML: {$total}");
 
-                if ($product)
-                {
-                    $this->info("Найден продукт: ".$product->product_info->title);
-                    $exist++;
+        $this->info('Шаг 3: парсинг и вставка…');
 
-                    $system_price = $xmlObject->ПакетПредложений->Предложения->Предложение[$i]->Цены->Цена->ЦенаЗаЕдиницу;
-                    $old_price_procent = rand(5,15);
+        $bar = $this->output->createProgressBar($total);
+        $bar->setFormat(" %current%/%max% [%bar%] %percent:3s%% %elapsed:6s% ETA %estimated:-6s%");
+        $bar->setRedrawFrequency(200);
+        $bar->start();
 
-                    $product->price = $system_price;
-                    $product->old_price = $system_price + (($system_price/100)*$old_price_procent);
-                    $product->save();
+        $reader = new \XMLReader();
+        $reader->open($path);
+
+        $batch = [];
+        $batchSize = 1000;
+
+        while ($reader->read()) {
+            if ($reader->nodeType !== \XMLReader::ELEMENT || $reader->localName !== 'Предложение') {
+                continue;
+            }
+
+            $xml = $reader->readOuterXml();
+            if ($xml === '') {
+                $bar->advance();
+                continue;
+            }
+            $node = @simplexml_load_string($xml);
+            if (!$node) {
+                $bar->advance();
+                continue;
+            }
+
+            $extId = trim((string) ($node->Ид ?? ''));
+            if ($extId === '') {
+                $stats['skipped_no_id']++;
+                $bar->advance();
+                continue;
+            }
+
+            $name = trim((string) ($node->Наименование ?? ''));
+
+            $price = 0.0;
+            if (isset($node->Цены->Цена->ЦенаЗаЕдиницу)) {
+                $price = (float) (string) $node->Цены->Цена->ЦенаЗаЕдиницу;
+            }
+
+            $count = (int) (string) ($node->Количество ?? 0);
+
+            $batch[] = [
+                'ext_id'     => $extId,
+                'name'       => $name,
+                'price'      => $price,
+                'count'      => $count,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+
+            if (count($batch) >= $batchSize) {
+                $this->flushOffersBatch($batch, $stats);
+                $batch = [];
+            }
+
+            $bar->advance();
+        }
+        $reader->close();
+
+        if ($batch) {
+            $this->flushOffersBatch($batch, $stats);
+            $batch = [];
+        }
+
+        $bar->finish();
+        $this->newLine();
+    }
+
+    private function flushOffersBatch(array &$batch, array &$stats): void
+    {
+        try {
+            DB::table('import_offers_data')->insert($batch);
+            $stats['parsed'] += count($batch);
+        } catch (\Throwable $e) {
+            foreach ($batch as $row) {
+                try {
+                    DB::table('import_offers_data')->insert([$row]);
+                    $stats['parsed']++;
+                } catch (\Throwable $rowErr) {
+                    $stats['skipped_no_id']++;
                 }
+            }
+        }
+    }
 
-                else
-                    {
-                        $this->error("Продукт не найден");
-                        $no_exist++;
+    private function countOffers(string $path): int
+    {
+        $reader = new \XMLReader();
+        $reader->open($path);
+        $n = 0;
+        while ($reader->read()) {
+            if ($reader->nodeType === \XMLReader::ELEMENT && $reader->localName === 'Предложение') {
+                $n++;
+            }
+        }
+        $reader->close();
+        return $n;
+    }
+
+    private function updateProductPrices(array &$stats): void
+    {
+        $this->info('Шаг 4: обновление product_prices по ext_id…');
+
+        $total = DB::table('product_prices')->count();
+
+        $bar = $this->output->createProgressBar($total);
+        $bar->setFormat(" %current%/%max% [%bar%] %percent:3s%% %elapsed:6s% ETA %estimated:-6s%");
+        $bar->setRedrawFrequency(100);
+        $bar->start();
+
+        DB::table('product_prices')
+            ->select(['id', 'ext_id', 'price', 'count'])
+            ->orderBy('id')
+            ->chunkById(200, function ($rows) use (&$stats, $bar) {
+                foreach ($rows as $row) {
+                    if (!$row->ext_id) {
+                        $stats['unchanged']++;
+                        $bar->advance();
+                        continue;
                     }
 
-                $this->line("-------------");
-            }
+                    $offer = DB::table('import_offers_data')
+                        ->where('ext_id', $row->ext_id)
+                        ->first(['price', 'count']);
 
+                    if (!$offer) {
+                        $stats['unchanged']++;
+                        $bar->advance();
+                        continue;
+                    }
 
-        }
+                    if ((float) $row->price === (float) $offer->price && (int) $row->count === (int) $offer->count) {
+                        $stats['unchanged']++;
+                        $bar->advance();
+                        continue;
+                    }
 
-        $this->comment("Результаты:");
-        $this->info("Товаров на сайте: ".ProductPrices::count());
-        $this->info("Найдено: ".$exist);
-        $this->info("Не найдено: ".$no_exist);
+                    DB::table('product_prices')->where('id', $row->id)->update([
+                        'price'      => $offer->price,
+                        'count'      => $offer->count,
+                        'updated_at' => now(),
+                    ]);
+                    $stats['updated']++;
+                    $bar->advance();
+                }
+            });
 
+        $bar->finish();
+        $this->newLine();
     }
 }

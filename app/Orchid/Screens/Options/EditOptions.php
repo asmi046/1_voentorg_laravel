@@ -2,19 +2,16 @@
 
 namespace App\Orchid\Screens\Options;
 
-use Orchid\Screen\Screen;
-
 use App\Models\Option;
-
-use Orchid\Support\Facades\Layout;
+use Illuminate\Http\Request;
+use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Quill;
 use Orchid\Screen\Fields\TextArea;
-use Orchid\Support\Facades\Toast;
-use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Screen;
 use Orchid\Support\Color;
-
-use Illuminate\Http\Request;
+use Orchid\Support\Facades\Layout;
+use Orchid\Support\Facades\Toast;
 
 class EditOptions extends Screen
 {
@@ -23,20 +20,17 @@ class EditOptions extends Screen
      *
      * @return array
      */
-
-     public $option;
+    public $option;
 
     public function query($id): iterable
     {
         return [
-            "option" => Option::where('id',$id)->first()
+            'option' => Option::where('id', $id)->first(),
         ];
     }
 
     /**
      * Display header name.
-     *
-     * @return string|null
      */
     public function name(): ?string
     {
@@ -66,44 +60,45 @@ class EditOptions extends Screen
             Input::make('option.type')->value($this->option->type)->type('hidden'),
 
             Input::make('option.name')
-                    ->title('Псевдоним')
-                    ->help('Псевдоним записи')
-                    ->required()
-                    ->disabled()
-                    ->horizontal(),
+                ->title('Псевдоним')
+                ->help('Псевдоним записи')
+                ->required()
+                ->disabled()
+                ->horizontal(),
 
-                Input::make('option.title')
-                    ->title('Название')
-                    ->help('Название опции')
-                    ->required()
-                    ->disabled()
-                    ->horizontal(),
+            Input::make('option.title')
+                ->title('Название')
+                ->help('Название опции')
+                ->required()
+                ->disabled()
+                ->horizontal(),
         ]);
-        if ($this->option->type === "rich")
+        if ($this->option->type === 'rich') {
             $la[] = Layout::rows([
                 Quill::make('option.value')->title('Значение')->required()->horizontal()->help('Введите значение'),
             ]);
-        else
+        } else {
             $la[] = Layout::rows([
                 TextArea::make('option.value')->title('Значение')->rows(6)->required()->horizontal()->help('Введите значение'),
             ]);
+        }
 
         $la[] = Layout::rows([
-            Button::make('Сохранить')->method('save_info')->type(Color::SUCCESS())
+            Button::make('Сохранить')->method('save_info')->type(Color::SUCCESS()),
         ]);
 
         return $la;
     }
 
-    public function save_info(Option $option, Request $request) {
+    public function save_info(Option $option, Request $request)
+    {
 
         $new_data = $request->validate([
-            'option.value' => ['required', 'string']
+            'option.value' => ['required', 'string'],
         ]);
-
 
         $this->option->fill($request->get('option'))->save();
 
-        Toast::info("Запись сохранена");
+        Toast::info('Запись сохранена');
     }
 }

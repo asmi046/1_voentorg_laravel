@@ -2,37 +2,35 @@
 
 namespace App\Filters;
 
-use App\Models\ProductPrices;
+class ProductFilter extends QueryFilter
+{
+    public function sort($sort)
+    {
+        if (! empty($sort)) {
+            $direction = 'DESC';
+            $field = 'created_at'; // новые по умолчанию
 
-class ProductFilter extends QueryFilter {
-
-
-    public function sort($sort) {
-        if (!empty($sort)) {
-            $direction = "DESC";
-            $field = "created_at"; //новые по умолчанию
-
-            if ($sort === "Актуальные"){
-                $direction = "ASC";
-                $field = "order";
+            if ($sort === 'Актуальные') {
+                $direction = 'ASC';
+                $field = 'order';
             }
 
-            if ($sort === "Новые"){
-                $direction = "DESC";
-                $field = "created_at";
+            if ($sort === 'Новые') {
+                $direction = 'DESC';
+                $field = 'created_at';
             }
 
-            if ($sort === "Сначала дешевые"){
-                $direction = "DESC";
-                $field = "price";
+            if ($sort === 'Сначала дешевые') {
+                $direction = 'DESC';
+                $field = 'price';
             }
 
-            if ($sort === "Сначала дорогие"){
-                $direction = "ASC";
-                $field = "price";
+            if ($sort === 'Сначала дорогие') {
+                $direction = 'ASC';
+                $field = 'price';
             }
 
-            if ($field === "order" ) {
+            if ($field === 'order') {
                 $this->builder->orderBy('order', $direction);
             } else {
                 $this->builder
@@ -42,7 +40,6 @@ class ProductFilter extends QueryFilter {
 
         }
     }
-
 
     // public function order($order) {
     //         if ($order == "Сначала дешевые") $this->builder->orderBy('price', 'asc');

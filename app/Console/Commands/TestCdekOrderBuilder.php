@@ -35,6 +35,7 @@ class TestCdekOrderBuilder extends Command
             if (! $payload) {
                 $this->error('Failed to build payload');
                 $this->newLine();
+
                 continue;
             }
 
@@ -53,7 +54,7 @@ class TestCdekOrderBuilder extends Command
 
     private function createTestOrder(array $data): ShopOrder
     {
-        $order = new ShopOrder();
+        $order = new ShopOrder;
 
         $order->id = $data['id'];
         $order->name = $data['name'];

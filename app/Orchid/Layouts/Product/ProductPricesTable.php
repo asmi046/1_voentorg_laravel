@@ -2,18 +2,11 @@
 
 namespace App\Orchid\Layouts\Product;
 
+use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Actions\DropDown;
+use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Layouts\Table;
 use Orchid\Screen\TD;
-
-use Orchid\Screen\Fields\Group;
-use Orchid\Screen\Actions\Link;
-use Orchid\Screen\Actions\Button;
-use Orchid\Support\Color;
-
-use App\Models\ProductImage;
-
-use Orchid\Screen\Actions\DropDown;
-
 
 class ProductPricesTable extends Table
 {
@@ -43,23 +36,22 @@ class ProductPricesTable extends Table
             TD::make('price', 'Цена'),
             TD::make('old_price', 'Старая цена'),
 
-
             TD::make(__('Actions'))
-            ->align(TD::ALIGN_CENTER)
-            ->width('100px')
-            ->render(fn ($element) => DropDown::make()
-                ->icon('chat-right-dots')
-                ->list([
+                ->align(TD::ALIGN_CENTER)
+                ->width('100px')
+                ->render(fn ($element) => DropDown::make()
+                    ->icon('chat-right-dots')
+                    ->list([
 
-                    Link::make('Редактировать')
-                        ->route('platform.product_price_edit',$element->id)
-                        ->icon('pencil'),
+                        Link::make('Редактировать')
+                            ->route('platform.product_price_edit', $element->id)
+                            ->icon('pencil'),
 
-                    Button::make('Удалить')
-                        ->icon('trash')
-                        ->confirm(__('Данная запись будет удален навсегда! Вы согласны?'))
-                        ->method('delete_price', ["id" => $element->id]),
-                ])),
+                        Button::make('Удалить')
+                            ->icon('trash')
+                            ->confirm(__('Данная запись будет удален навсегда! Вы согласны?'))
+                            ->method('delete_price', ['id' => $element->id]),
+                    ])),
 
         ];
     }

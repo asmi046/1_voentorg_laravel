@@ -2,12 +2,10 @@
 
 namespace App\Orchid\Screens\Shop;
 
-use Orchid\Screen\Screen;
-
 use App\Models\Shop;
 use App\Orchid\Layouts\Shop\ShopListTable;
-
 use Orchid\Screen\Actions\Link;
+use Orchid\Screen\Screen;
 use Orchid\Support\Color;
 use Orchid\Support\Facades\Toast;
 
@@ -23,14 +21,12 @@ class ShopListScreen extends Screen
         $shops = Shop::all();
 
         return [
-            "shops" => $shops
+            'shops' => $shops,
         ];
     }
 
     /**
      * Display header name.
-     *
-     * @return string|null
      */
     public function name(): ?string
     {
@@ -45,7 +41,7 @@ class ShopListScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            Link::make('Добавить магазин')->route('platform.shops_create')->type(Color::SUCCESS())
+            Link::make('Добавить магазин')->route('platform.shops_create')->type(Color::SUCCESS()),
         ];
     }
 
@@ -57,17 +53,18 @@ class ShopListScreen extends Screen
     public function layout(): iterable
     {
         return [
-            ShopListTable::class
+            ShopListTable::class,
         ];
     }
 
-    public function delete_field($id) {
+    public function delete_field($id)
+    {
         $dell_elem = Shop::where('id', $id)->first();
-        if ($dell_elem ) {
+        if ($dell_elem) {
             $dell_elem->delete();
-            Toast::info("Запись удалена");
+            Toast::info('Запись удалена');
         } else {
-            Toast::info("Ошибка при удалении");
+            Toast::info('Ошибка при удалении');
         }
     }
 }

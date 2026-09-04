@@ -2,23 +2,12 @@
 
 namespace App\Orchid\Screens\News;
 
-use Orchid\Screen\Screen;
-
 use App\Models\News;
-
-use Orchid\Support\Facades\Layout;
-use Orchid\Screen\Fields\Input;
-use Orchid\Screen\Fields\Quill;
-use Orchid\Support\Facades\Toast;
-use Orchid\Screen\Actions\Button;
-use Orchid\Support\Color;
-
 use App\Orchid\Layouts\News\NewsEditFields;
-use Orchid\Screen\Fields\Picture;
-
 use Illuminate\Http\Request;
-
-use Orchid\Screen\Fields\TextArea;
+use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Screen;
+use Orchid\Support\Facades\Toast;
 
 class NewsEditScreen extends Screen
 {
@@ -27,20 +16,17 @@ class NewsEditScreen extends Screen
      *
      * @return array
      */
-
-     public $news;
+    public $news;
 
     public function query($id): iterable
     {
         return [
-            "news" => News::where('id',$id)->first()
+            'news' => News::where('id', $id)->first(),
         ];
     }
 
     /**
      * Display header name.
-     *
-     * @return string|null
      */
     public function name(): ?string
     {
@@ -69,10 +55,11 @@ class NewsEditScreen extends Screen
         ];
     }
 
-    public function save_info(Request $request) {
+    public function save_info(Request $request)
+    {
 
         $this->news->fill($request->get('news'))->save();
 
-        Toast::info("Запись сохранена");
+        Toast::info('Запись сохранена');
     }
 }

@@ -2,13 +2,11 @@
 
 namespace App\Orchid\Screens\Category;
 
-use Orchid\Screen\Screen;
-
 use App\Models\Category;
 use App\Orchid\Layouts\Category\CategoryListTable;
 use App\Orchid\Layouts\Category\CategorySelection;
-
 use Orchid\Screen\Actions\Link;
+use Orchid\Screen\Screen;
 use Orchid\Support\Color;
 use Orchid\Support\Facades\Toast;
 
@@ -21,17 +19,16 @@ class CategoryListScreen extends Screen
      */
     public function query(): iterable
     {
-        $cats = Category::with('parent_category')->filters(CategorySelection::class)->orderByDesc("created_at")->paginate(15);
+        $cats = Category::with('parent_category')->filters(CategorySelection::class)->orderByDesc('created_at')->paginate(15);
+
         // dd($cats);
         return [
-            "categories" => $cats
+            'categories' => $cats,
         ];
     }
 
     /**
      * Display header name.
-     *
-     * @return string|null
      */
     public function name(): ?string
     {
@@ -46,7 +43,7 @@ class CategoryListScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            Link::make('Добавить категорию')->route('platform.category_create')->type(Color::SUCCESS())
+            Link::make('Добавить категорию')->route('platform.category_create')->type(Color::SUCCESS()),
         ];
     }
 
@@ -59,18 +56,18 @@ class CategoryListScreen extends Screen
     {
         return [
             CategorySelection::class,
-            CategoryListTable::class
+            CategoryListTable::class,
         ];
     }
 
-
-    public function delete_field($id) {
+    public function delete_field($id)
+    {
         $dell_elem = Category::where('id', $id)->first();
-        if ($dell_elem ) {
+        if ($dell_elem) {
             $dell_elem->delete();
-            Toast::info("Категория удалена");
+            Toast::info('Категория удалена');
         } else {
-            Toast::info("Ошибка при удалении");
+            Toast::info('Ошибка при удалении');
         }
     }
 }

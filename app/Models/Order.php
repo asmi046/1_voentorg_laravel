@@ -4,15 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
-use Orchid\Screen\AsSource;
 use Orchid\Filters\Filterable;
+use Orchid\Screen\AsSource;
 
 class Order extends Model
 {
-    use HasFactory;
     use AsSource;
     use Filterable;
+    use HasFactory;
 
     public $fillable = [
         'id',
@@ -57,25 +56,29 @@ class Order extends Model
         'phone',
     ];
 
-    public static function update_order_pay_id($orderId, $payId ) {
-        $element = self::where(["id" => $orderId])->first();
+    public static function update_order_pay_id($orderId, $payId)
+    {
+        $element = self::where(['id' => $orderId])->first();
         $element->pay_order = $payId;
         $element->save();
     }
 
-    public static function update_order_status($payId , $orderStatus, $orderStatusText) {
-        $element = self::where(["pay_order" => $payId])->first();
+    public static function update_order_status($payId, $orderStatus, $orderStatusText)
+    {
+        $element = self::where(['pay_order' => $payId])->first();
         $element->pay_order = $payId;
         $element->pay_status = $orderStatus;
         $element->pay_status_text = $orderStatusText;
         $element->save();
     }
 
-    public function orderProducts() {
+    public function orderProducts()
+    {
         return $this->belongsToMany(Product::class);
     }
 
-    public function orderCart() {
+    public function orderCart()
+    {
         return $this->hasMany(OrderProduct::class);
     }
 }

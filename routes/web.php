@@ -24,22 +24,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [IndexController::class, "show"])->name('home');
+Route::get('/', [IndexController::class, 'show'])->name('home');
 
-Route::get('/test', [TestController::class, "index"])->name('test');
+Route::get('/test', [TestController::class, 'index'])->name('test');
 
-Route::get('/vedomstva', [VedomstvoController::class, "index"])->name('vedomstva');
-Route::get('/vedomstva/{slug}', [VedomstvoController::class, "vedomstvo"])->name('vedomstvo');
-Route::get('/katalog', [CategoryController::class, "catalog"])->name('catalog');
-Route::get('/katalog/{slug}', [CategoryController::class, "category"])->name('category');
-Route::get('/product/{slug}', [ProductController::class, "show"])->name('product');
+Route::get('/vedomstva', [VedomstvoController::class, 'index'])->name('vedomstva');
+Route::get('/vedomstva/{slug}', [VedomstvoController::class, 'vedomstvo'])->name('vedomstvo');
+Route::get('/katalog', [CategoryController::class, 'catalog'])->name('catalog');
+Route::get('/katalog/{slug}', [CategoryController::class, 'category'])->name('category');
+Route::get('/product/{slug}', [ProductController::class, 'show'])->name('product');
 
-Route::get('/kontakty', [EasyPageController::class, "kontakty"])->name('kontakty');
-Route::get('/oplata-i-dostavka', [EasyPageController::class, "oplata_i_dostavka"])->name('oplata-i-dostavka');
-Route::get('/proizvodstvo', [EasyPageController::class, "proizvodstvo"])->name('proizvodstvo');
-Route::get('/optovye-postavki', [EasyPageController::class, "optovye_postavki"])->name('optovye-postavki');
+Route::get('/kontakty', [EasyPageController::class, 'kontakty'])->name('kontakty');
+Route::get('/oplata-i-dostavka', [EasyPageController::class, 'oplata_i_dostavka'])->name('oplata-i-dostavka');
+Route::get('/proizvodstvo', [EasyPageController::class, 'proizvodstvo'])->name('proizvodstvo');
+Route::get('/optovye-postavki', [EasyPageController::class, 'optovye_postavki'])->name('optovye-postavki');
 
-Route::get('/sitemap.xml', [SiteMapController::class, "index"])->name('sitemap');
+Route::get('/sitemap.xml', [SiteMapController::class, 'index'])->name('sitemap');
 
 Route::get('/search_pds', [SearchController::class, 'search_pds'])->name('search_pds');
 Route::get('/search', [SearchController::class, 'show_search_page'])->name('show_search_page');
@@ -47,7 +47,6 @@ Route::get('/search', [SearchController::class, 'show_search_page'])->name('show
 Route::get('/news', [NewsController::class, 'index'])->name('news');
 Route::get('/news/{slug}', [NewsController::class, 'news_page'])->name('news_page');
 
-Route::get('/yml-feed/{slug}', [FeedController::class, "yml_actegory"])->name('yml_actegory');
+Route::get('/yml-feed/{slug}', [FeedController::class, 'yml_actegory'])->name('yml_actegory');
 
-Route::post('/pay_hook', [PayController::class, "pay_hook"])->name("pay_hook");
-
+Route::post('/pay_hook', [PayController::class, 'pay_hook'])->name('pay_hook');

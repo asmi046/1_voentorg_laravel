@@ -20,8 +20,8 @@ return new class extends Migration
             $table->integer('user_id');
             $table->string('product_sku', 150);
             $table->integer('quentity');
-            $table->double('price', 12,2)->default(0);
-            $table->foreignId('product_id')->comment("id товара");
+            $table->double('price', 12, 2)->default(0);
+            $table->foreignId('product_id')->comment('id товара');
         });
     }
 

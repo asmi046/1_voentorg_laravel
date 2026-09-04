@@ -3,7 +3,6 @@
 namespace App\Mail\Cart;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
@@ -35,8 +34,8 @@ class BascetSend extends Mailable
             ->replyTo(config('cart.reply_to'), config('cart.reply_to_text'))
             ->view('mail.bascetmail')
             ->with([
-            "formData" => $this->formData
-        ]);
+                'formData' => $this->formData,
+            ]);
 
     }
 }

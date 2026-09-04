@@ -2,22 +2,12 @@
 
 namespace App\Orchid\Screens\Product;
 
-use Orchid\Screen\Screen;
-
 use App\Models\ProductPrices;
-use App\Models\Category;
-use App\Models\ProductImage;
-use App\Models\Celebration;
-
-use Orchid\Screen\Actions\Link;
-
-use Orchid\Support\Facades\Layout;
-use Orchid\Support\Facades\Toast;
-use Orchid\Screen\Actions\ModalToggle;
-use Illuminate\Validation\Rule;
-
 use App\Orchid\Layouts\Product\ProductPriceEditFields;
 use Illuminate\Http\Request;
+use Orchid\Screen\Actions\Link;
+use Orchid\Screen\Screen;
+use Orchid\Support\Facades\Toast;
 
 class ProductPriceEditScreen extends Screen
 {
@@ -26,21 +16,19 @@ class ProductPriceEditScreen extends Screen
      *
      * @return array
      */
-
-     public $element;
+    public $element;
 
     public function query($id): iterable
     {
         $element = ProductPrices::where('id', $id)->first();
+
         return [
-            "element" => $element
+            'element' => $element,
         ];
     }
 
     /**
      * Display header name.
-     *
-     * @return string|null
      */
     public function name(): ?string
     {
@@ -56,8 +44,8 @@ class ProductPriceEditScreen extends Screen
     {
         return [
             Link::make('Назад')
-            ->href(route("platform.product_edit", $this->element->product_info->id))
-            ->icon('arrow-up-left'),
+                ->href(route('platform.product_edit', $this->element->product_info->id))
+                ->icon('arrow-up-left'),
         ];
     }
 
@@ -69,21 +57,19 @@ class ProductPriceEditScreen extends Screen
     public function layout(): iterable
     {
         return [
-            ProductPriceEditFields::class
+            ProductPriceEditFields::class,
         ];
     }
 
-
-    public function save_info(Request $request) {
+    public function save_info(Request $request)
+    {
         $request->validate([
             'element.sku' => ['required', 'string'],
             'element.price' => ['required', 'string'],
         ]);
 
-
-
         $this->element->fill($request->get('element'))->save();
 
-        Toast::info("Запись сохранена");
+        Toast::info('Запись сохранена');
     }
 }

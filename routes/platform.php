@@ -2,6 +2,12 @@
 
 declare(strict_types=1);
 
+use App\Orchid\Screens\Banner\BannerCreateScreen;
+use App\Orchid\Screens\Banner\BannerEditScreen;
+use App\Orchid\Screens\Banner\BannerListScreen;
+use App\Orchid\Screens\Category\CategoryCreateScreen;
+use App\Orchid\Screens\Category\CategoryEditScreen;
+use App\Orchid\Screens\Category\CategoryListScreen;
 use App\Orchid\Screens\Examples\ExampleActionsScreen;
 use App\Orchid\Screens\Examples\ExampleCardsScreen;
 use App\Orchid\Screens\Examples\ExampleChartsScreen;
@@ -11,51 +17,34 @@ use App\Orchid\Screens\Examples\ExampleGridScreen;
 use App\Orchid\Screens\Examples\ExampleLayoutsScreen;
 use App\Orchid\Screens\Examples\ExampleScreen;
 use App\Orchid\Screens\Examples\ExampleTextEditorsScreen;
-use App\Orchid\Screens\PlatformScreen;
-use App\Orchid\Screens\Role\RoleEditScreen;
-use App\Orchid\Screens\Role\RoleListScreen;
-use App\Orchid\Screens\User\UserEditScreen;
-use App\Orchid\Screens\User\UserListScreen;
-use App\Orchid\Screens\User\UserProfileScreen;
-use Illuminate\Support\Facades\Route;
-use Tabuna\Breadcrumbs\Trail;
-
-
-use App\Orchid\Screens\Category\CategoryCreateScreen;
-use App\Orchid\Screens\Category\CategoryEditScreen;
-use App\Orchid\Screens\Category\CategoryListScreen;
-
-use App\Orchid\Screens\Shop\ShopCreateScreen;
-use App\Orchid\Screens\Shop\ShopEditScreen;
-use App\Orchid\Screens\Shop\ShopListScreen;
-
-use App\Orchid\Screens\Banner\BannerCreateScreen;
-use App\Orchid\Screens\Banner\BannerEditScreen;
-use App\Orchid\Screens\Banner\BannerListScreen;
-
 use App\Orchid\Screens\News\NewsCreateScreen;
 use App\Orchid\Screens\News\NewsEditScreen;
 use App\Orchid\Screens\News\NewsListScreen;
-
+use App\Orchid\Screens\Options\EditOptions;
+use App\Orchid\Screens\Options\OptionsList;
+use App\Orchid\Screens\Order\OrderListScreen;
+use App\Orchid\Screens\Order\OrderShowScreen;
+use App\Orchid\Screens\PlatformScreen;
+use App\Orchid\Screens\Product\ProductCreateScreen;
+use App\Orchid\Screens\Product\ProductEditScreen;
+use App\Orchid\Screens\Product\ProductGaleryCreateScreen;
+use App\Orchid\Screens\Product\ProductGaleryEditScreen;
+use App\Orchid\Screens\Product\ProductListScreen;
+use App\Orchid\Screens\Product\ProductPriceCreateScreen;
+use App\Orchid\Screens\Product\ProductPriceEditScreen;
+use App\Orchid\Screens\Role\RoleEditScreen;
+use App\Orchid\Screens\Role\RoleListScreen;
+use App\Orchid\Screens\Shop\ShopCreateScreen;
+use App\Orchid\Screens\Shop\ShopEditScreen;
+use App\Orchid\Screens\Shop\ShopListScreen;
+use App\Orchid\Screens\User\UserEditScreen;
+use App\Orchid\Screens\User\UserListScreen;
+use App\Orchid\Screens\User\UserProfileScreen;
 use App\Orchid\Screens\Vedomstvo\VedomstvoCreateScreen;
 use App\Orchid\Screens\Vedomstvo\VedomstvoEditScreen;
 use App\Orchid\Screens\Vedomstvo\VedomstvoListScreen;
-
-use App\Orchid\Screens\Product\ProductCreateScreen;
-use App\Orchid\Screens\Product\ProductEditScreen;
-use App\Orchid\Screens\Product\ProductListScreen;
-
-use App\Orchid\Screens\Product\ProductGaleryCreateScreen;
-use App\Orchid\Screens\Product\ProductGaleryEditScreen;
-
-use App\Orchid\Screens\Product\ProductPriceCreateScreen;
-use App\Orchid\Screens\Product\ProductPriceEditScreen;
-
-
-use App\Orchid\Screens\Options\OptionsList;
-use App\Orchid\Screens\Options\EditOptions;
-use App\Orchid\Screens\Order\OrderListScreen;
-use App\Orchid\Screens\Order\OrderShowScreen;
+use Illuminate\Support\Facades\Route;
+use Tabuna\Breadcrumbs\Trail;
 
 /*
 |--------------------------------------------------------------------------
@@ -148,7 +137,6 @@ Route::screen('/news/create', NewsCreateScreen::class)
     ->parent('platform.news')
     ->push(__('Добавление Новости'), route('platform.news_create')));
 
-
 // Товары
 Route::screen('/products', ProductListScreen::class)
     ->name('platform.product')->breadcrumbs(fn (Trail $trail) => $trail
@@ -188,29 +176,25 @@ Route::screen('/products/{id}/price/create', ProductPriceCreateScreen::class)
 // Заказы
 Route::screen('/orders', OrderListScreen::class)
     ->name('platform.orders')->breadcrumbs(fn (Trail $trail) => $trail
-        ->parent('platform.index')
-        ->push(__('Заказы'), route('platform.orders')));
+    ->parent('platform.index')
+    ->push(__('Заказы'), route('platform.orders')));
 
 Route::screen('/orders/{id}', OrderShowScreen::class)
     ->name('platform.orders.show')->breadcrumbs(fn (Trail $trail, $id) => $trail
-        ->parent('platform.orders')
-        ->push(__('Заказ #' . $id), route('platform.orders.show', $id)));
+    ->parent('platform.orders')
+    ->push(__('Заказ #'.$id), route('platform.orders.show', $id)));
 
 // Опции
 Route::screen('/options', OptionsList::class)
     ->name('platform.options')
     ->breadcrumbs(fn (Trail $trail) => $trail
         ->parent('platform.index')
-        ->push(__('Опции'), route("platform.options")));
+        ->push(__('Опции'), route('platform.options')));
 
 Route::screen('/options/{id}/edit', EditOptions::class)
     ->name('platform.options_edit')->breadcrumbs(fn (Trail $trail, $id) => $trail
     ->parent('platform.options')
     ->push(__('Редактирование опции'), route('platform.options_edit', $id)));
-
-
-
-
 
 // Main
 Route::screen('/main', PlatformScreen::class)
@@ -282,4 +266,4 @@ Route::screen('/examples/grid', ExampleGridScreen::class)->name('platform.exampl
 Route::screen('/examples/charts', ExampleChartsScreen::class)->name('platform.example.charts');
 Route::screen('/examples/cards', ExampleCardsScreen::class)->name('platform.example.cards');
 
-//Route::screen('idea', Idea::class, 'platform.screens.idea');
+// Route::screen('idea', Idea::class, 'platform.screens.idea');

@@ -24,8 +24,8 @@ class BascetForm extends FormRequest
     public function rules()
     {
         return [
-            "fio" => ["required"],
-            "phone" => ["required"]
+            'fio' => ['required'],
+            'phone' => ['required'],
         ];
     }
 }

@@ -49,14 +49,14 @@ class ShopOrder extends Model
     ];
 
     protected $allowedFilters = [
-        'id'            => Where::class,
-        'name'          => Like::class,
-        'email'         => Like::class,
-        'phone'         => Like::class,
-        'promo_code'    => Like::class,
-        'payment_status'=> Where::class,
-        'session_id'    => Where::class,
-        'user_id'       => Where::class,
+        'id' => Where::class,
+        'name' => Like::class,
+        'email' => Like::class,
+        'phone' => Like::class,
+        'promo_code' => Like::class,
+        'payment_status' => Where::class,
+        'session_id' => Where::class,
+        'user_id' => Where::class,
     ];
 
     public function delivery(): HasOne

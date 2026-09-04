@@ -2,18 +2,11 @@
 
 namespace App\Orchid\Layouts\Product;
 
+use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Actions\DropDown;
+use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Layouts\Table;
 use Orchid\Screen\TD;
-
-use Orchid\Screen\Fields\Group;
-use Orchid\Screen\Actions\Link;
-use Orchid\Screen\Actions\Button;
-
-use Orchid\Screen\Actions\DropDown;
-
-use App\Models\Category;
-
-use Orchid\Support\Color;
 
 class ProductListTable extends Table
 {
@@ -37,26 +30,25 @@ class ProductListTable extends Table
         return [
             TD::make('id', 'id')->sort(),
             TD::make('img', 'Фото')->render(
-                function($element) {
-                    return "<img width='50' height='50' src='".($element->img?$element->img:asset("img/no_photo.jpg"))."'>";
+                function ($element) {
+                    return "<img width='50' height='50' src='".($element->img ? $element->img : asset('img/no_photo.jpg'))."'>";
                 }
-            )->width("10%"),
-            TD::make('sku', 'Артикул')->width("15%")->sort(),
-            TD::make('order', 'Порядок')->width("10%")->sort(),
-            TD::make('category', 'Категории')->render(function($element) {
-                $rstr = "";
-                foreach($element->tovar_categories()->get() as $item) {
-                    $rstr .= $item->title."<br/>";
+            )->width('10%'),
+            TD::make('sku', 'Артикул')->width('15%')->sort(),
+            TD::make('order', 'Порядок')->width('10%')->sort(),
+            TD::make('category', 'Категории')->render(function ($element) {
+                $rstr = '';
+                foreach ($element->tovar_categories()->get() as $item) {
+                    $rstr .= $item->title.'<br/>';
                 }
 
                 return $rstr;
-            })->width("20%"),
+            })->width('20%'),
 
-
-            TD::make('title', 'Заголовок')->width("45%")->sort(),
-            TD::make('new', 'Новинка')->width("10%")->sort()->render(
-                function($element) {
-                    return ($element->new)?"Да":"Нет";
+            TD::make('title', 'Заголовок')->width('45%')->sort(),
+            TD::make('new', 'Новинка')->width('10%')->sort()->render(
+                function ($element) {
+                    return ($element->new) ? 'Да' : 'Нет';
                 }
             ),
 
@@ -66,21 +58,21 @@ class ProductListTable extends Table
             // }),
 
             TD::make(__('Actions'))
-            ->align(TD::ALIGN_CENTER)
-            ->width('100px')
-            ->render(fn ($element) => DropDown::make()
-                ->icon('chat-right-dots')
-                ->list([
+                ->align(TD::ALIGN_CENTER)
+                ->width('100px')
+                ->render(fn ($element) => DropDown::make()
+                    ->icon('chat-right-dots')
+                    ->list([
 
-                    Link::make('Редактировать')
-                        ->route('platform.product_edit',$element->id)
-                        ->icon('pencil'),
+                        Link::make('Редактировать')
+                            ->route('platform.product_edit', $element->id)
+                            ->icon('pencil'),
 
-                    Button::make('Удалить')
-                        ->icon('trash')
-                        ->confirm(__('Данный продукт будет удален навсегда! Вы согласны?'))
-                        ->method('delete_field', ["id" => $element->id]),
-                ])),
+                        Button::make('Удалить')
+                            ->icon('trash')
+                            ->confirm(__('Данный продукт будет удален навсегда! Вы согласны?'))
+                            ->method('delete_field', ['id' => $element->id]),
+                    ])),
 
         ];
     }

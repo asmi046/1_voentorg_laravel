@@ -13,9 +13,9 @@ class HelpersLoadProvider extends ServiceProvider
      */
     public function register()
     {
-        $file = app_path('helpers/allHelpers.php'); 
-        if (file_exists($file)) { 
-            require_once($file); 
+        $file = app_path('helpers/allHelpers.php');
+        if (file_exists($file)) {
+            require_once $file;
         }
     }
 

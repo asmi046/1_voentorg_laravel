@@ -4,7 +4,6 @@ namespace App\Mail\Cart;
 
 use App\Models\ShopOrder;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
@@ -13,9 +12,13 @@ class PaymentStatusSend extends Mailable
     use Queueable, SerializesModels;
 
     protected int $orderId;
+
     protected string $paymentId;
+
     protected string $orderStatus;
+
     protected string $amount;
+
     protected ?ShopOrder $shopOrder;
 
     public function __construct($orderId, $paymentId, $orderStatus, $amount, ?ShopOrder $shopOrder = null)

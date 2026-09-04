@@ -2,23 +2,12 @@
 
 namespace App\Orchid\Screens\Product;
 
-use Orchid\Screen\Screen;
-
 use App\Models\Product;
 use App\Models\ProductImage;
-use App\Models\Category;
-use App\Models\Celebration;
-
-use Orchid\Screen\Actions\Link;
-
-use Orchid\Support\Facades\Layout;
-use Orchid\Support\Facades\Toast;
-use Orchid\Screen\Actions\ModalToggle;
-use Illuminate\Validation\Rule;
-
 use App\Orchid\Layouts\Product\ProductGaleryEditFields;
-
 use Illuminate\Http\Request;
+use Orchid\Screen\Actions\Link;
+use Orchid\Screen\Screen;
 
 class ProductGaleryCreateScreen extends Screen
 {
@@ -27,21 +16,19 @@ class ProductGaleryCreateScreen extends Screen
      *
      * @return array
      */
-
-     public $tovar;
+    public $tovar;
 
     public function query($id): iterable
     {
         $tovar = Product::where('id', $id)->first();
+
         return [
-            "tovar" => $tovar
+            'tovar' => $tovar,
         ];
     }
 
     /**
      * Display header name.
-     *
-     * @return string|null
      */
     public function name(): ?string
     {
@@ -57,8 +44,8 @@ class ProductGaleryCreateScreen extends Screen
     {
         return [
             Link::make('Назад')
-            ->href(route("platform.product_edit", $this->tovar->id))
-            ->icon('arrow-up-left'),
+                ->href(route('platform.product_edit', $this->tovar->id))
+                ->icon('arrow-up-left'),
         ];
     }
 
@@ -70,14 +57,14 @@ class ProductGaleryCreateScreen extends Screen
     public function layout(): iterable
     {
         return [
-            ProductGaleryEditFields::class
+            ProductGaleryEditFields::class,
         ];
     }
 
-
-    public function save_info( Request $request) {
+    public function save_info(Request $request)
+    {
         $request->validate([
-            'element.link' => ['required', 'string']
+            'element.link' => ['required', 'string'],
         ]);
 
         $data = $request->get('element');

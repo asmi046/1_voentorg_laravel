@@ -4,28 +4,27 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
-use Orchid\Screen\AsSource;
-use Orchid\Filters\Filterable;
 use Illuminate\Support\Str;
+use Orchid\Filters\Filterable;
 use Orchid\Filters\Types\Like;
+use Orchid\Screen\AsSource;
 
 class Category extends Model
 {
-    use HasFactory;
     use AsSource;
     use Filterable;
+    use HasFactory;
 
     public $fillable = [
-        "order",
-        "title",
-        "title_mini",
-        "slug",
-        "parent",
-        "description",
-        "img",
-        "seo_title",
-        "seo_description"
+        'order',
+        'title',
+        'title_mini',
+        'slug',
+        'parent',
+        'description',
+        'img',
+        'seo_title',
+        'seo_description',
     ];
 
     protected $allowedSorts = [
@@ -39,17 +38,20 @@ class Category extends Model
 
     public function setSlugAttribute($value)
     {
-        if (empty($value))
-            $this->attributes['slug'] =  Str::slug($this->title);
-        else
-            $this->attributes['slug'] =  $value;
+        if (empty($value)) {
+            $this->attributes['slug'] = Str::slug($this->title);
+        } else {
+            $this->attributes['slug'] = $value;
+        }
     }
 
-    public function category_tovars() {
+    public function category_tovars()
+    {
         return $this->belongsToMany(Product::class);
     }
 
-    public function parent_category() {
-        return $this->hasOne(Category::class,"id","parent");
+    public function parent_category()
+    {
+        return $this->hasOne(Category::class, 'id', 'parent');
     }
 }

@@ -5,13 +5,11 @@ namespace App\Orchid\Screens\Order;
 use App\Models\ShopOrder;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\Link;
-use Orchid\Screen\Fields\Label;
-use Orchid\Screen\Layouts\Table;
 use Orchid\Screen\Screen;
 use Orchid\Screen\Sight;
 use Orchid\Screen\TD;
-use Orchid\Support\Facades\Layout;
 use Orchid\Support\Color;
+use Orchid\Support\Facades\Layout;
 
 class OrderShowScreen extends Screen
 {
@@ -30,7 +28,7 @@ class OrderShowScreen extends Screen
 
     public function name(): ?string
     {
-        return 'Заказ #' . optional($this->order)->id;
+        return 'Заказ #'.optional($this->order)->id;
     }
 
     public function description(): ?string
@@ -42,11 +40,11 @@ class OrderShowScreen extends Screen
     {
         return [
             Link::make('Открыть продукт')
-                ->href('https://yookassa.ru/my/orders/' . $this->order->payment_id)
+                ->href('https://yookassa.ru/my/orders/'.$this->order->payment_id)
                 ->icon('bs.box-arrow-up-right')
                 ->target('_blank')
                 ->canSee($this->order->payment_id !== null),
-            
+
             Button::make('Назад к заказам')
                 ->route('platform.orders')
                 ->type(Color::LIGHT()),
@@ -76,13 +74,13 @@ class OrderShowScreen extends Screen
             Layout::split([
                 Layout::legend('order', [
                     Sight::make('cart_summ', 'Сумма товаров')->render(function ($order) {
-                        return number_format((float) $order->cart_summ, 2, ',', ' ') . ' ₽';
+                        return number_format((float) $order->cart_summ, 2, ',', ' ').' ₽';
                     }),
                     Sight::make('discount_summ', 'Скидка')->render(function ($order) {
-                        return number_format((float) $order->discount_summ, 2, ',', ' ') . ' ₽';
+                        return number_format((float) $order->discount_summ, 2, ',', ' ').' ₽';
                     }),
                     Sight::make('total_summ', 'Итого')->render(function ($order) {
-                        return number_format((float) $order->total_summ, 2, ',', ' ') . ' ₽';
+                        return number_format((float) $order->total_summ, 2, ',', ' ').' ₽';
                     }),
                 ])->title('Суммы'),
 
@@ -112,12 +110,11 @@ class OrderShowScreen extends Screen
                 TD::make('product_name', 'Название товара'),
                 TD::make('product_title', 'Заголовок'),
                 TD::make('price', 'Цена')->render(function ($item) {
-                    return number_format((float) $item->price, 2, ',', ' ') . ' ₽';
+                    return number_format((float) $item->price, 2, ',', ' ').' ₽';
                 }),
                 TD::make('quantity', 'Количество'),
                 TD::make('weight_grams', 'Вес (гр)'),
             ])->title('Товары в заказе'),
         ];
     }
-
 }

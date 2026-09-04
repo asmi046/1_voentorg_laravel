@@ -2,9 +2,9 @@
 
 namespace App\Orchid\Layouts\Product;
 
+use App\Orchid\Filters\Product\ProductFilter;
 use Orchid\Filters\Filter;
 use Orchid\Screen\Layouts\Selection;
-use App\Orchid\Filters\Product\ProductFilter;
 
 class ProductSelection extends Selection
 {
@@ -14,7 +14,7 @@ class ProductSelection extends Selection
     public function filters(): iterable
     {
         return [
-            ProductFilter::class
+            ProductFilter::class,
         ];
     }
 }

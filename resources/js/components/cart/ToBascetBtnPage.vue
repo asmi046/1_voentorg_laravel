@@ -32,7 +32,7 @@ export default {
         watch(
             () => [store.getters.cartCount, props.skuid],
             function () {
-                let inBascetElem = store.state.cart_tovars.find((elem) => {
+                let inBascetElem = (store.state.cart_tovars || []).find((elem) => {
                     return elem.product_sku === props.sku;
                 });
                 inBascet.value = inBascetElem != undefined;

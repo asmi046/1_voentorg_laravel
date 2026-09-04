@@ -2,14 +2,11 @@
 
 namespace App\Orchid\Layouts\News;
 
+use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Actions\DropDown;
+use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Layouts\Table;
 use Orchid\Screen\TD;
-
-use Orchid\Screen\Fields\Group;
-use Orchid\Screen\Actions\Link;
-use Orchid\Screen\Actions\Button;
-
-use Orchid\Screen\Actions\DropDown;
 
 class NewsListTable extends Table
 {
@@ -31,32 +28,31 @@ class NewsListTable extends Table
     protected function columns(): iterable
     {
         return [
-            TD::make('id', 'id')->width("10%"),
+            TD::make('id', 'id')->width('10%'),
             TD::make('img', 'Изображение')->render(
-                function($element) {
-                    return "<img height='50' src='".($element->img?$element->img:asset("img/noPhoto.jpg"))."'>";
+                function ($element) {
+                    return "<img height='50' src='".($element->img ? $element->img : asset('img/noPhoto.jpg'))."'>";
                 }
-            )->width("28%"),
-            TD::make('title', 'Заголовок')->width("28%"),
-            TD::make('short_description', 'Цитата')->width("28%"),
-
+            )->width('28%'),
+            TD::make('title', 'Заголовок')->width('28%'),
+            TD::make('short_description', 'Цитата')->width('28%'),
 
             TD::make(__('Actions'))
-            ->align(TD::ALIGN_CENTER)
-            ->width('3%')
-            ->render(fn ($element) => DropDown::make()
-                ->icon('chat-right-dots')
-                ->list([
+                ->align(TD::ALIGN_CENTER)
+                ->width('3%')
+                ->render(fn ($element) => DropDown::make()
+                    ->icon('chat-right-dots')
+                    ->list([
 
-                    Link::make('Редактировать')
-                        ->route('platform.news_edit', $element->id)
-                        ->icon('pencil'),
+                        Link::make('Редактировать')
+                            ->route('platform.news_edit', $element->id)
+                            ->icon('pencil'),
 
-                    Button::make('Удалить')
-                        ->icon('trash')
-                        ->confirm(__('Данная запись будет удалена навсегда! Вы согласны?'))
-                        ->method('delete_field', ["id" => $element->id]),
-                ])),
+                        Button::make('Удалить')
+                            ->icon('trash')
+                            ->confirm(__('Данная запись будет удалена навсегда! Вы согласны?'))
+                            ->method('delete_field', ['id' => $element->id]),
+                    ])),
         ];
     }
 }

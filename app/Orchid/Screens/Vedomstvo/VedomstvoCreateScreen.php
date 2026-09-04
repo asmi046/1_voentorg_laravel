@@ -2,17 +2,10 @@
 
 namespace App\Orchid\Screens\Vedomstvo;
 
-use Orchid\Screen\Screen;
-
 use App\Models\Vedomstvo;
-
-use Orchid\Support\Facades\Layout;
-
 use App\Orchid\Layouts\Vedomstvo\VedomstvoEditFields;
-
-
-
 use Illuminate\Http\Request;
+use Orchid\Screen\Screen;
 
 class VedomstvoCreateScreen extends Screen
 {
@@ -21,7 +14,6 @@ class VedomstvoCreateScreen extends Screen
      *
      * @return array
      */
-
     public function query(): iterable
     {
         return [];
@@ -29,8 +21,6 @@ class VedomstvoCreateScreen extends Screen
 
     /**
      * Display header name.
-     *
-     * @return string|null
      */
     public function name(): ?string
     {
@@ -59,7 +49,8 @@ class VedomstvoCreateScreen extends Screen
         ];
     }
 
-    public function save_info(Request $request) {
+    public function save_info(Request $request)
+    {
 
         $new_cat_id = Vedomstvo::create($request->get('category'));
 

@@ -12,7 +12,7 @@ class ProductDimensionsSeeder extends Seeder
     {
         $file = public_path('tmp_content/product_dimensions.json');
 
-        if (!File::exists($file)) {
+        if (! File::exists($file)) {
             $this->command->error("Файл не найден: {$file}");
 
             return;
@@ -20,7 +20,7 @@ class ProductDimensionsSeeder extends Seeder
 
         $data = json_decode(File::get($file), true);
 
-        if (!is_array($data)) {
+        if (! is_array($data)) {
             $this->command->error('Некорректный JSON в файле габаритов.');
 
             return;
@@ -32,7 +32,7 @@ class ProductDimensionsSeeder extends Seeder
             $sku = $item['sku'] ?? $key;
             $dimensions = $item['dimensions'] ?? null;
 
-            if (!$dimensions) {
+            if (! $dimensions) {
                 continue;
             }
 
@@ -41,7 +41,7 @@ class ProductDimensionsSeeder extends Seeder
             $updates[(string) $sku] = [
                 'weight' => $weightKg !== null ? (int) round((float) $weightKg * 1000) : null,
                 'length' => isset($dimensions['length']) ? (int) round((float) $dimensions['length']) : null,
-                'width'  => isset($dimensions['width'])  ? (int) round((float) $dimensions['width'])  : null,
+                'width' => isset($dimensions['width']) ? (int) round((float) $dimensions['width']) : null,
                 'height' => isset($dimensions['height']) ? (int) round((float) $dimensions['height']) : null,
             ];
         }
@@ -64,8 +64,9 @@ class ProductDimensionsSeeder extends Seeder
             foreach ($updates as $sku => $fields) {
                 $ids = $skuToIds[$sku] ?? null;
 
-                if (!$ids) {
+                if (! $ids) {
                     $missing++;
+
                     continue;
                 }
 
@@ -75,7 +76,7 @@ class ProductDimensionsSeeder extends Seeder
         });
 
         $this->command->info(
-            "Габариты товаров загружены: обновлено {$updated}, не найдено по sku {$missing}, всего записей " . count($updates) . '.'
+            "Габариты товаров загружены: обновлено {$updated}, не найдено по sku {$missing}, всего записей ".count($updates).'.'
         );
     }
 }

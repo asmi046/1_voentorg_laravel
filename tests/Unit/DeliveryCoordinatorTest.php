@@ -10,7 +10,8 @@ class DeliveryCoordinatorTest extends TestCase
 {
     public function test_it_normalizes_pickup_points_and_selects_the_cheapest_courier_offer(): void
     {
-        $gatewayA = new class implements DeliveryGateway {
+        $gatewayA = new class implements DeliveryGateway
+        {
             public function listPoints(array $context): array
             {
                 return [
@@ -33,7 +34,8 @@ class DeliveryCoordinatorTest extends TestCase
             }
         };
 
-        $gatewayB = new class implements DeliveryGateway {
+        $gatewayB = new class implements DeliveryGateway
+        {
             public function listPoints(array $context): array
             {
                 return [

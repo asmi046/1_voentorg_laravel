@@ -2,24 +2,15 @@
 
 namespace App\Orchid\Screens\Product;
 
-use Orchid\Screen\Screen;
-
 use App\Models\Product;
-use App\Models\Category;
-use App\Models\ProductImage;
-use App\Models\Celebration;
-
-use Orchid\Support\Facades\Layout;
-use Orchid\Support\Facades\Toast;
-use Orchid\Screen\Actions\ModalToggle;
-use Orchid\Screen\Actions\Link;
-use Illuminate\Validation\Rule;
-
 use App\Orchid\Layouts\Product\ProductEditFields;
 use App\Orchid\Layouts\Product\ProductImageTable;
 use App\Orchid\Layouts\Product\ProductPricesTable;
-
 use Illuminate\Http\Request;
+use Orchid\Screen\Actions\Link;
+use Orchid\Screen\Screen;
+use Orchid\Support\Facades\Layout;
+use Orchid\Support\Facades\Toast;
 
 class ProductEditScreen extends Screen
 {
@@ -28,17 +19,21 @@ class ProductEditScreen extends Screen
      *
      * @return array
      */
+    public $product;
 
-     public $product;
-     public $product_galery;
-     public $product_prices;
-     public $category;
-     public $vedomstvo;
-     public $effect;
+    public $product_galery;
+
+    public $product_prices;
+
+    public $category;
+
+    public $vedomstvo;
+
+    public $effect;
 
     public function query($id): iterable
     {
-        $product = Product::where('id',$id)->first();
+        $product = Product::where('id', $id)->first();
 
         $product_galery = $product->product_images;
         $product_prices = $product->product_prices;
@@ -50,19 +45,17 @@ class ProductEditScreen extends Screen
         // dd($category, $effect);
 
         return [
-            "product" => $product,
-            "category"=> $category,
-            "vedomstvo"=> $vedomstvo,
-            "effect"=> $effect,
-            "product_galery"=> $product_galery,
-            "product_prices"=> $product_prices,
+            'product' => $product,
+            'category' => $category,
+            'vedomstvo' => $vedomstvo,
+            'effect' => $effect,
+            'product_galery' => $product_galery,
+            'product_prices' => $product_prices,
         ];
     }
 
     /**
      * Display header name.
-     *
-     * @return string|null
      */
     public function name(): ?string
     {
@@ -78,17 +71,17 @@ class ProductEditScreen extends Screen
     {
         return [
             Link::make('Добавить в галерею')
-            ->href(route("platform.product_galery_create", $this->product->id))
-            ->icon('card-image'),
+                ->href(route('platform.product_galery_create', $this->product->id))
+                ->icon('card-image'),
 
             Link::make('Добавить цену')
-            ->href(route("platform.product_price_create", $this->product->id))
-            ->icon('coin'),
+                ->href(route('platform.product_price_create', $this->product->id))
+                ->icon('coin'),
 
             Link::make('Просмотр')
-            ->href(route("product", $this->product->slug))
-            ->target('_blanck')
-            ->icon('aspect-ratio'),
+                ->href(route('product', $this->product->slug))
+                ->target('_blanck')
+                ->icon('aspect-ratio'),
         ];
     }
 
@@ -106,53 +99,55 @@ class ProductEditScreen extends Screen
                     ProductEditFields::class,
                 ],
 
-                'Галерея'      => [
-                    ProductImageTable::class
+                'Галерея' => [
+                    ProductImageTable::class,
                 ],
 
-                'Варианты цены'      => [
-                    ProductPricesTable::class
+                'Варианты цены' => [
+                    ProductPricesTable::class,
                 ],
             ]),
-
 
         ];
     }
 
-    public function delete_galery_img($id) {
+    public function delete_galery_img($id)
+    {
 
         $dell_elem = $this->product_galery->where('id', $id)->first();
 
-        if ($dell_elem ) {
+        if ($dell_elem) {
             $dell_elem->delete();
-            Toast::info("Запись удалена");
+            Toast::info('Запись удалена');
         } else {
-            Toast::info("Ошибка при удалении");
+            Toast::info('Ошибка при удалении');
         }
     }
 
-    public function delete_price($id) {
+    public function delete_price($id)
+    {
         $dell_elem = $this->product_prices->where('id', $id)->first();
-        if ($dell_elem ) {
+        if ($dell_elem) {
             $dell_elem->delete();
-            Toast::info("Запись удалена");
+            Toast::info('Запись удалена');
         } else {
-            Toast::info("Ошибка при удалении");
+            Toast::info('Ошибка при удалении');
         }
     }
 
-    public function save_info( Request $request) {
+    public function save_info(Request $request)
+    {
 
         $request->validate([
             'product.title' => ['required', 'string'],
             'product.sku' => ['required', 'string'],
         ]);
 
-        $this->product->tovar_categories()->sync($request->get("category"));
-        $this->product->tovar_vedomstva()->sync($request->get("vedomstvo"));
+        $this->product->tovar_categories()->sync($request->get('category'));
+        $this->product->tovar_vedomstva()->sync($request->get('vedomstvo'));
 
         $this->product->fill($request->get('product'))->save();
 
-        Toast::info("Продукт сохранен");
+        Toast::info('Продукт сохранен');
     }
 }

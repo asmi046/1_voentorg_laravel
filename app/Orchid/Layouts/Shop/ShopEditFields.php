@@ -2,18 +2,11 @@
 
 namespace App\Orchid\Layouts\Shop;
 
-use Orchid\Screen\Field;
-use Orchid\Screen\Layouts\Rows;
-
-use Orchid\Screen\Fields\Input;
-use Orchid\Screen\Fields\Number;
-use Orchid\Screen\Fields\Select;
-use Orchid\Screen\Fields\Quill;
-use Orchid\Screen\Fields\TextArea;
-use Orchid\Support\Facades\Toast;
 use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Field;
+use Orchid\Screen\Fields\Input;
+use Orchid\Screen\Layouts\Rows;
 use Orchid\Support\Color;
-use Orchid\Screen\Fields\Picture;
 
 class ShopEditFields extends Rows
 {
@@ -22,7 +15,7 @@ class ShopEditFields extends Rows
      *
      * @var string|null
      */
-    protected $title = "Поля категории";
+    protected $title = 'Поля категории';
 
     /**
      * Get the fields elements to be displayed.
@@ -46,7 +39,6 @@ class ShopEditFields extends Rows
                 ->title('Координаты на карте')
                 ->required()
                 ->horizontal(),
-
 
             Input::make('shop.orientir')
                 ->title('Ориентир на местности')
@@ -72,7 +64,7 @@ class ShopEditFields extends Rows
                 ->title('Время работы')
                 ->horizontal(),
 
-            Button::make('Сохранить')->method('save_info')->type(Color::SUCCESS())
+            Button::make('Сохранить')->method('save_info')->type(Color::SUCCESS()),
         ];
     }
 }

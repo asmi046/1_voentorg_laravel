@@ -2,20 +2,16 @@
 
 namespace App\Orchid\Layouts\Category;
 
-use Orchid\Screen\Field;
-use Orchid\Screen\Layouts\Rows;
-
-use Orchid\Screen\Fields\Input;
-use Orchid\Screen\Fields\Number;
-use Orchid\Screen\Fields\Select;
-use Orchid\Screen\Fields\Quill;
-use Orchid\Screen\Fields\TextArea;
-use Orchid\Support\Facades\Toast;
-use Orchid\Screen\Actions\Button;
-use Orchid\Support\Color;
-use Orchid\Screen\Fields\Picture;
-
 use App\Models\Category;
+use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Field;
+use Orchid\Screen\Fields\Input;
+use Orchid\Screen\Fields\Picture;
+use Orchid\Screen\Fields\Quill;
+use Orchid\Screen\Fields\Select;
+use Orchid\Screen\Fields\TextArea;
+use Orchid\Screen\Layouts\Rows;
+use Orchid\Support\Color;
 
 class CategoryEditFields extends Rows
 {
@@ -24,7 +20,7 @@ class CategoryEditFields extends Rows
      *
      * @var string|null
      */
-    protected $title = "Поля категории";
+    protected $title = 'Поля категории';
 
     /**
      * Get the fields elements to be displayed.
@@ -52,12 +48,10 @@ class CategoryEditFields extends Rows
                 ->help('Короткий заголовок категории')
                 ->horizontal(),
 
-
             Input::make('category.slug')
                 ->title('Окончание ссылки')
                 ->help('Slug категории')
                 ->horizontal(),
-
 
             Picture::make('category.img')
                 ->title('Основное изображение')
@@ -78,15 +72,15 @@ class CategoryEditFields extends Rows
                 ->horizontal(),
 
             Input::make('category.seo_title')
-                    ->title('SEO заголовок')
-                    ->help('SEO заголовок')
-                    ->horizontal(),
+                ->title('SEO заголовок')
+                ->help('SEO заголовок')
+                ->horizontal(),
 
             TextArea::make('category.seo_description')
-                    ->title('SEO описание')
-                    ->help('SEO описание')
-                    ->horizontal(),
-            Button::make('Сохранить')->method('save_info')->type(Color::SUCCESS())
+                ->title('SEO описание')
+                ->help('SEO описание')
+                ->horizontal(),
+            Button::make('Сохранить')->method('save_info')->type(Color::SUCCESS()),
         ];
     }
 }

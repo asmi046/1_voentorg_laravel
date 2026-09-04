@@ -26,11 +26,40 @@
 			text-decoration: line-through;
 		}
 
-        select {
+select {
             margin-right: 20px;
             background-color: white;
         }
-	}
+    }
+
+    .price-selector {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 12px;
+
+        &__btn {
+            padding: 8px 16px;
+            border: 1px solid #C6C6C6;
+            background-color: #fff;
+            color: #333;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 14px;
+            line-height: 1.2;
+            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+
+            &:hover {
+                border-color: #65b965;
+            }
+
+            &--active {
+                background-color: #65b965;
+                border-color: #65b965;
+                color: #fff;
+            }
+        }
+    }
 
     .lb_wrapper {
         display: flex;

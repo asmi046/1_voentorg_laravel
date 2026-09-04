@@ -2,25 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Vedomstvo;
-
-use Illuminate\Http\Request;
 use App\Filters\ProductFilter;
+use App\Models\Vedomstvo;
 
 class VedomstvoController extends Controller
 {
-    public function vedomstvo(ProductFilter $request, $slug) {
+    public function vedomstvo(ProductFilter $request, $slug)
+    {
         $vedomstvo_info = Vedomstvo::with('vedomstvo_tovars')->where('slug', $slug)->first();
 
-        return view('vedomstvo', ['vedomstvo_info' => $vedomstvo_info, 'tovars' =>
-            $vedomstvo_info
+        return view('vedomstvo', ['vedomstvo_info' => $vedomstvo_info, 'tovars' => $vedomstvo_info
             ->vedomstvo_tovars()
             ->filter($request)
-            ->get() ]);
+            ->get()]);
     }
 
-    public function index() {
-        $all_vedomstva = Vedomstvo::select('*')->orderBy('order', "ASC")->get();
+    public function index()
+    {
+        $all_vedomstva = Vedomstvo::select('*')->orderBy('order', 'ASC')->get();
 
         return view('vedomstva', ['vedomstva' => $all_vedomstva]);
     }

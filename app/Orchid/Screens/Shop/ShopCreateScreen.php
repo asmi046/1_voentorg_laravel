@@ -2,17 +2,10 @@
 
 namespace App\Orchid\Screens\Shop;
 
-use Orchid\Screen\Screen;
-
 use App\Models\Shop;
-
-use Orchid\Support\Facades\Layout;
-
 use App\Orchid\Layouts\Shop\ShopEditFields;
-
-
-
 use Illuminate\Http\Request;
+use Orchid\Screen\Screen;
 
 class ShopCreateScreen extends Screen
 {
@@ -21,7 +14,6 @@ class ShopCreateScreen extends Screen
      *
      * @return array
      */
-
     public function query(): iterable
     {
         return [];
@@ -29,8 +21,6 @@ class ShopCreateScreen extends Screen
 
     /**
      * Display header name.
-     *
-     * @return string|null
      */
     public function name(): ?string
     {
@@ -59,7 +49,8 @@ class ShopCreateScreen extends Screen
         ];
     }
 
-    public function save_info(Request $request) {
+    public function save_info(Request $request)
+    {
 
         $new_cat_id = Shop::create($request->get('shop'));
 

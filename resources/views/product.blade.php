@@ -61,7 +61,6 @@
                 @endauth
 
                 <h1>{{ $product->title }}</h1>
-                <p class="sku_in_page">Артикул: <span>{{ $product->sku }}</span></p>
 
                 <page-to-cart sku="{{ $product->sku }}"
                     :prices="{{ json_encode($product->product_prices) }}"></page-to-cart>

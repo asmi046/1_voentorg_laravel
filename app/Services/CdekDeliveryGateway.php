@@ -6,9 +6,7 @@ use App\Contracts\DeliveryGateway;
 
 class CdekDeliveryGateway implements DeliveryGateway
 {
-    public function __construct(private CdekService $cdekService)
-    {
-    }
+    public function __construct(private CdekService $cdekService) {}
 
     public function listPoints(array $context): array
     {

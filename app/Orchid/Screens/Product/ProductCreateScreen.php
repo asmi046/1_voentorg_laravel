@@ -2,22 +2,10 @@
 
 namespace App\Orchid\Screens\Product;
 
-use Orchid\Screen\Screen;
-
 use App\Models\Product;
-use App\Models\Category;
-use App\Models\ProductImage;
-
-use Orchid\Support\Facades\Layout;
-use Orchid\Support\Facades\Toast;
-
-use Illuminate\Validation\Rule;
-
-use App\Orchid\Layouts\Product\ProductImageTable;
-
 use App\Orchid\Layouts\Product\ProductEditFields;
-
 use Illuminate\Http\Request;
+use Orchid\Screen\Screen;
 
 class ProductCreateScreen extends Screen
 {
@@ -26,7 +14,6 @@ class ProductCreateScreen extends Screen
      *
      * @return array
      */
-
     public function query(): iterable
     {
         return [];
@@ -34,8 +21,6 @@ class ProductCreateScreen extends Screen
 
     /**
      * Display header name.
-     *
-     * @return string|null
      */
     public function name(): ?string
     {
@@ -64,18 +49,18 @@ class ProductCreateScreen extends Screen
         ];
     }
 
-    public function save_info(Request $request) {
+    public function save_info(Request $request)
+    {
 
         $request->validate([
             'product.title' => ['required', 'string'],
             'product.sku' => ['required', 'string'],
         ]);
 
-
         $new_id = Product::create($request->get('product'));
 
-        $new_id->tovar_categories()->sync($request->get("category"));
-        $new_id->tovar_vedomstva()->sync($request->get("vedomstvo"));
+        $new_id->tovar_categories()->sync($request->get('category'));
+        $new_id->tovar_vedomstva()->sync($request->get('vedomstvo'));
 
         return redirect()->route('platform.product_edit', $new_id);
     }

@@ -2,9 +2,9 @@
 
 namespace App\Orchid\Layouts\Vedomstvo;
 
+use App\Orchid\Filters\Vedomstvo\VedomstvoFilter;
 use Orchid\Filters\Filter;
 use Orchid\Screen\Layouts\Selection;
-use App\Orchid\Filters\Vedomstvo\VedomstvoFilter;
 
 class VedomstvoSelection extends Selection
 {
@@ -14,7 +14,7 @@ class VedomstvoSelection extends Selection
     public function filters(): iterable
     {
         return [
-            VedomstvoFilter::class
+            VedomstvoFilter::class,
         ];
     }
 }

@@ -3,8 +3,8 @@
 namespace Tests\Unit;
 
 use App\DTO\CheckoutData;
-use App\DTO\DeliveryData;
 use App\DTO\CheckoutItemData;
+use App\DTO\DeliveryData;
 use App\Models\Product;
 use App\Models\ProductPrices;
 use App\Models\ShopOrder;
@@ -17,8 +17,11 @@ class ShopCartServiceTest extends TestCase
     use RefreshDatabase;
 
     private ShopCartService $service;
+
     private ProductPrices $priceRow;
+
     private Product $product;
+
     private const SESSION_ID = 'test-session-001';
 
     protected function setUp(): void

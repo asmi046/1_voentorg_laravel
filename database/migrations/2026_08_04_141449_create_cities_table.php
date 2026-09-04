@@ -33,7 +33,7 @@ return new class extends Migration
             $table->string('federal_district', 50)->nullable();
             $table->integer('population')->nullable();
             $table->timestamps();
-            
+
             $table->index(['name', 'region_id']);
         });
     }

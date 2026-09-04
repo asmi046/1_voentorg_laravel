@@ -14,9 +14,7 @@ use Illuminate\Http\Request;
 
 class ShopCartController extends Controller
 {
-    public function __construct(private readonly ShopCartService $cartService)
-    {
-    }
+    public function __construct(private readonly ShopCartService $cartService) {}
 
     /**
      * Получить содержимое корзины.

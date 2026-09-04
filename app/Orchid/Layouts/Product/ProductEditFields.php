@@ -2,22 +2,18 @@
 
 namespace App\Orchid\Layouts\Product;
 
-use Orchid\Screen\Field;
-use Orchid\Screen\Layouts\Rows;
-
-use Orchid\Screen\Fields\Input;
-use Orchid\Screen\Fields\Quill;
-use Orchid\Support\Facades\Toast;
-use Orchid\Screen\Actions\Button;
-use Orchid\Support\Color;
-use Orchid\Screen\Fields\Picture;
-use Orchid\Screen\Fields\Switcher;
-use Orchid\Screen\Fields\TextArea;
-use Orchid\Screen\Fields\Matrix;
-use Orchid\Screen\Fields\Relation;
-
 use App\Models\Category;
 use App\Models\Vedomstvo;
+use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Field;
+use Orchid\Screen\Fields\Input;
+use Orchid\Screen\Fields\Picture;
+use Orchid\Screen\Fields\Quill;
+use Orchid\Screen\Fields\Relation;
+use Orchid\Screen\Fields\Switcher;
+use Orchid\Screen\Fields\TextArea;
+use Orchid\Screen\Layouts\Rows;
+use Orchid\Support\Color;
 
 class ProductEditFields extends Rows
 {
@@ -112,18 +108,17 @@ class ProductEditFields extends Rows
                 ->targetRelativeUrl()
                 ->horizontal(),
 
-
             Input::make('product.seo_title')
-                    ->title('SEO заголовок')
-                    ->help('SEO заголовок')
-                    ->horizontal(),
+                ->title('SEO заголовок')
+                ->help('SEO заголовок')
+                ->horizontal(),
 
             TextArea::make('product.seo_description')
-                    ->title('SEO описание')
-                    ->help('SEO описание')
-                    ->horizontal(),
+                ->title('SEO описание')
+                ->help('SEO описание')
+                ->horizontal(),
 
-            Button::make('Сохранить')->method('save_info')->type(Color::SUCCESS())
+            Button::make('Сохранить')->method('save_info')->type(Color::SUCCESS()),
         ];
     }
 }

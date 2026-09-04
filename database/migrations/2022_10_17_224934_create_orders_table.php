@@ -23,9 +23,9 @@ return new class extends Migration
             $table->string('comment')->nullable();
             $table->string('session_id');
             $table->integer('user_id');
-            $table->string('pay_order')->nullable()->comment("id оплаты СБЕР");
-            $table->integer('pay_status')->nullable()->comment("Статус оплаты СБЕР");
-            $table->string('pay_status_text')->nullable()->comment("Статус оплаты СБЕР Комеентарий");
+            $table->string('pay_order')->nullable()->comment('id оплаты СБЕР');
+            $table->integer('pay_status')->nullable()->comment('Статус оплаты СБЕР');
+            $table->string('pay_status_text')->nullable()->comment('Статус оплаты СБЕР Комеентарий');
         });
 
         Schema::create('order_product', function (Blueprint $table) {

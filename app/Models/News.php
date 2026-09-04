@@ -2,17 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
-use Orchid\Screen\AsSource;
-use Orchid\Filters\Filterable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
+use Orchid\Filters\Filterable;
+use Orchid\Screen\AsSource;
 
 class News extends Model
 {
-    use HasFactory;
     use AsSource;
     use Filterable;
+    use HasFactory;
 
     protected $fillable = [
         'title',
@@ -25,14 +25,15 @@ class News extends Model
     ];
 
     protected $allowedSorts = [
-        'title'
+        'title',
     ];
 
     public function setSlugAttribute($value)
     {
-        if (empty($value))
-            $this->attributes['slug'] =  Str::slug($this->title);
-        else
-            $this->attributes['slug'] =  $value;
+        if (empty($value)) {
+            $this->attributes['slug'] = Str::slug($this->title);
+        } else {
+            $this->attributes['slug'] = $value;
+        }
     }
 }

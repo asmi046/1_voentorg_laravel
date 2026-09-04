@@ -8,12 +8,12 @@ use Orchid\Screen\AsSource;
 
 class Option extends Model
 {
-    use HasFactory;
     use AsSource;
+    use HasFactory;
 
     protected $fillable = [
         'name',
         'title',
-        'value'
+        'value',
     ];
 }

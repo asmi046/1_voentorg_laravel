@@ -14,8 +14,8 @@ class SendBascetToTelegramListener implements ShouldQueue
 
     public function handle(BascetOrderCreated $event): void
     {
-        $toText = new BascetToTextAction();
-        $tgSender = new TelegramSendAction();
+        $toText = new BascetToTextAction;
+        $tgSender = new TelegramSendAction;
 
         $text = $toText->handle($event->formData, $event->orderId);
         $tgSender->handle($text);

@@ -31,17 +31,17 @@ class OrderListLayout extends Table
                 return $order->created_at ? $order->created_at->format('d.m.Y H:i') : '—';
             })->sort(),
             TD::make('name', 'Клиент')->width('15%')->render(function ($order) {
-                return $order->name . '<br><small>' . e($order->email ?? '') . '</small>';
+                return $order->name.'<br><small>'.e($order->email ?? '').'</small>';
             })->filter(),
             TD::make('phone', 'Телефон')->width('10%')->filter(),
             TD::make('total_summ', 'Сумма')->width('10%')->render(function ($order) {
-                return number_format((float) $order->total_summ, 2, ',', ' ') . ' ₽';
+                return number_format((float) $order->total_summ, 2, ',', ' ').' ₽';
             })->sort(),
             TD::make('delivery.method', 'Доставка')->width('10%')->render(function ($order) {
                 return $order->delivery->method ?? 'Самовывоз';
             }),
             TD::make('delivery.price', 'Доставка')->width('8%')->render(function ($order) {
-                return $order->delivery && $order->delivery->price ? number_format((float) $order->delivery->price, 2, ',', ' ') . ' ₽' : '—';
+                return $order->delivery && $order->delivery->price ? number_format((float) $order->delivery->price, 2, ',', ' ').' ₽' : '—';
             }),
             TD::make('payment_status', 'Статус')->width('8%')->render(function ($order) {
                 return $order->payment_status ?: '—';

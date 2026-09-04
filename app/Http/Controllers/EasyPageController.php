@@ -2,38 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
-
-use Illuminate\Http\Request;
-
 class EasyPageController extends Controller
 {
-    public function policy() {
+    public function policy()
+    {
         return view('policy');
     }
 
-    public function kontakty() {
+    public function kontakty()
+    {
         return view('kontakty');
     }
 
-    public function proizvodstvo() {
+    public function proizvodstvo()
+    {
         return view('proizvodstvo');
     }
 
-    public function optovye_postavki() {
+    public function optovye_postavki()
+    {
         return view('optovye-postavki');
     }
 
-
-    public function category() {
+    public function category()
+    {
         return view('category');
     }
 
-    public function product() {
+    public function product()
+    {
         return view('product');
     }
 
-    public function oplata_i_dostavka() {
+    public function oplata_i_dostavka()
+    {
         return view('oplata-i-dostavka');
     }
 }

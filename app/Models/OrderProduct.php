@@ -4,13 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
 use Orchid\Screen\AsSource;
 
 class OrderProduct extends Model
 {
-    use HasFactory;
     use AsSource;
+    use HasFactory;
 
     protected $fillable = [
         'product_sku',
@@ -18,8 +17,8 @@ class OrderProduct extends Model
         'price',
     ];
 
-    public function tovar_data() {
+    public function tovar_data()
+    {
         return $this->hasOne(Product::class, 'sku', 'product_sku');
     }
-
 }

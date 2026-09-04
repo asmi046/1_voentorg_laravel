@@ -18,12 +18,12 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreignId('order_id')->constrained()
-                        ->onUpdate('cascade')
-                        ->onDelete('cascade');
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
 
             $table->string('product_sku', 150);
             $table->integer('quentity');
-            $table->double('price', 12,2)->default(0);
+            $table->double('price', 12, 2)->default(0);
         });
     }
 

@@ -9,7 +9,7 @@ class ProductSqlSeederTest extends TestCase
 {
     public function test_prepare_sql_for_import_rewrites_insert_statements_and_keeps_html_content(): void
     {
-        $seeder = new ProductSqlSeeder();
+        $seeder = new ProductSqlSeeder;
         $reflection = new \ReflectionClass($seeder);
         $method = $reflection->getMethod('prepareSqlForImport');
         $method->setAccessible(true);

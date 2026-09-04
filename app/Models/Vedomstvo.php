@@ -4,27 +4,26 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
-use Orchid\Screen\AsSource;
-use Orchid\Filters\Filterable;
 use Illuminate\Support\Str;
+use Orchid\Filters\Filterable;
 use Orchid\Filters\Types\Like;
+use Orchid\Screen\AsSource;
 
 class Vedomstvo extends Model
 {
-    use HasFactory;
     use AsSource;
     use Filterable;
+    use HasFactory;
 
     public $fillable = [
-        "order",
-        "title",
-        "title_mini",
-        "slug",
-        "description",
-        "img",
-        "seo_title",
-        "seo_description"
+        'order',
+        'title',
+        'title_mini',
+        'slug',
+        'description',
+        'img',
+        'seo_title',
+        'seo_description',
     ];
 
     protected $allowedSorts = [
@@ -38,14 +37,15 @@ class Vedomstvo extends Model
 
     public function setSlugAttribute($value)
     {
-        if (empty($value))
-            $this->attributes['slug'] =  Str::slug($this->title);
-        else
-            $this->attributes['slug'] =  $value;
+        if (empty($value)) {
+            $this->attributes['slug'] = Str::slug($this->title);
+        } else {
+            $this->attributes['slug'] = $value;
+        }
     }
 
-    public function vedomstvo_tovars() {
+    public function vedomstvo_tovars()
+    {
         return $this->belongsToMany(Product::class);
     }
-
 }

@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->foreignId('product_id')->constrained()
-                                        ->onUpdate('cascade')
-                                        ->onDelete('cascade');
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
 
             $table->string('sku', 20)->unicue();
             $table->string('value', 80);

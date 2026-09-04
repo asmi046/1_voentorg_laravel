@@ -2,17 +2,13 @@
 
 namespace App\Orchid\Screens\Product;
 
-use Orchid\Screen\Screen;
-
 use App\Models\Product;
 use App\Orchid\Layouts\Product\ProductListTable;
 use App\Orchid\Layouts\Product\ProductSelection;
-
 use Orchid\Screen\Actions\Link;
+use Orchid\Screen\Screen;
 use Orchid\Support\Color;
 use Orchid\Support\Facades\Toast;
-
-use Orchid\Filter\Filterable;
 
 class ProductListScreen extends Screen
 {
@@ -24,14 +20,12 @@ class ProductListScreen extends Screen
     public function query(): iterable
     {
         return [
-            "products" => Product::filters(ProductSelection::class)->defaultSort('id')->paginate(15)
+            'products' => Product::filters(ProductSelection::class)->defaultSort('id')->paginate(15),
         ];
     }
 
     /**
      * Display header name.
-     *
-     * @return string|null
      */
     public function name(): ?string
     {
@@ -46,7 +40,7 @@ class ProductListScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            Link::make('Добавить товар')->route('platform.product_create')->type(Color::SUCCESS())
+            Link::make('Добавить товар')->route('platform.product_create')->type(Color::SUCCESS()),
         ];
     }
 
@@ -59,18 +53,18 @@ class ProductListScreen extends Screen
     {
         return [
             ProductSelection::class,
-            ProductListTable::class
+            ProductListTable::class,
         ];
     }
 
-
-    public function delete_field($id) {
+    public function delete_field($id)
+    {
         $dell_elem = Product::where('id', $id)->first();
-        if ($dell_elem ) {
+        if ($dell_elem) {
             $dell_elem->delete();
-            Toast::info("Товар удален");
+            Toast::info('Товар удален');
         } else {
-            Toast::info("Ошибка при удалении");
+            Toast::info('Ошибка при удалении');
         }
     }
 }

@@ -2,12 +2,10 @@
 
 namespace App\Providers;
 
-use App\Models\Option;
 use App\Models\Category;
-use App\Models\Celebration;
+use App\Models\Option;
 use App\Models\Shop;
 use Illuminate\Support\ServiceProvider;
-
 use View;
 
 class OptionsProvider extends ServiceProvider
@@ -43,18 +41,18 @@ class OptionsProvider extends ServiceProvider
 
             $struct_cat = [];
 
-            foreach ($categoryes as $item)
-                if (!isset($item->parent))
-                {
+            foreach ($categoryes as $item) {
+                if (! isset($item->parent)) {
                     $struct_cat[$item->id]['main'] = $item;
                     $struct_cat[$item->id]['sub'] = [];
                 }
+            }
 
-            foreach ($categoryes as $item)
-                if (isset($item->parent))
-                {
+            foreach ($categoryes as $item) {
+                if (isset($item->parent)) {
                     $struct_cat[$item->parent]['sub'][] = $item;
                 }
+            }
 
             View::share('options', $opt);
             View::share('all_cat', $struct_cat);

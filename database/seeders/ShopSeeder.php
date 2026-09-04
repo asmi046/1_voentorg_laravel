@@ -2,10 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
-
 use DB;
+use Illuminate\Database\Seeder;
 
 class ShopSeeder extends Seeder
 {
@@ -14,7 +12,7 @@ class ShopSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table("shops")->insert(
+        DB::table('shops')->insert(
             [
                 [
                     'name' => '1-й ВОЕНТОРГ',
@@ -23,7 +21,7 @@ class ShopSeeder extends Seeder
                     'orientir' => 'напротив стоянки центрального рынка',
                     'phone' => '+7 (4712) 73-04-49',
                     'email' => '1voentorg@bk.ru',
-                    'time_work' => 'ежедневно, 9:00–19:00'
+                    'time_work' => 'ежедневно, 9:00–19:00',
                 ],
 
                 [
@@ -33,7 +31,7 @@ class ShopSeeder extends Seeder
                     'orientir' => 'слева от МегаГринна',
                     'phone' => '+7 (951) 083-99-56',
                     'email' => '1voentorg@bk.ru',
-                    'time_work' => 'ежедневно, 9:00–19:00'
+                    'time_work' => 'ежедневно, 9:00–19:00',
                 ],
 
                 [
@@ -43,7 +41,7 @@ class ShopSeeder extends Seeder
                     'orientir' => '',
                     'phone' => '+7 (951) 081-85-05',
                     'email' => '1voentorg@bk.ru',
-                    'time_work' => 'ежедневно, 9:00–19:00'
+                    'time_work' => 'ежедневно, 9:00–19:00',
                 ],
 
                 [
@@ -53,7 +51,7 @@ class ShopSeeder extends Seeder
                     'orientir' => '',
                     'phone' => '+7 (904) 097-16-14',
                     'email' => '1voentorg@bk.ru',
-                    'time_work' => 'ежедневно, 9:00–19:00'
+                    'time_work' => 'ежедневно, 9:00–19:00',
                 ],
 
                 [
@@ -63,8 +61,8 @@ class ShopSeeder extends Seeder
                     'orientir' => '',
                     'phone' => '+7 (920) 578-27-08',
                     'email' => '1voentorg@bk.ru',
-                    'time_work' => 'ежедневно, 9:00–19:00'
-                ]
+                    'time_work' => 'ежедневно, 9:00–19:00',
+                ],
 
             ]
         );

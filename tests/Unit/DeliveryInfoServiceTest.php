@@ -9,7 +9,7 @@ class DeliveryInfoServiceTest extends TestCase
 {
     public function test_it_normalizes_delivery_payload_for_order_and_text(): void
     {
-        $service = new DeliveryInfoService();
+        $service = new DeliveryInfoService;
 
         $payload = $service->normalizeForOrder([
             'deliveryMethod' => 'Курьер',

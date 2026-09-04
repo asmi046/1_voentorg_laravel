@@ -2,20 +2,12 @@
 
 namespace App\Orchid\Layouts\Product;
 
-use Orchid\Screen\Field;
-use Orchid\Screen\Layouts\Rows;
-
-use Orchid\Screen\Fields\Input;
-use Orchid\Screen\Fields\Quill;
-use Orchid\Support\Facades\Toast;
 use Orchid\Screen\Actions\Button;
-use Orchid\Support\Color;
+use Orchid\Screen\Field;
+use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Picture;
-use Orchid\Screen\Fields\Switcher;
-use Orchid\Screen\Fields\TextArea;
-use Orchid\Screen\Fields\Matrix;
-use Orchid\Screen\Fields\Relation;
-
+use Orchid\Screen\Layouts\Rows;
+use Orchid\Support\Color;
 
 class ProductGaleryEditFields extends Rows
 {
@@ -34,8 +26,8 @@ class ProductGaleryEditFields extends Rows
     protected function fields(): iterable
     {
         return [
-            Input::make("element.product_group_id")
-            ->type('hidden'),
+            Input::make('element.product_group_id')
+                ->type('hidden'),
 
             Input::make('element.alt')
                 ->title('alt')
@@ -47,7 +39,6 @@ class ProductGaleryEditFields extends Rows
                 ->help('Текст title')
                 ->horizontal(),
 
-
             Picture::make('element.link')
                 ->title('Основное изображение')
                 ->storage('public')
@@ -55,7 +46,7 @@ class ProductGaleryEditFields extends Rows
                 ->required()
                 ->horizontal(),
 
-            Button::make('Сохранить')->method('save_info')->type(Color::SUCCESS())
+            Button::make('Сохранить')->method('save_info')->type(Color::SUCCESS()),
         ];
     }
 }

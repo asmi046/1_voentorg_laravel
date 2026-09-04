@@ -2,12 +2,10 @@
 
 namespace App\Orchid\Filters\Product;
 
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Builder;
 use Orchid\Filters\Filter;
 use Orchid\Screen\Field;
-
-use App\Models\Category;
-
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Select;
 
@@ -15,8 +13,6 @@ class ProductFilter extends Filter
 {
     /**
      * The displayable name of the filter.
-     *
-     * @return string
      */
     public function name(): string
     {
@@ -25,32 +21,27 @@ class ProductFilter extends Filter
 
     /**
      * The array of matched parameters.
-     *
-     * @return array|null
      */
     public function parameters(): ?array
     {
-        return ['category','sku','title'];
+        return ['category', 'sku', 'title'];
     }
 
     /**
      * Apply to a given Eloquent query builder.
-     *
-     * @param Builder $builder
-     *
-     * @return Builder
      */
     public function run(Builder $builder): Builder
     {
-        if (!empty($this->request->get('category')))
-            return $builder->where("title", 'LIKE', '%'.$this->request->get('title').'%')
-            ->where("sku", 'LIKE', '%'.$this->request->get('sku').'%')
-            ->whereHas("tovar_categories", function (Builder $query) {
+        if (! empty($this->request->get('category'))) {
+            return $builder->where('title', 'LIKE', '%'.$this->request->get('title').'%')
+                ->where('sku', 'LIKE', '%'.$this->request->get('sku').'%')
+                ->whereHas('tovar_categories', function (Builder $query) {
                     $query->where('category_id', $this->request->get('category'));
-            });
-        else
-            return $builder->where("title", 'LIKE', '%'.$this->request->get('title').'%')
-            ->where("sku", 'LIKE', '%'.$this->request->get('sku').'%');
+                });
+        } else {
+            return $builder->where('title', 'LIKE', '%'.$this->request->get('title').'%')
+                    ->where('sku', 'LIKE', '%'.$this->request->get('sku').'%');
+        }
     }
 
     /**
@@ -63,16 +54,16 @@ class ProductFilter extends Filter
         return [
 
             Input::make('title')
-            ->type('text')
-            ->value($this->request->get('title'))
-            ->placeholder('Наименование...')
-            ->title('Имя товара'),
+                ->type('text')
+                ->value($this->request->get('title'))
+                ->placeholder('Наименование...')
+                ->title('Имя товара'),
 
             Input::make('sku')
-            ->type('text')
-            ->value($this->request->get('sku'))
-            ->placeholder('Введите артикул...')
-            ->title('Артикул'),
+                ->type('text')
+                ->value($this->request->get('sku'))
+                ->placeholder('Введите артикул...')
+                ->title('Артикул'),
 
             Select::make('category')
                 ->fromModel(Category::class, 'title', 'id')

@@ -14,10 +14,6 @@ class PlatformProvider extends OrchidServiceProvider
 {
     /**
      * Bootstrap the application services.
-     *
-     * @param Dashboard $dashboard
-     *
-     * @return void
      */
     public function boot(Dashboard $dashboard): void
     {
@@ -48,7 +44,6 @@ class PlatformProvider extends OrchidServiceProvider
                 ->icon('slash-square')
                 ->route('platform.vedomstva'),
 
-
             Menu::make('Опции сайта')
                 ->icon('list-check')
                 ->route('platform.options')
@@ -74,7 +69,7 @@ class PlatformProvider extends OrchidServiceProvider
                 ->icon('bs.people')
                 ->route('platform.systems.users')
                 ->permission('platform.systems.users')
-                ->title("Пользователи и роли"),
+                ->title('Пользователи и роли'),
 
             Menu::make(__('Roles'))
                 ->icon('bs.shield')

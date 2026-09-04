@@ -2,18 +2,14 @@
 
 namespace App\Orchid\Layouts\News;
 
+use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Field;
-use Orchid\Screen\Layouts\Rows;
-
 use Orchid\Screen\Fields\Input;
-use Orchid\Screen\Fields\Number;
-use Orchid\Screen\Fields\Select;
+use Orchid\Screen\Fields\Picture;
 use Orchid\Screen\Fields\Quill;
 use Orchid\Screen\Fields\TextArea;
-use Orchid\Support\Facades\Toast;
-use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Layouts\Rows;
 use Orchid\Support\Color;
-use Orchid\Screen\Fields\Picture;
 
 class NewsEditFields extends Rows
 {
@@ -22,7 +18,7 @@ class NewsEditFields extends Rows
      *
      * @var string|null
      */
-    protected $title = "Поля категории";
+    protected $title = 'Поля категории';
 
     /**
      * Get the fields elements to be displayed.
@@ -32,7 +28,6 @@ class NewsEditFields extends Rows
     protected function fields(): iterable
     {
         return [
-
 
             Input::make('news.title')
                 ->title('Название')
@@ -72,7 +67,7 @@ class NewsEditFields extends Rows
                 ->help('SEO описание')
                 ->horizontal(),
 
-            Button::make('Сохранить')->method('save_info')->type(Color::SUCCESS())
+            Button::make('Сохранить')->method('save_info')->type(Color::SUCCESS()),
         ];
     }
 }

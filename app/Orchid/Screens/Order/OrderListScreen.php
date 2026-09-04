@@ -5,7 +5,6 @@ namespace App\Orchid\Screens\Order;
 use App\Models\ShopOrder;
 use App\Orchid\Layouts\Order\OrderListLayout;
 use Orchid\Screen\Screen;
-use Orchid\Screen\Actions\Link;
 
 class OrderListScreen extends Screen
 {
@@ -32,7 +31,7 @@ class OrderListScreen extends Screen
     public function layout(): iterable
     {
         return [
-            new OrderListLayout(),
+            new OrderListLayout,
         ];
     }
 }

@@ -11,6 +11,7 @@ class ShopOrderCreated
     use Dispatchable, SerializesModels;
 
     public int $orderId;
+
     public ShopOrder $order;
 
     public function __construct(int $orderId, ShopOrder $order)

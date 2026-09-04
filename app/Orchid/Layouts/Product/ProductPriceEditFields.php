@@ -2,21 +2,11 @@
 
 namespace App\Orchid\Layouts\Product;
 
-use Orchid\Screen\Field;
-use Orchid\Screen\Layouts\Rows;
-
-use Orchid\Screen\Fields\Input;
-use Orchid\Screen\Fields\Quill;
-use Orchid\Support\Facades\Toast;
 use Orchid\Screen\Actions\Button;
+use Orchid\Screen\Field;
+use Orchid\Screen\Fields\Input;
+use Orchid\Screen\Layouts\Rows;
 use Orchid\Support\Color;
-use Orchid\Screen\Fields\Picture;
-use Orchid\Screen\Fields\Switcher;
-use Orchid\Screen\Fields\TextArea;
-use Orchid\Screen\Fields\Select;
-use Orchid\Screen\Fields\Matrix;
-use Orchid\Screen\Fields\Relation;
-
 
 class ProductPriceEditFields extends Rows
 {
@@ -35,8 +25,8 @@ class ProductPriceEditFields extends Rows
     protected function fields(): iterable
     {
         return [
-            Input::make("element.product_group_id")
-            ->type('hidden'),
+            Input::make('element.product_group_id')
+                ->type('hidden'),
 
             Input::make('element.sku')
                 ->title('Артикул')
@@ -56,8 +46,7 @@ class ProductPriceEditFields extends Rows
                 ->title('Старая цена')
                 ->horizontal(),
 
-
-            Button::make('Сохранить')->method('save_info')->type(Color::SUCCESS())
+            Button::make('Сохранить')->method('save_info')->type(Color::SUCCESS()),
         ];
     }
 }

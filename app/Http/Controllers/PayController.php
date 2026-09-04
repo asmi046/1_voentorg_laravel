@@ -6,8 +6,8 @@ use App\Services\YooKassaService;
 
 class PayController extends Controller
 {
-    public function pay_hook(YooKassaService $pay) {
+    public function pay_hook(YooKassaService $pay)
+    {
         $pay->pay_fixation();
     }
-
 }

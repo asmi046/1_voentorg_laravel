@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use App\Models\Product;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Storage;
 
 class DetermineProductDimensions extends Command
 {
@@ -18,7 +17,9 @@ class DetermineProductDimensions extends Command
     protected $description = 'Определить вес и габариты товаров через AI (Ollama)';
 
     private string $promptTemplate;
+
     private array $results = [];
+
     private array $processedSkus = [];
 
     public function __construct()
@@ -40,11 +41,11 @@ class DetermineProductDimensions extends Command
 
         if ($sku) {
             $query->where('sku', $sku);
-        } elseif (!empty($this->processedSkus)) {
+        } elseif (! empty($this->processedSkus)) {
             $query->whereNotIn('sku', $this->processedSkus);
         }
 
-        if ($limit > 0 && !$sku) {
+        if ($limit > 0 && ! $sku) {
             $query->limit($limit);
         }
 
@@ -52,13 +53,13 @@ class DetermineProductDimensions extends Command
 
         if ($products->isEmpty()) {
             $this->info('Нет товаров для обработки');
-            $this->info('Всего записей в файле: ' . count($this->results));
+            $this->info('Всего записей в файле: '.count($this->results));
 
             return self::SUCCESS;
         }
 
         $this->info("Товаров для обработки: {$products->count()}");
-        $this->info("Уже обработано: " . count($this->processedSkus));
+        $this->info('Уже обработано: '.count($this->processedSkus));
 
         $bar = $this->output->createProgressBar($products->count());
         $bar->start();
@@ -87,7 +88,7 @@ class DetermineProductDimensions extends Command
         $this->saveResults($outputPath);
 
         $this->info("Результаты сохранены в: {$outputPath}");
-        $this->info("Всего записей: " . count($this->results));
+        $this->info('Всего записей: '.count($this->results));
         $this->info("Обработано в этом запуске: {$products->count()}");
 
         return self::SUCCESS;
@@ -110,7 +111,7 @@ class DetermineProductDimensions extends Command
                 $this->processedSkus[] = $sku;
             }
 
-            $this->info("Загружено существующих записей: " . count($this->results));
+            $this->info('Загружено существующих записей: '.count($this->results));
         } else {
             $this->results = [];
             $this->processedSkus = [];
@@ -120,7 +121,7 @@ class DetermineProductDimensions extends Command
     private function saveResults(string $filePath): void
     {
         $directory = dirname($filePath);
-        if (!is_dir($directory)) {
+        if (! is_dir($directory)) {
             mkdir($directory, 0755, true);
         }
 
@@ -135,19 +136,19 @@ class DetermineProductDimensions extends Command
             $http = Http::timeout(config('ollama.timeout'));
 
             if (config('ollama.api_key')) {
-                $http->withHeader('Authorization', 'Bearer ' . config('ollama.api_key'));
+                $http->withHeader('Authorization', 'Bearer '.config('ollama.api_key'));
             }
 
-            $response = $http->post(config('ollama.base_url') . '/api/generate', [
+            $response = $http->post(config('ollama.base_url').'/api/generate', [
                 'model' => config('ollama.model'),
                 'prompt' => $prompt,
                 'stream' => false,
                 'format' => 'json',
             ]);
 
-            if (!$response->successful()) {
+            if (! $response->successful()) {
                 $this->newLine();
-                $this->warn("Ошибка API для SKU: {$title} - " . $response->status() . ' ' . $response->body());
+                $this->warn("Ошибка API для SKU: {$title} - ".$response->status().' '.$response->body());
 
                 return null;
             }
@@ -172,7 +173,7 @@ class DetermineProductDimensions extends Command
             return $dimensions;
         } catch (\Exception $e) {
             $this->newLine();
-            $this->warn("Ошибка для SKU: {$title} - " . $e->getMessage());
+            $this->warn("Ошибка для SKU: {$title} - ".$e->getMessage());
 
             return null;
         }

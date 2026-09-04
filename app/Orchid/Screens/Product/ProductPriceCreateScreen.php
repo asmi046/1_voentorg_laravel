@@ -2,22 +2,12 @@
 
 namespace App\Orchid\Screens\Product;
 
-use Orchid\Screen\Screen;
-
-use App\Models\ProductPrices;
 use App\Models\Product;
-use App\Models\Celebration;
-
-use Orchid\Screen\Actions\Link;
-
-use Orchid\Support\Facades\Layout;
-use Orchid\Support\Facades\Toast;
-use Orchid\Screen\Actions\ModalToggle;
-use Illuminate\Validation\Rule;
-
+use App\Models\ProductPrices;
 use App\Orchid\Layouts\Product\ProductPriceEditFields;
-
 use Illuminate\Http\Request;
+use Orchid\Screen\Actions\Link;
+use Orchid\Screen\Screen;
 
 class ProductPriceCreateScreen extends Screen
 {
@@ -26,21 +16,19 @@ class ProductPriceCreateScreen extends Screen
      *
      * @return array
      */
-
-     public $tovar;
+    public $tovar;
 
     public function query($id): iterable
     {
         $tovar = Product::where('id', $id)->first();
+
         return [
-            "tovar" => $tovar
+            'tovar' => $tovar,
         ];
     }
 
     /**
      * Display header name.
-     *
-     * @return string|null
      */
     public function name(): ?string
     {
@@ -56,8 +44,8 @@ class ProductPriceCreateScreen extends Screen
     {
         return [
             Link::make('Назад')
-            ->href(route("platform.product_edit", $this->tovar->id))
-            ->icon('arrow-up-left'),
+                ->href(route('platform.product_edit', $this->tovar->id))
+                ->icon('arrow-up-left'),
         ];
     }
 
@@ -69,12 +57,12 @@ class ProductPriceCreateScreen extends Screen
     public function layout(): iterable
     {
         return [
-            ProductPriceEditFields::class
+            ProductPriceEditFields::class,
         ];
     }
 
-
-    public function save_info( Request $request) {
+    public function save_info(Request $request)
+    {
         $request->validate([
             'element.sku' => ['required', 'string'],
             'element.price' => ['required', 'string'],
@@ -83,7 +71,9 @@ class ProductPriceCreateScreen extends Screen
         $data = $request->get('element');
         $data['product_id'] = $this->tovar->id;
 
-        if ($data['old_price'] === null) $data['old_price'] = 0;
+        if ($data['old_price'] === null) {
+            $data['old_price'] = 0;
+        }
 
         $element_id = ProductPrices::create($data);
 

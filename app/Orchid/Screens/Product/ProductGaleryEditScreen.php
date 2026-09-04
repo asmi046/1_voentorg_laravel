@@ -2,21 +2,12 @@
 
 namespace App\Orchid\Screens\Product;
 
-use Orchid\Screen\Screen;
-
 use App\Models\ProductImage;
-use App\Models\Category;
-use App\Models\Celebration;
-
-use Orchid\Screen\Actions\Link;
-
-use Orchid\Support\Facades\Layout;
-use Orchid\Support\Facades\Toast;
-use Orchid\Screen\Actions\ModalToggle;
-use Illuminate\Validation\Rule;
-
 use App\Orchid\Layouts\Product\ProductGaleryEditFields;
 use Illuminate\Http\Request;
+use Orchid\Screen\Actions\Link;
+use Orchid\Screen\Screen;
+use Orchid\Support\Facades\Toast;
 
 class ProductGaleryEditScreen extends Screen
 {
@@ -25,21 +16,19 @@ class ProductGaleryEditScreen extends Screen
      *
      * @return array
      */
-
-     public $element;
+    public $element;
 
     public function query($id): iterable
     {
         $element = ProductImage::where('id', $id)->first();
+
         return [
-            "element" => $element
+            'element' => $element,
         ];
     }
 
     /**
      * Display header name.
-     *
-     * @return string|null
      */
     public function name(): ?string
     {
@@ -55,8 +44,8 @@ class ProductGaleryEditScreen extends Screen
     {
         return [
             Link::make('Назад')
-            ->href(route("platform.product_edit", $this->element->product_info->id))
-            ->icon('arrow-up-left'),
+                ->href(route('platform.product_edit', $this->element->product_info->id))
+                ->icon('arrow-up-left'),
         ];
     }
 
@@ -68,19 +57,18 @@ class ProductGaleryEditScreen extends Screen
     public function layout(): iterable
     {
         return [
-            ProductGaleryEditFields::class
+            ProductGaleryEditFields::class,
         ];
     }
 
-
-    public function save_info(Request $request) {
+    public function save_info(Request $request)
+    {
         $request->validate([
-            'element.link' => ['required', 'string']
+            'element.link' => ['required', 'string'],
         ]);
-
 
         $this->element->fill($request->get('element'))->save();
 
-        Toast::info("Запись сохранена");
+        Toast::info('Запись сохранена');
     }
 }

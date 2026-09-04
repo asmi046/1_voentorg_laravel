@@ -2,17 +2,10 @@
 
 namespace App\Orchid\Screens\Category;
 
-use Orchid\Screen\Screen;
-
 use App\Models\Category;
-
-use Orchid\Support\Facades\Layout;
-
 use App\Orchid\Layouts\Category\CategoryEditFields;
-
-
-
 use Illuminate\Http\Request;
+use Orchid\Screen\Screen;
 
 class CategoryCreateScreen extends Screen
 {
@@ -21,7 +14,6 @@ class CategoryCreateScreen extends Screen
      *
      * @return array
      */
-
     public function query(): iterable
     {
         return [];
@@ -29,8 +21,6 @@ class CategoryCreateScreen extends Screen
 
     /**
      * Display header name.
-     *
-     * @return string|null
      */
     public function name(): ?string
     {
@@ -59,12 +49,12 @@ class CategoryCreateScreen extends Screen
         ];
     }
 
-    public function save_info(Request $request) {
+    public function save_info(Request $request)
+    {
 
         $request->validate([
             'category.title' => ['required', 'string'],
         ]);
-
 
         $new_cat_id = Category::create($request->get('category'));
 

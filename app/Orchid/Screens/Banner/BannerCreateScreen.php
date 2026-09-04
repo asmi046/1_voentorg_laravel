@@ -2,17 +2,10 @@
 
 namespace App\Orchid\Screens\Banner;
 
-use Orchid\Screen\Screen;
-
 use App\Models\Banner;
-
-use Orchid\Support\Facades\Layout;
-
 use App\Orchid\Layouts\Banner\BannerEditFields;
-
-
-
 use Illuminate\Http\Request;
+use Orchid\Screen\Screen;
 
 class BannerCreateScreen extends Screen
 {
@@ -21,7 +14,6 @@ class BannerCreateScreen extends Screen
      *
      * @return array
      */
-
     public function query(): iterable
     {
         return [];
@@ -29,8 +21,6 @@ class BannerCreateScreen extends Screen
 
     /**
      * Display header name.
-     *
-     * @return string|null
      */
     public function name(): ?string
     {
@@ -59,7 +49,8 @@ class BannerCreateScreen extends Screen
         ];
     }
 
-    public function save_info(Request $request) {
+    public function save_info(Request $request)
+    {
 
         $new_cat_id = Banner::create($request->get('banner'));
 
