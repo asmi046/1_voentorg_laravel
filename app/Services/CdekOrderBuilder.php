@@ -148,10 +148,6 @@ class CdekOrderBuilder
                 'cost' => (float) $item->price,
                 'weight' => round($weight, 3),
                 'amount' => $item->quantity,
-                'payment' => [
-                    'value' => (float) $item->price * $item->quantity,
-                    'vat_sum' => 0,
-                ],
             ];
         }
 
