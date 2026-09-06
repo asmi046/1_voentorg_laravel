@@ -359,7 +359,8 @@ const sendBascet = async () => {
             response.pay_info.confirmation &&
             response.pay_info.confirmation.confirmation_url !== undefined
         ) {
-            document.location.href = "/bascet/thencs";
+            document.location.href =
+                response.pay_info.confirmation.confirmation_url;
         } else {
             document.location.href = "/bascet/thencs";
         }
