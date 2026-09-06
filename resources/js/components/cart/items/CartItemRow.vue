@@ -3,9 +3,9 @@
         <div class="tl-side left-side">
             <div class="tovar_all_blk picture_blk">
                 <img
-                    v-if="item.tovar_content.img != ''"
-                    :src="item.tovar_content.img"
-                    alt=""
+                    v-if="item.product?.img"
+                    :src="item.product.img"
+                    :alt="item.product?.title ?? item.product_sku"
                 />
                 <img v-else :src="noPhotoUrl" alt="" />
             </div>
@@ -13,12 +13,18 @@
                 <h2>
                     <a
                         target="_blank"
-                        :href="`/product/${item.tovar_content.slug}`"
+                        :href="`/product/${item.product?.slug ?? item.product_sku}`"
                     >
-                        {{ item.tovar_content.title }}
+                        {{ item.product?.title ?? item.product_sku }}
                     </a>
                 </h2>
-                <p>Артикул: {{ item.product_sku }} / {{ item.product_id }}</p>
+                <p class="tovar_sku">Артикул: {{ item.product_sku }}</p>
+                <p v-if="hasSize" class="tovar_size">
+                    Размер: <span>{{ item.variant.value }}</span>
+                </p>
+                <p v-if="dimensionsText" class="tovar_dims">
+                    Габариты: {{ dimensionsText }}
+                </p>
             </div>
         </div>
 
@@ -27,6 +33,12 @@
                 <span class="rub price_formator">{{
                     Number(item.price).toLocaleString("ru-RU")
                 }}</span>
+                <span
+                    v-if="item.old_price && item.old_price > item.price"
+                    class="rub price_formator price_old"
+                >
+                    {{ Number(item.old_price).toLocaleString("ru-RU") }}
+                </span>
             </div>
             <div class="tovar_all_blk couint_blk">
                 <div class="number_wrapper">
@@ -35,7 +47,7 @@
                         class="number_btn val_down"
                         >-</span
                     >
-                    <input type="number" :value="item.quentity" />
+                    <input type="number" :value="item.quantity" />
                     <span
                         @click="$emit('change-item-quantity', item, 1)"
                         class="number_btn val_upp"
@@ -47,7 +59,7 @@
                 <span class="rub price_formator"
                     >{{
                         Number(
-                            parseFloat(item.quentity) * parseFloat(item.price),
+                            parseFloat(item.quantity) * parseFloat(item.price),
                         ).toLocaleString("ru-RU")
                     }}
                     <span class="rub_symbol">₽</span></span
@@ -64,7 +76,9 @@
 </template>
 
 <script setup>
-defineProps({
+import { computed } from "vue";
+
+const props = defineProps({
     item: {
         type: Object,
         required: true,
@@ -80,6 +94,43 @@ defineProps({
 });
 
 defineEmits(["change-item-quantity", "delete-element"]);
+
+const hasSize = computed(() => {
+    const value = props.item?.variant?.value;
+    return value !== null && value !== undefined && value !== "" && value !== "-";
+});
+
+const dimensionsText = computed(() => {
+    const p = props.item?.product;
+    if (!p) return "";
+
+    const parts = [];
+    if (p.length) parts.push(`${p.length} см`);
+    if (p.width) parts.push(`${p.width} см`);
+    if (p.height) parts.push(`${p.height} см`);
+
+    return parts.length ? `${parts.join(" × ")}${p.weight ? `, ${p.weight} г` : ""}` : "";
+});
 </script>
 
-<style></style>
+<style scoped>
+.tovar_sku,
+.tovar_size,
+.tovar_dims {
+    margin: 2px 0;
+    font-size: 13px;
+    color: #555;
+}
+
+.tovar_size span {
+    font-weight: 600;
+    color: #222;
+}
+
+.price_old {
+    display: block;
+    font-size: 12px;
+    color: #999;
+    text-decoration: line-through;
+}
+</style>

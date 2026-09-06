@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Actions\TelegramSendAction;
 use App\Mail\Cart\PaymentStatusSend;
-use App\Models\Order;
 use App\Models\ShopOrder;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -59,20 +58,10 @@ class YooKassaService
 
                 $order = ShopOrder::where('payment_id', $someData['paymentId'])->first();
 
-                if (! $order) {
-                    $order = Order::where('pay_order', $someData['paymentId'])->first();
-                }
-
                 if ($order) {
-                    if ($order instanceof ShopOrder) {
-                        $order->payment_status = $someData['paymentStatus'];
-                        $order->payment_status_text = $someData['paymentStatus'] === 'succeeded' ? 'Оплачен' : 'Не оплачен';
-                        $order->save();
-                    } else {
-                        $order->pay_status = 1;
-                        $order->pay_status_text = $someData['paymentStatus'];
-                        $order->save();
-                    }
+                    $order->payment_status = $someData['paymentStatus'];
+                    $order->payment_status_text = $someData['paymentStatus'] === 'succeeded' ? 'Оплачен' : 'Не оплачен';
+                    $order->save();
 
                     $orderStatusText = ($someData['paymentStatus'] === 'succeeded') ? 'Оплачен' : 'Не оплачен';
 
@@ -82,26 +71,24 @@ class YooKassaService
                     $pay_text .= '<b>ID: </b>'.$someData['paymentId']."\n\r";
                     $pay_text .= '<b>Сумма: </b>'.$amount." ₽\n\r";
 
-                    if ($order instanceof ShopOrder) {
-                        $pay_text .= '<b>Клиент:</b> '.($order->name ?? '—')."\n\r";
-                        $pay_text .= '<b>Телефон:</b> '.($order->phone ?? '—')."\n\r";
-                        $pay_text .= '<b>Email:</b> '.($order->email ?? '—')."\n\r";
+                    $pay_text .= '<b>Клиент:</b> '.($order->name ?? '—')."\n\r";
+                    $pay_text .= '<b>Телефон:</b> '.($order->phone ?? '—')."\n\r";
+                    $pay_text .= '<b>Email:</b> '.($order->email ?? '—')."\n\r";
 
-                        if ($order->delivery) {
-                            $pay_text .= '<b>Доставка:</b> '.($order->delivery->method ?? '—')."\n\r";
-                            $pay_text .= '<b>Город:</b> '.($order->delivery->city ?? '—')."\n\r";
-                            $pay_text .= '<b>Адрес:</b> '.($order->delivery->delivery_address ?? '—')."\n\r";
-                            if ($order->delivery->price) {
-                                $pay_text .= '<b>Цена доставки:</b> '.number_format((float) $order->delivery->price, 2, '.', '')." ₽\n\r";
-                            }
+                    if ($order->delivery) {
+                        $pay_text .= '<b>Доставка:</b> '.($order->delivery->method ?? '—')."\n\r";
+                        $pay_text .= '<b>Город:</b> '.($order->delivery->city ?? '—')."\n\r";
+                        $pay_text .= '<b>Адрес:</b> '.($order->delivery->delivery_address ?? '—')."\n\r";
+                        if ($order->delivery->price) {
+                            $pay_text .= '<b>Цена доставки:</b> '.number_format((float) $order->delivery->price, 2, '.', '')." ₽\n\r";
                         }
+                    }
 
-                        $pay_text .= "\n\r<b>Товары:</b>\n\r";
-                        foreach ($order->items as $item) {
-                            $pay_text .= '• '.($item->product_name ?? $item->product_title ?? 'Товар').' ('.$item->product_sku.')';
-                            $pay_text .= ' — '.$item->quantity.' шт. x '.number_format((float) $item->price, 2, '.', '').' ₽';
-                            $pay_text .= ' = '.number_format((float) ($item->price * $item->quantity), 2, '.', '')." ₽\n\r";
-                        }
+                    $pay_text .= "\n\r<b>Товары:</b>\n\r";
+                    foreach ($order->items as $item) {
+                        $pay_text .= '• '.($item->product_name ?? $item->product_title ?? 'Товар').' ('.$item->product_sku.')';
+                        $pay_text .= ' — '.$item->quantity.' шт. x '.number_format((float) $item->price, 2, '.', '').' ₽';
+                        $pay_text .= ' = '.number_format((float) ($item->price * $item->quantity), 2, '.', '')." ₽\n\r";
                     }
 
                     $tgsender = new TelegramSendAction;
@@ -112,7 +99,7 @@ class YooKassaService
                         $someData['paymentId'],
                         $orderStatusText,
                         $amount,
-                        $order instanceof ShopOrder ? $order : null
+                        $order
                     ));
 
                     Log::channel('pay')->info('Order status updated info: '.print_r($paymentInfo, true));
@@ -338,7 +325,7 @@ class YooKassaService
         $normalized = [];
         foreach ($units as $index => $unit) {
             $normalizedItem = $unit['item'];
-            $normalizedItem['quentity'] = 1;
+            $normalizedItem['quantity'] = 1;
             $normalizedItem['price'] = $allocated[$index];
             $normalized[] = $normalizedItem;
         }
@@ -361,12 +348,12 @@ class YooKassaService
 
     private function getItemTitle(array $item): string
     {
-        return $item['tovar_content']['title'] ?? $item['product_title'] ?? $item['product_name'] ?? '';
+        return $item['product_title'] ?? $item['product_name'] ?? '';
     }
 
     private function getItemQuantity(array $item): int
     {
-        return (int) ($item['quentity'] ?? $item['quantity'] ?? 1);
+        return (int) ($item['quantity'] ?? 1);
     }
 
     private function getItemPrice(array $item): int

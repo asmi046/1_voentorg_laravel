@@ -1,17 +1,16 @@
 import http from './http';
 
 /**
- * API-слой для работы с корзиной.
+ * API-слой для работы с корзиной (новая логика /shop/cart/*).
  *
- * Использует новые эндпоинты /shop/cart/*.
- * Все ответы бэкенда оборачиваются в { success, data }, поэтому
- * здесь делается ответная анпакинг: возвращается только payload из data.
+ * Бэкенд оборачивает ответы в { success, data }, поэтому
+ * здесь делается анпакинг: возвращается только payload из data.
  */
 
 /**
  * Получить содержимое корзины.
  *
- * @returns {Promise<{count: number, position: Array}>}
+ * @returns {Promise<{count: number, cart_summ: number, parcel_weight_grams: number, position: Array}>}
  */
 export function getCart() {
     return http.get('/shop/cart').then((response) => response.data.data);
@@ -20,7 +19,7 @@ export function getCart() {
 /**
  * Добавить товар в корзину.
  *
- * @param {{product_id: string|number, product_sku: string, addcount: number}} data
+ * @param {{product_sku: string, quantity?: number}} data
  * @returns {Promise<Object>}
  */
 export function addToCart(data) {
@@ -30,7 +29,7 @@ export function addToCart(data) {
 /**
  * Обновить количество позиции.
  *
- * @param {{product_id: string|number, count: number}} data
+ * @param {{product_sku: string, quantity: number}} data
  * @returns {Promise<Object>}
  */
 export function updateCartItem(data) {
@@ -40,7 +39,7 @@ export function updateCartItem(data) {
 /**
  * Удалить позицию из корзины.
  *
- * @param {{product_id: string|number}} data
+ * @param {{product_sku: string}} data
  * @returns {Promise<Object>}
  */
 export function deleteCartItem(data) {

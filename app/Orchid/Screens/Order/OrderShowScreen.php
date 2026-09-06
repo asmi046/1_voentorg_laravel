@@ -105,15 +105,33 @@ class OrderShowScreen extends Screen
             ]),
 
             Layout::table('items', [
-                TD::make('id', '#'),
-                TD::make('product_sku', 'Артикул'),
-                TD::make('product_name', 'Название товара'),
-                TD::make('product_title', 'Заголовок'),
-                TD::make('price', 'Цена')->render(function ($item) {
+                TD::make('id', '#')->width('5%'),
+                TD::make('product_sku', 'Артикул')->width('12%'),
+                TD::make('product_name', 'Название товара')->width('25%'),
+                TD::make('price', 'Цена')->width('10%')->render(function ($item) {
                     return number_format((float) $item->price, 2, ',', ' ').' ₽';
                 }),
-                TD::make('quantity', 'Количество'),
-                TD::make('weight_grams', 'Вес (гр)'),
+                TD::make('quantity', 'Кол-во')->width('8%'),
+                TD::make('sum', 'Сумма')->width('12%')->render(function ($item) {
+                    return number_format((float) $item->price * (int) $item->quantity, 2, ',', ' ').' ₽';
+                }),
+                TD::make('weight_grams', 'Вес (гр)')->width('8%')->render(function ($item) {
+                    return $item->weight_grams !== null ? (int) $item->weight_grams : '—';
+                }),
+                TD::make('dimensions', 'Габариты (см)')->width('15%')->render(function ($item) {
+                    $d = $item->dimensions;
+                    if (! $d) {
+                        return '—';
+                    }
+
+                    $parts = array_filter([
+                        $d['length'] ?? null,
+                        $d['width'] ?? null,
+                        $d['height'] ?? null,
+                    ], fn ($v) => $v !== null && $v !== '');
+
+                    return $parts ? implode(' × ', $parts) : '—';
+                }),
             ])->title('Товары в заказе'),
         ];
     }

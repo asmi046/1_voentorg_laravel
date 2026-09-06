@@ -4,13 +4,13 @@
     </p>
     <div class="to_card_widget">
         <div class="price">
+            <span class="price__main"> {{ price }} руб. </span>
+            <br />
             <price-selector
                 :prices="prices"
                 :sku="sku"
                 @select="onSelect"
             ></price-selector>
-
-            <span class="price__main"> {{ price }} руб. </span>
 
             <span v-show="oldprice != 0" class="price__old">
                 {{ oldprice }} руб.

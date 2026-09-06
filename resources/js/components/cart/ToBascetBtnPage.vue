@@ -12,9 +12,10 @@
 </template>
 
 <script>
-import { ref, computed, watch } from "vue";
+import { ref } from "vue";
 import { useStore } from "vuex";
 import * as cartApi from "@/api/cart";
+
 export default {
     props: {
         sku: String,
@@ -25,50 +26,32 @@ export default {
     setup(props) {
         const store = useStore();
 
-        let countToAdd = ref(1);
         let inBascet = ref(false);
-        let inBascetCount = ref(1);
+        let inBascetCount = ref(0);
 
-        watch(
-            () => [store.getters.cartCount, props.skuid],
-            function () {
-                let inBascetElem = (store.state.cart_tovars || []).find((elem) => {
-                    return elem.product_sku === props.sku;
-                });
-                inBascet.value = inBascetElem != undefined;
-                inBascetCount.value =
-                    inBascetElem != undefined ? inBascetElem.quentity : 0;
-            },
-        );
+        const refreshFromStore = () => {
+            const inBascetElem = (store.state.cart_tovars || []).find(
+                (elem) => elem.product_sku === props.sku,
+            );
+            inBascet.value = inBascetElem != null;
+            inBascetCount.value =
+                inBascetElem != null ? Number(inBascetElem.quantity) || 0 : 0;
+        };
 
         const addToBascet = () => {
             cartApi
                 .addToCart({
                     product_sku: props.sku,
-                    product_id: props.skuid,
-                    addcount: countToAdd.value,
+                    quantity: 1,
                 })
                 .then(() => {
-                    store.dispatch("initialBascet");
-                    console.log(store.getters.cartCount);
+                    store.dispatch("initialBascet").then(refreshFromStore);
                 })
                 .catch((error) => console.log(error));
         };
 
-        const upCounter = () => {
-            countToAdd.value++;
-        };
-
-        const downCounter = () => {
-            if (countToAdd.value == 1) return;
-            countToAdd.value--;
-        };
-
         return {
             inBascet,
-            upCounter,
-            downCounter,
-            countToAdd,
             inBascetCount,
             addToBascet,
             bascet: props.bascet,

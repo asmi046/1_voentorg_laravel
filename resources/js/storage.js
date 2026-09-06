@@ -46,10 +46,10 @@ export const store = new createStore({
     actions: {
 
         initialBascet(context, value) {
-                cartApi.getCart()
+                return cartApi.getCart()
                 .then((data) => {
-                    context.commit('setCount', data.count)
-                    context.commit('setTovars', data.position)
+                    context.commit('setCount', data.count ?? 0)
+                    context.commit('setTovars', data.position ?? [])
                 })
                 .catch(error => console.log(error));
         },

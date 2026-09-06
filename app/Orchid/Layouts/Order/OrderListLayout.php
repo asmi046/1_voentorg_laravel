@@ -34,21 +34,26 @@ class OrderListLayout extends Table
                 return $order->name.'<br><small>'.e($order->email ?? '').'</small>';
             })->filter(),
             TD::make('phone', 'Телефон')->width('10%')->filter(),
-            TD::make('total_summ', 'Сумма')->width('10%')->render(function ($order) {
+            TD::make('cart_summ', 'Сумма товаров')->width('10%')->render(function ($order) {
+                return number_format((float) $order->cart_summ, 2, ',', ' ').' ₽';
+            }),
+            TD::make('discount_summ', 'Скидка')->width('8%')->render(function ($order) {
+                return $order->discount_summ
+                    ? number_format((float) $order->discount_summ, 2, ',', ' ').' ₽'
+                    : '—';
+            }),
+            TD::make('total_summ', 'Итого')->width('10%')->render(function ($order) {
                 return number_format((float) $order->total_summ, 2, ',', ' ').' ₽';
             })->sort(),
-            TD::make('delivery.method', 'Доставка')->width('10%')->render(function ($order) {
-                return $order->delivery->method ?? 'Самовывоз';
+            TD::make('delivery.method', 'Способ доставки')->width('10%')->render(function ($order) {
+                return $order->delivery?->method ?? 'Самовывоз';
             }),
-            TD::make('delivery.price', 'Доставка')->width('8%')->render(function ($order) {
-                return $order->delivery && $order->delivery->price ? number_format((float) $order->delivery->price, 2, ',', ' ').' ₽' : '—';
-            }),
-            TD::make('payment_status', 'Статус')->width('8%')->render(function ($order) {
-                return $order->payment_status ?: '—';
+            TD::make('payment_status', 'Статус оплаты')->width('8%')->render(function ($order) {
+                return $order->payment_status_text ?: $order->payment_status ?: '—';
             })->filter(),
             TD::make(__('Actions'))
                 ->align(TD::ALIGN_CENTER)
-                ->width('9%')
+                ->width('8%')
                 ->render(fn ($order) => Link::make('Подробнее')
                     ->route('platform.orders.show', $order->id)
                     ->icon('eye')),

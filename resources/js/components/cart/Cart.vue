@@ -101,8 +101,6 @@ const bascetInfo = reactive({
     promokod: "",
 });
 
-console.log(bascetList);
-
 const finalTotal = computed(() => {
     return Math.max(
         subtotal.value + deliveryPrice.value - promoDiscount.value,
@@ -196,39 +194,29 @@ const schedulePromocodeRecalculation = () => {
     }, 700);
 };
 
-const updateBascet = () => {
-    count.value = 0;
-    subtotal.value = 0;
-    parcelWeightGrams.value = 0;
+const updateBascet = (payload = {}) => {
+    if (
+        typeof payload.count === "number" ||
+        typeof payload.cart_summ === "number" ||
+        typeof payload.parcel_weight_grams === "number"
+    ) {
+        count.value = payload.count ?? count.value;
+        subtotal.value = payload.cart_summ ?? subtotal.value;
+        parcelWeightGrams.value =
+            payload.parcel_weight_grams ?? parcelWeightGrams.value;
+    } else {
+        count.value = 0;
+        subtotal.value = 0;
+        parcelWeightGrams.value = 0;
 
-    const DEFAULT_WEIGHT_GRAMS = 300;
-
-    const normalizeWeightToGrams = (weight) => {
-        const numeric = Number(weight);
-
-        if (!Number.isFinite(numeric) || numeric <= 0) {
-            return DEFAULT_WEIGHT_GRAMS;
+        for (const item of bascetList.value) {
+            const quantity = Number(item.quantity) || 0;
+            count.value += quantity;
+            subtotal.value += quantity * Number(item.price);
         }
 
-        // If weight looks like kilograms (e.g. 0.7, 3), convert to grams.
-        if (numeric < 50) {
-            return Math.round(numeric * 1000);
-        }
-
-        return Math.round(numeric);
-    };
-
-    for (const item of bascetList.value) {
-        const quantity = Number(item.quentity ?? item.quantity) || 0;
-        const itemWeight = item?.tovar_content?.weight;
-
-        count.value += quantity;
-        subtotal.value += quantity * Number(item.price);
-        parcelWeightGrams.value +=
-            normalizeWeightToGrams(itemWeight) * quantity;
+        parcelWeightGrams.value = payload.parcel_weight_grams ?? 0;
     }
-
-    console.log("Parcel weight (g):", parcelWeightGrams.value);
 
     syncCounterInHeader();
 
@@ -266,7 +254,6 @@ const recalculatePromocode = () => {
 };
 
 const onDeliveryChange = (payload) => {
-    console.log("Delivery change payload:", payload);
     deliveryData.value = {
         deliveryMethod: payload?.deliveryMethod || "",
         transportCompany: payload?.transportCompany || null,
@@ -294,40 +281,7 @@ const onDeliveryChange = (payload) => {
         : 0;
 };
 
-const calcDeliveryPrice = () => {
-    if (
-        bascetInfo.city != "" &&
-        bascetInfo.street != "" &&
-        bascetInfo.home != "" &&
-        bascetInfo.postindex != ""
-    ) {
-        if (subtotal.value > 3000) {
-            deliveryPrice.value = 0;
-            return;
-        }
-
-        axios
-            .get("/delivery_calc", {
-                params: {
-                    city: bascetInfo.city,
-                    street: bascetInfo.street,
-                    home: bascetInfo.home,
-                    postindex: bascetInfo.postindex,
-                    price: subtotal.value,
-                },
-            })
-            .then((response) => {
-                deliveryPrice.value = parseFloat(response.data.pricing_total);
-                console.log(deliveryPrice.value);
-                console.log(response.data);
-            })
-            .catch((error) => console.log(error));
-    }
-};
-
 const sendBascet = async () => {
-    console.log(deliveryMethod.value);
-
     errorList.value = [];
 
     if (promoApplied.value && promoDirty.value && appliedPromoCode.value) {
@@ -395,24 +349,18 @@ const sendBascet = async () => {
             },
             items: bascetList.value.map((item) => ({
                 product_sku: item.product_sku,
-                quantity: Number(item.quantity ?? item.quentity) || 1,
+                quantity: Number(item.quantity) || 1,
             })),
         };
 
         const response = await cartApi.checkout(formData);
-        console.log(response);
         if (
             response.pay_info != null &&
             response.pay_info.confirmation &&
             response.pay_info.confirmation.confirmation_url !== undefined
         ) {
-            console.log(response.pay_info);
-
-            // document.location.href =
-            //     response.pay_info.confirmation.confirmation_url;
             document.location.href = "/bascet/thencs";
         } else {
-            console.log(response.pay_info);
             document.location.href = "/bascet/thencs";
         }
     } catch (error) {
@@ -430,8 +378,6 @@ const sendBascet = async () => {
         } else {
             errorList.value.push("Произошла ошибка при оформлении заказа.");
         }
-
-        console.log(error);
     } finally {
         loadet.value = false;
     }
@@ -442,7 +388,7 @@ const updateItem = (item) => {
         .updateCartItem({
             _token: token,
             product_sku: item.product_sku,
-            quantity: Number(item.quentity),
+            quantity: Number(item.quantity),
         })
         .then(() => {
             syncCounterInHeader();
@@ -451,7 +397,7 @@ const updateItem = (item) => {
 };
 
 const changeItemQuantity = (item, delta) => {
-    item.quentity = Math.max(1, Number(item.quentity) + delta);
+    item.quantity = Math.max(1, Number(item.quantity) + delta);
     updateBascet();
     updateItem(item);
 };
@@ -477,7 +423,6 @@ const deleteElement = (item, index) => {
             product_sku: item.product_sku,
         })
         .then(() => {
-            item.quentity = 0;
             bascetList.value.splice(index, 1);
             updateBascet();
         })
@@ -507,9 +452,12 @@ onMounted(() => {
     cartApi
         .getCart()
         .then((data) => {
-            bascetList.value = data.position;
-            console.log(bascetList.value);
-            updateBascet();
+            bascetList.value = data.position || [];
+            updateBascet({
+                count: data.count,
+                cart_summ: data.cart_summ,
+                parcel_weight_grams: data.parcel_weight_grams,
+            });
             show_bascet.value = true;
             syncCounterInHeader();
         })

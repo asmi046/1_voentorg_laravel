@@ -15,15 +15,17 @@ class ShopCartControllerTest extends TestCase
 
     private string $sku;
 
+    private Product $product;
+
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->setUpShopSession();
 
-        $product = Product::factory()->create(['weight' => 1]);
+        $this->product = Product::factory()->create(['weight' => 1]);
         $this->sku = ProductPrices::factory()->create([
-            'product_id' => $product->id,
+            'product_id' => $this->product->id,
             'sku' => 'API-SKU-1',
             'price' => 1500,
         ])->sku;
@@ -36,7 +38,26 @@ class ShopCartControllerTest extends TestCase
         $response->assertOk();
         $response->assertJsonPath('success', true);
         $response->assertJsonPath('data.count', 0);
-        $response->assertJsonPath('data.items', []);
+        $response->assertJsonPath('data.position', []);
+    }
+
+    public function test_position_includes_product_data(): void
+    {
+        $this->postJson('/shop/cart/add', [
+            'product_sku' => $this->sku,
+            'quantity' => 1,
+        ]);
+
+        $response = $this->getJson('/shop/cart');
+
+        $response->assertOk();
+        $response->assertJsonPath('data.position.0.product_sku', $this->sku);
+        $response->assertJsonPath('data.position.0.quantity', 1);
+        $response->assertJsonPath('data.position.0.price', 1500);
+        $response->assertJsonPath('data.position.0.product.title', $this->product->title);
+        $response->assertJsonPath('data.position.0.product.slug', $this->product->slug);
+        $response->assertJsonPath('data.position.0.product.img', $this->product->img);
+        $response->assertJsonPath('data.position.0.variant.sku', $this->sku);
     }
 
     public function test_add_item_to_cart(): void
@@ -129,7 +150,7 @@ class ShopCartControllerTest extends TestCase
 
         $response->assertOk();
         $response->assertJsonPath('data.count', 0);
-        $response->assertJsonPath('data.items', []);
+        $response->assertJsonPath('data.position', []);
     }
 
     public function test_delete_nonexistent_item_returns_404(): void

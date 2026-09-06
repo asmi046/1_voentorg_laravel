@@ -33,22 +33,37 @@
                 <td><strong>Город:</strong></td>
                 <td>{{ $delivery->city ?: '—' }}</td>
             </tr>
-            <tr>
-                <td><strong>ID пункта выдачи:</strong></td>
-                <td>{{ $delivery->pickup_point_id ?: '—' }}</td>
-            </tr>
-            <tr>
-                <td><strong>Адрес пункта выдачи:</strong></td>
-                <td>{{ $delivery->pickup_point_address ?: '—' }}</td>
-            </tr>
-            <tr>
-                <td><strong>Адрес доставки:</strong></td>
-                <td>{{ $delivery->delivery_address ?: '—' }}</td>
-            </tr>
-            <tr>
-                <td><strong>Квартира:</strong></td>
-                <td>{{ $delivery->apartment ?: '—' }}</td>
-            </tr>
+
+            @if($delivery->method === 'pickup_point')
+                <tr>
+                    <td><strong>ID пункта выдачи:</strong></td>
+                    <td>{{ $delivery->pickup_point_id ?: '—' }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Адрес пункта выдачи:</strong></td>
+                    <td>{{ $delivery->pickup_point_address ?: '—' }}</td>
+                </tr>
+            @endif
+
+            @if($delivery->method === 'courier')
+                <tr>
+                    <td><strong>Улица:</strong></td>
+                    <td>{{ $delivery->street ?: '—' }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Дом:</strong></td>
+                    <td>{{ $delivery->house ?: '—' }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Квартира:</strong></td>
+                    <td>{{ $delivery->apartment ?: '—' }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Адрес доставки:</strong></td>
+                    <td>{{ $delivery->delivery_address ?: '—' }}</td>
+                </tr>
+            @endif
+
             @if($delivery->tariff)
                 <tr>
                     <td><strong>Тариф:</strong></td>

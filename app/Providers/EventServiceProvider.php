@@ -2,11 +2,8 @@
 
 namespace App\Providers;
 
-use App\Events\BascetOrderCreated;
 use App\Events\ShopOrderCreated;
 use App\Listeners\RegisterCdekOrder;
-use App\Listeners\SendBascetMailListener;
-use App\Listeners\SendBascetToTelegramListener;
 use App\Listeners\SendShopOrderMailListener;
 use App\Listeners\SendShopOrderToTelegramListener;
 use App\Listeners\UploadFileListener;
@@ -29,11 +26,6 @@ class EventServiceProvider extends ServiceProvider
 
         UploadFileEvent::class => [
             UploadFileListener::class,
-        ],
-
-        BascetOrderCreated::class => [
-            SendBascetToTelegramListener::class,
-            SendBascetMailListener::class,
         ],
 
         ShopOrderCreated::class => [

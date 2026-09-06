@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Orchid\Screen\AsSource;
 
 class ShopCartItem extends Model
@@ -35,8 +36,22 @@ class ShopCartItem extends Model
         return $this->belongsTo(ProductPrices::class, 'product_sku', 'sku');
     }
 
-    public function product(): BelongsTo
+    /**
+     * Связанный Product через таблицу product_prices.
+     *
+     * Цепочка: shop_cart_items.product_sku -> product_prices.sku -> product_prices.product_id -> products.id.
+     * Это корректно для всех вариантов (включая размеры), в отличие от belongsTo(Product::class, 'product_sku', 'sku'),
+     * который срабатывает только когда sku варианта случайно совпадает с Product.sku.
+     */
+    public function product(): HasOneThrough
     {
-        return $this->belongsTo(Product::class, 'product_sku', 'sku');
+        return $this->hasOneThrough(
+            Product::class,
+            ProductPrices::class,
+            'sku',
+            'id',
+            'product_sku',
+            'product_id',
+        );
     }
 }

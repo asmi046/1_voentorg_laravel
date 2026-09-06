@@ -16,7 +16,7 @@
     <div class="tovar_list">
         <CartItemRow
             v-for="(item, index) in bascetList"
-            :key="item.product_id"
+            :key="item.product_sku"
             :item="item"
             :index="index"
             :no-photo-url="noPhotoUrl"
@@ -35,7 +35,7 @@
 <script setup>
 import CartItemRow from "./CartItemRow.vue";
 
-defineProps({
+const props = defineProps({
     bascetList: {
         type: Array,
         required: true,
@@ -45,6 +45,8 @@ defineProps({
         required: true,
     },
 });
+
+console.log(props.bascetList);
 
 defineEmits(["clear-bascet", "change-item-quantity", "delete-element"]);
 </script>

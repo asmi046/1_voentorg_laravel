@@ -157,26 +157,40 @@ class ShopCartController extends Controller
     private function cartResponse(\App\Models\ShopCart $cart, array $extra = []): JsonResponse
     {
         $items = $cart->items->map(function ($item) {
+            $priceRow = $item->productPrice;
+            $product = $item->product;
+
             return [
                 'id' => $item->id,
                 'product_sku' => $item->product_sku,
-                'product_id' => $item->product?->id,
+                'product_id' => $product?->id,
                 'quantity' => $item->quantity,
-                'quentity' => $item->quantity,
-                'price' => $item->price_snapshot ?? $item->productPrice?->price ?? 0,
-                'tovar_content' => $item->product ? [
-                    'img' => $item->product->img,
-                    'slug' => $item->product->slug,
-                    'title' => $item->product->title,
-                    'weight' => $item->product->weight,
+                'price' => (float) ($item->price_snapshot ?? $priceRow?->price ?? 0),
+                'old_price' => $priceRow?->old_price !== null
+                    ? (float) $priceRow->old_price
+                    : null,
+                'product' => $product ? [
+                    'id' => $product->id,
+                    'sku' => $product->sku,
+                    'title' => $product->title,
+                    'slug' => $product->slug,
+                    'img' => $product->img,
+                    'weight' => $product->weight,
+                    'length' => $product->length,
+                    'width' => $product->width,
+                    'height' => $product->height,
                 ] : null,
-                'tovar_data' => [
-                    'price' => $item->productPrice?->price ?? 0,
-                ],
+                'variant' => $priceRow ? [
+                    'id' => $priceRow->id,
+                    'sku' => $priceRow->sku,
+                    'value' => $priceRow->value,
+                    'ext_id' => $priceRow->ext_id,
+                ] : null,
+                'weight_grams' => $item->raw_data['weight_grams'] ?? null,
             ];
         })->all();
 
-        return response()->json(array_merge([
+        return response()->json([
             'success' => true,
             'data' => array_merge([
                 'count' => $this->cartService->getTotalQuantity($cart),
@@ -184,6 +198,22 @@ class ShopCartController extends Controller
                 'parcel_weight_grams' => $this->cartService->calculateParcelWeight($cart),
                 'position' => $items,
             ], $extra),
-        ], []));
+        ]);
+    }
+
+    /**
+     * Страница корзины /bascet.
+     */
+    public function page()
+    {
+        return view('cart.cart');
+    }
+
+    /**
+     * Страница «Спасибо за покупку» после успешной оплаты.
+     */
+    public function thencsPage()
+    {
+        return view('cart.thencs');
     }
 }
