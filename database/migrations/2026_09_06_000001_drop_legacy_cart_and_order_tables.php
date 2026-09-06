@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 /**
@@ -15,10 +14,19 @@ return new class extends Migration
 {
     public function up(): void
     {
-        foreach (['carts', 'orders', 'order_product', 'order_products'] as $table) {
-            if (Schema::hasTable($table)) {
-                Schema::drop($table);
+        // Дочерние таблицы ссылаются на orders.id через FK — отключаем проверку,
+        // иначе СУБД запретит дроп parent-таблицы. Laravel делает это
+        // кросс-платформенно (MySQL / PostgreSQL / SQLite).
+        Schema::disableForeignKeyConstraints();
+
+        try {
+            foreach (['order_product', 'order_products', 'carts', 'orders'] as $table) {
+                if (Schema::hasTable($table)) {
+                    Schema::drop($table);
+                }
             }
+        } finally {
+            Schema::enableForeignKeyConstraints();
         }
     }
 
