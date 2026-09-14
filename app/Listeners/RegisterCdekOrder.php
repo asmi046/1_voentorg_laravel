@@ -4,9 +4,10 @@ namespace App\Listeners;
 
 use App\Events\ShopOrderCreated;
 use App\Services\CdekOrderBuilder;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 
-class RegisterCdekOrder
+class RegisterCdekOrder implements ShouldQueue
 {
     public function __construct(
         private CdekOrderBuilder $builder
@@ -29,6 +30,7 @@ class RegisterCdekOrder
                     'cdek_uuid' => $result['entity']['uuid'],
                     'cdek_number' => $result['entity']['cdek_number'] ?? null,
                 ]);
+                Log::channel('sdek')->info( $result );
 
                 $order->update([
                     'external_order_id' => $result['entity']['uuid'],
