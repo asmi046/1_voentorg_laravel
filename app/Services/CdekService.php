@@ -285,6 +285,50 @@ class CdekService
             return null;
         }
 
+        $body = $response->json();
+
+        Log::channel('sdek')->info('CDEK register order response', [
+            'order_payload' => $payload,
+            'response' => $body,
+        ]);
+
+        return $body;
+    }
+
+    public function getOrder(string $uuid): ?array
+    {
+        $token = $this->getAccessToken();
+        if (! $token) {
+            return null;
+        }
+
+        try {
+            $response = Http::withToken($token)
+                ->acceptJson()
+                ->get($this->baseUrl().'/orders/'.$uuid);
+        } catch (ConnectionException $e) {
+            Log::channel('sdek')->error('CDEK get order connection error: '.$e->getMessage());
+
+            return null;
+        }
+
+        if ($response->status() === 401) {
+            $token = $this->getAccessToken(true);
+            if (! $token) {
+                return null;
+            }
+
+            $response = Http::withToken($token)
+                ->acceptJson()
+                ->get($this->baseUrl().'/orders/'.$uuid);
+        }
+
+        if (! $response->successful()) {
+            Log::channel('sdek')->error('CDEK get order failed: '.$response->body());
+
+            return null;
+        }
+
         return $response->json();
     }
 }

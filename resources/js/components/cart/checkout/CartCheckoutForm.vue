@@ -30,6 +30,7 @@
             <DeliverySelector
                 v-model="deliveryType"
                 :parcel-weight-grams="parcelWeightGrams"
+                :parcel-cost="subtotal"
                 @change="onDeliveryChange"
             />
             <br />
@@ -146,6 +147,10 @@ defineProps({
     parcelWeightGrams: {
         type: Number,
         required: true,
+    },
+    subtotal: {
+        type: Number,
+        default: 0,
     },
 });
 const assetUrl = window.Laravel?.assetUrl || "/";

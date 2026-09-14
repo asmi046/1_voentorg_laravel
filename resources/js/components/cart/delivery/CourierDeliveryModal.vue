@@ -87,6 +87,12 @@
                         <strong>{{ formattedDeliveryPrice }}</strong>
                     </div>
 
+                    <pre
+                        v-if="breakdownText"
+                        class="courier_delivery_modal__breakdown"
+                        >{{ breakdownText }}</pre
+                    >
+
                     <p
                         v-if="deliveryDateText"
                         class="courier_delivery_modal__date"
@@ -120,6 +126,10 @@ import SearchableCombobox from "../shared/SearchableCombobox.vue";
 import * as deliveryApi from "@/api/delivery";
 import { useDeliveryCities } from "@/composables/useDeliveryCities";
 import { formatPrice, formatDeliveryDateRange } from "@/composables/useDeliveryFormatters";
+import {
+    calculateDeliveryCost,
+    formatDeliveryBreakdown,
+} from "@/composables/useDeliverySurcharges";
 
 const props = defineProps({
     modelValue: {
@@ -127,6 +137,10 @@ const props = defineProps({
         default: false,
     },
     parcelWeightGrams: {
+        type: Number,
+        default: 0,
+    },
+    parcelCost: {
         type: Number,
         default: 0,
     },
@@ -144,7 +158,7 @@ const {
 const street = ref("");
 const house = ref("");
 const apartment = ref("");
-const deliveryPrice = ref(0);
+const baseDeliveryPrice = ref(0);
 const selectedTariff = ref(null);
 const tariffLoading = ref(false);
 const tariffError = ref("");
@@ -162,7 +176,21 @@ const canSelect = computed(
         selectedTariff.value !== null,
 );
 
+const deliveryBreakdown = computed(() => {
+    if (!selectedTariff.value || baseDeliveryPrice.value <= 0) {
+        return null;
+    }
+    return calculateDeliveryCost(baseDeliveryPrice.value, props.parcelCost);
+});
+
+const deliveryPrice = computed(() => deliveryBreakdown.value?.total ?? 0);
+
 const formattedDeliveryPrice = computed(() => formatPrice(deliveryPrice.value));
+
+const breakdownText = computed(() => {
+    const breakdown = deliveryBreakdown.value;
+    return breakdown ? formatDeliveryBreakdown(breakdown) : '';
+});
 
 const deliveryDateText = computed(() => {
     return formatDeliveryDateRange(selectedTariff.value?.delivery_date_range);
@@ -170,7 +198,7 @@ const deliveryDateText = computed(() => {
 
 const clearTariffResult = () => {
     selectedTariff.value = null;
-    deliveryPrice.value = 0;
+    baseDeliveryPrice.value = 0;
     tariffError.value = "";
 };
 
@@ -198,7 +226,7 @@ const calculateCourierTariff = async () => {
         const offer = data?.best ?? null;
         selectedTariff.value = offer?.raw || null;
         const sum = Number(offer?.price ?? offer?.raw?.delivery_sum ?? 0);
-        deliveryPrice.value = Number.isFinite(sum) ? sum : 0;
+        baseDeliveryPrice.value = Number.isFinite(sum) ? sum : 0;
     } catch (error) {
         if (localRequestId !== requestId) {
             return;

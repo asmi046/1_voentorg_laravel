@@ -36,6 +36,7 @@
             :error-list="errorList"
             :loadet="loadet"
             :parcel-weight-grams="parcelWeightGrams"
+            :subtotal="subtotal"
             @apply-promocode="applyPromocode"
             @delivery-change="onDeliveryChange"
             @submit-order="sendBascet"

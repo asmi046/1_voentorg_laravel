@@ -20,6 +20,7 @@
         <CourierDeliveryModal
             v-model="courierModalVisible"
             :parcel-weight-grams="parcelWeightGrams"
+            :parcel-cost="parcelCost"
             @select="onCourierSelected"
         />
     </div>
@@ -35,6 +36,10 @@ import {
     toNumber,
     formatDeliveryDateRange,
 } from "@/composables/useDeliveryFormatters";
+import {
+    calculateDeliveryCost,
+    formatDeliveryBreakdown,
+} from "@/composables/useDeliverySurcharges";
 
 const props = defineProps({
     modelValue: {
@@ -42,6 +47,10 @@ const props = defineProps({
         default: "",
     },
     parcelWeightGrams: {
+        type: Number,
+        default: 0,
+    },
+    parcelCost: {
         type: Number,
         default: 0,
     },
@@ -83,7 +92,7 @@ const BASE_OPTIONS = [
 
 const getNumericPrice = toNumber;
 
-const resolvePickupPointPrice = (point) => {
+const resolvePickupPointBasePrice = (point) => {
     const rawTariff = pickupPointTariff.value?.raw || pickupPointTariff.value;
 
     if (rawTariff?.delivery_sum !== undefined) {
@@ -118,6 +127,28 @@ const resolvePickupPointPrice = (point) => {
 
     return null;
 };
+
+const resolvePickupPointPrice = (point) => {
+    const base = resolvePickupPointBasePrice(point);
+
+    if (base === null) {
+        return null;
+    }
+
+    return calculateDeliveryCost(base, props.parcelCost).total;
+};
+
+const pickupPointBreakdown = computed(() => {
+    const base = resolvePickupPointBasePrice(selectedPoint.value);
+
+    if (base === null) {
+        return '';
+    }
+
+    return formatDeliveryBreakdown(
+        calculateDeliveryCost(base, props.parcelCost),
+    );
+});
 
 const calculateDeliveryPriceStub = async (deliveryType, city = null) => {
     if (deliveryType === "pickup") {
@@ -187,6 +218,10 @@ const pickupPointDescription = computed(() => {
         lines.push(deliveryDateText);
     }
 
+    if (pickupPointBreakdown.value) {
+        lines.push(pickupPointBreakdown.value);
+    }
+
     return lines.join("\n");
 });
 
@@ -220,26 +255,50 @@ const courierDescription = computed(() => {
     return lines.join("\n");
 });
 
+const courierBasePrice = computed(() =>
+    getNumericPrice(selectedCourier.value?.deliveryPrice),
+);
+
+const resolveCourierPrice = (base) => {
+    if (base === null) {
+        return null;
+    }
+
+    return calculateDeliveryCost(base, props.parcelCost).total;
+};
+
+const courierBreakdown = computed(() => {
+    const base = courierBasePrice.value;
+
+    if (base === null) {
+        return '';
+    }
+
+    return formatDeliveryBreakdown(
+        calculateDeliveryCost(base, props.parcelCost),
+    );
+});
+
 const options = computed(() => {
     return BASE_OPTIONS.map((option) => {
         const isPickupPoint = option.type === "pickup_point";
         const isCourier = option.type === "courier";
 
-        return {
-            ...option,
-            description: isPickupPoint
-                ? pickupPointDescription.value
-                : isCourier
-                  ? courierDescription.value
-                  : option.description,
-            price:
-                option.type === "pickup"
-                    ? 0
-                    : isPickupPoint
-                      ? resolvePickupPointPrice(selectedPoint.value)
-                      : getNumericPrice(selectedCourier.value?.deliveryPrice),
-        };
-    });
+    return {
+        ...option,
+        description: isPickupPoint
+            ? pickupPointDescription.value
+            : isCourier
+              ? courierDescription.value
+              : option.description,
+        price:
+            option.type === "pickup"
+                ? 0
+                : isPickupPoint
+                  ? resolvePickupPointPrice(selectedPoint.value)
+                  : resolveCourierPrice(courierBasePrice.value),
+    };
+});
 });
 
 const buildDeliveryPayload = (option, overrides = {}) => {

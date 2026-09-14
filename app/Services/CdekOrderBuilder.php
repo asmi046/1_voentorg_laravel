@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\ShopOrder;
+use Illuminate\Support\Facades\Log;
 
 class CdekOrderBuilder
 {
@@ -22,11 +23,11 @@ class CdekOrderBuilder
 
         $payload = [
             'type' => '1',
-            'number' => 'ORD-'.$order->id,
+            'number' => 'ORD-'.$order->id.'-'.now()->format('Hi'),
             'tariff_code' => $this->getTariffCode($delivery),
             'comment' => "Заказ #{$order->id}. {$order->name}. {$order->phone}",
-            'shipment_point' => config('cdek.shipment_point'),
-            'from_location' => $this->buildFromLocation(),
+            'shipment_point' => config('cdek.shipment_point') ?: null,
+            'from_location' => config('cdek.shipment_point') ? null : $this->buildFromLocation(),
             'sender' => $this->buildSender(),
             'recipient' => $this->buildRecipient($order, $delivery),
             'packages' => $this->buildPackages($order),
@@ -52,6 +53,8 @@ class CdekOrderBuilder
         if (! $payload) {
             return null;
         }
+
+        Log::channel('sdek')->info("Payload", $payload );
 
         return $this->cdekService->registerOrder($payload);
     }
@@ -149,7 +152,7 @@ class CdekOrderBuilder
                 'weight' => round($weight, 3),
                 'amount' => $item->quantity,
                 'payment' => [
-                    'value' => (float) $item->price * $item->quantity,
+                    'value' => 0,
                     'vat_sum' => 0,
                 ],
             ];

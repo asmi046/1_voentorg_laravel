@@ -302,6 +302,19 @@
     font-size: 16px;
 }
 
+.courier_delivery_modal__breakdown {
+    margin: 8px 12px 0;
+    padding: 10px 12px;
+    background-color: #f9fafb;
+    border: 1px dashed #d6dbe1;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #4a5158;
+    white-space: pre-line;
+}
+
 .courier_delivery_modal__date {
     margin: 10px 0 0;
     font-size: 12px;
