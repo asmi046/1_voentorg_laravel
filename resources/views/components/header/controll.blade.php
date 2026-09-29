@@ -2,7 +2,8 @@
     <div class="container">
         <a href="{{ route('home') }}" class="logo"></a>
         <form role="search" method="get" class="searchform" id="searchform" action="{{ route('show_search_page') }}">
-            <input type="text" value="{{ old('search_str') }}" name="search_str" id="search_str" />
+            <input type="text" value="{{ old('search_str') }}" placeholder="Поиск..." name="search_str"
+                id="search_str" />
             <button type="submit"></button>
         </form>
 
@@ -26,4 +27,13 @@
 
 
     </div>
+
+    <div class="container container-mobile">
+        <form role="search" method="get" class="searchform" id="searchform" action="{{ route('show_search_page') }}">
+            <input type="text" value="{{ old('search_str') }}" placeholder="Поиск..." name="search_str"
+                id="search_str" />
+            <button type="submit"></button>
+        </form>
+    </div>
+
 </section>
