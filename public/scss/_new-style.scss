@@ -22,6 +22,7 @@ $redcolor: #ed1c24;
     }
 }
 
+.header_info .container-mobile,
 .container-mobile {
     display: none;
 }
@@ -392,6 +393,10 @@ ul {
     margin-bottom: auto;
 }
 
+.header_info .container-mobile {
+    display: none;
+}
+
 .logo {
     width: 200px;
     height: 70px;
@@ -466,7 +471,7 @@ ul {
         display: none;
     }
 
-    .container-mobile {
+    .header_info .container-mobile {
         display: flex;
         .searchform {
             display: flex;
