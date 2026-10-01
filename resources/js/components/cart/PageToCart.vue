@@ -23,6 +23,7 @@
                     :sku="sku"
                     :skuid="id_sku"
                     :bascet="'/bascet'"
+                    :disabled="!hasAvailability"
                 ></to-bascet-btn-page>
             </div>
 
@@ -34,7 +35,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import ToFavoritesBtn from "./ToFavoritesBtn.vue";
 import ToBascetBtnPage from "./ToBascetBtnPage.vue";
 import PriceSelector from "./PriceSelector.vue";
@@ -52,6 +53,10 @@ export default {
         let oldprice = ref(props.prices[0].old_price);
         let id_sku = ref(props.prices[0].id);
 
+        const hasStock = (item) => Number(item?.count) > 0;
+
+        const hasAvailability = computed(() => props.prices.some(hasStock));
+
         const onSelect = (index) => {
             price.value = props.prices[index].price;
             oldprice.value = props.prices[index].old_price;
@@ -65,6 +70,7 @@ export default {
             oldprice,
             sku,
             id_sku,
+            hasAvailability,
             onSelect,
         };
     },

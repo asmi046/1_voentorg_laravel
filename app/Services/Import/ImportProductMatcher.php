@@ -27,6 +27,20 @@ class ImportProductMatcher
     {
         $productNorm = $this->normalizer->normalize($product->title);
 
+        if ($product->sku && isset($index->byBarcode[$product->sku])) {
+            $hit = $index->byBarcode[$product->sku];
+            $groupKey = $hit['base_norm'];
+            $offers = $hit['has_modifier']
+                ? ($index->byNormBase[$groupKey] ?? [$hit])
+                : [$hit];
+            return new MatchResult(
+                offers: $offers,
+                method: 'barcode',
+                score: 1.0,
+                matchedBaseName: $hit['base_name'],
+            );
+        }
+
         if ($product->external_id && isset($index->byExternalId[$product->external_id])) {
             $hit = $index->byExternalId[$product->external_id];
             $groupKey = $hit['base_norm'];

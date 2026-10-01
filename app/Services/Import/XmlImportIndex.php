@@ -65,27 +65,27 @@ class XmlImportIndex
             }
 
             $split = $this->extractor->split($title);
-            if ($split['base_name'] === '' || $split['base_name'] === $title && $split['modifier'] === '') {
-                $this->unparsed++;
+            $hasModifier = $split['modifier'] !== '' && $split['base_name'] !== $title;
 
-                continue;
-            }
-
-            $normBase = $this->normalizer->normalize($split['base_name']);
+            $normBase = $hasModifier
+                ? $this->normalizer->normalize($split['base_name'])
+                : $this->normalizer->normalize($title);
 
             $offer = [
-                'barcode' => $barcode,
-                'modifier' => $split['modifier'],
-                'ext_id' => $extId,
-                'category_id' => $catId,
-                'base_name' => $split['base_name'],
-                'base_norm' => $normBase,
-                'raw_title' => $title,
+                'barcode'      => $barcode,
+                'modifier'     => $hasModifier ? $split['modifier'] : '',
+                'ext_id'       => $extId,
+                'category_id'  => $catId,
+                'base_name'    => $hasModifier ? $split['base_name'] : $title,
+                'base_norm'    => $normBase,
+                'raw_title'    => $title,
+                'has_modifier' => $hasModifier,
             ];
 
-            if ($normBase !== '') {
-                $this->byNormBase[$normBase][] = $offer;
+            if (!$hasModifier) {
+                $this->unparsed++;
             }
+
             if ($barcode !== '') {
                 $this->byBarcode[$barcode] = $offer;
             }
@@ -94,6 +94,9 @@ class XmlImportIndex
             }
             if ($extId !== '') {
                 $this->byExternalId[$extId] = $offer;
+            }
+            if ($hasModifier && $normBase !== '') {
+                $this->byNormBase[$normBase][] = $offer;
             }
         }
 

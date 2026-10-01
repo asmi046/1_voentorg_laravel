@@ -1,6 +1,12 @@
 <template>
+    <span
+        v-if="disabled"
+        class="button fill_btn button--disabled"
+        aria-disabled="true"
+        >Нет в наличии</span
+    >
     <a
-        v-if="!inBascet"
+        v-else-if="!inBascet"
         href="#"
         @click.prevent="addToBascet"
         class="button fill_btn"
@@ -21,6 +27,10 @@ export default {
         sku: String,
         skuid: Number,
         bascet: String,
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     setup(props) {
@@ -39,6 +49,9 @@ export default {
         };
 
         const addToBascet = () => {
+            if (props.disabled) {
+                return;
+            }
             cartApi
                 .addToCart({
                     product_sku: props.sku,

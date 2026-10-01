@@ -13,14 +13,15 @@ use Illuminate\Console\Command;
 
 class ImportMatchOffers extends Command
 {
-    protected $signature = 'import:match-offers
-                            {xml : Путь к import0_1.xml}
+protected $signature = 'import:match-offers
+                            {xml=public/shopbase/webdata/import0_1.xml : Путь к import0_1.xml}
                             {--dry-run : Только отчёт, без записи в БД}
                             {--threshold=0.7 : Минимальный score для fuzzy-матча}
                             {--auto-accept=0.85 : Score, при котором матч считается уверенным}
                             {--only-category= : Внешний UUID (1С) категории из XML}
                             {--limit= : Ограничить число обрабатываемых товаров}
-                            {--only-empty : Обрабатывать только товары без штрихкодов в product_prices}';
+                            {--only-empty : Обрабатывать только товары без штрихкодов в product_prices}
+                            {--show-all : Показывать все строки в таблицах отчёта (без обрезки до 50/100)}';
 
     protected $description = 'Сопоставление офферов из CommerceML import0_1.xml с существующими products';
 
@@ -76,6 +77,7 @@ class ImportMatchOffers extends Command
         $stats = [
             'exact' => 0,
             'external_id' => 0,
+            'barcode' => 0,
             'fuzzy_auto' => 0,
             'fuzzy_ambiguous' => 0,
             'not_found' => 0,
@@ -88,6 +90,7 @@ class ImportMatchOffers extends Command
 
         $conflicts = [];
         $ambiguous = [];
+        $notFound  = [];
 
         $query = Product::query()->with(['product_prices', 'tovar_categories']);
 
@@ -108,7 +111,7 @@ class ImportMatchOffers extends Command
         $bar2->setRedrawFrequency(50);
         $bar2->start();
 
-        $query->chunkById(200, function ($products) use (&$stats, &$conflicts, &$ambiguous, $matcher, $index, $limit, &$count, $dryRun, $bar2) {
+        $query->chunkById(200, function ($products) use (&$stats, &$conflicts, &$ambiguous, &$notFound, $matcher, $index, $limit, &$count, $dryRun, $bar2) {
             foreach ($products as $product) {
                 if ($limit !== null && $count >= $limit) {
                     return false;
@@ -124,7 +127,11 @@ class ImportMatchOffers extends Command
 
                 if ($result === null) {
                     $stats['not_found']++;
-
+                    $notFound[] = [
+                        'id'    => $product->id,
+                        'sku'   => $product->sku,
+                        'title' => $product->title,
+                    ];
                     continue;
                 }
 
@@ -132,6 +139,8 @@ class ImportMatchOffers extends Command
                     $stats['exact']++;
                 } elseif ($result->method === 'external_id') {
                     $stats['external_id']++;
+                } elseif ($result->method === 'barcode') {
+                    $stats['barcode']++;
                 } elseif ($result->score >= $matcher->fuzzyThreshold()) {
                     $stats['fuzzy_auto']++;
                 } else {
@@ -173,7 +182,7 @@ class ImportMatchOffers extends Command
             $this->warn('Конфликты штрихкодов ('.count($conflicts).'):');
             $this->table(
                 ['product_id', 'product_title', 'sku', 'modifier', 'existing_product_id'],
-                array_slice($conflicts, 0, 50),
+                $this->option('show-all') ? $conflicts : array_slice($conflicts, 0, 50),
             );
         }
 
@@ -182,7 +191,16 @@ class ImportMatchOffers extends Command
             $this->warn('Сомнительные матчи ('.count($ambiguous).'):');
             $this->table(
                 ['product_id', 'product_title', 'matched_base', 'score', 'offers_count'],
-                array_slice($ambiguous, 0, 50),
+                $this->option('show-all') ? $ambiguous : array_slice($ambiguous, 0, 50),
+            );
+        }
+
+        if ($notFound) {
+            $this->newLine();
+            $this->warn('Не найдено в выгрузке ('.count($notFound).'):');
+            $this->table(
+                ['id', 'sku', 'title'],
+                $this->option('show-all') ? $notFound : array_slice($notFound, 0, 100),
             );
         }
 
