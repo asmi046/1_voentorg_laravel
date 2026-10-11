@@ -1,10 +1,10 @@
 @php
-    if (isset($category)){
+    if (isset($category)) {
         if (isset($category->parent)) {
             $main_cat = $category->parent;
             $sub_cat = $category->id;
         } else {
-            $main_cat = $category->id ;
+            $main_cat = $category->id;
             $sub_cat = 0;
         }
     } else {
@@ -12,12 +12,13 @@
         $sub_cat = 0;
     }
 
-
 @endphp
 <div class ="cat_navigation">
     <h2>Категории</h2>
     <ul>
-        @foreach ($all_cat as $item)
+        @dd($all_cat);
+
+        {{-- @foreach ($all_cat as $item)
             <li class="cat-item">
                 <a href="{{ route('category', $item['main']->slug) }}"
                     @class(['active' => $main_cat == $item['main']->id])
@@ -39,7 +40,7 @@
                     @endif
                 </ul>
             </li>
-        @endforeach
+        @endforeach --}}
 
     </ul>
 
