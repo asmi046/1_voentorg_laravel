@@ -16,31 +16,28 @@
 <div class ="cat_navigation">
     <h2>Категории</h2>
     <ul>
-        @dd($all_cat);
 
-        {{-- @foreach ($all_cat as $item)
+        @foreach ($all_cat as $item)
+            @continue(!isset($item['main']))
             <li class="cat-item">
                 <a href="{{ route('category', $item['main']->slug) }}"
-                    @class(['active' => $main_cat == $item['main']->id])
-                    >{{$item['main']->title}}</a>
+                    @class(['active' => $main_cat == $item['main']->id])>{{ $item['main']->title }}</a>
                 <ul class="children">
                     <li class="cat-item">
-                        <a href="{{ route('category', $item['main']->slug) }}"
-                            @class(['active' => $main_cat == $item['main']->id && $sub_cat == 0])
-                        >Смотреть все товары</a>
+                        <a href="{{ route('category', $item['main']->slug) }}" @class(['active' => $main_cat == $item['main']->id && $sub_cat == 0])>Смотреть все
+                            товары</a>
                     </li>
                     @if (!empty($item['sub']))
                         @foreach ($item['sub'] as $subitem)
                             <li class="cat-item">
                                 <a href="{{ route('category', $subitem->slug) }}"
-                                    @class(['active' => $sub_cat == $subitem->id])
-                                >{{$subitem->title_mini}}</a>
+                                    @class(['active' => $sub_cat == $subitem->id])>{{ $subitem->title_mini }}</a>
                             </li>
                         @endforeach
                     @endif
                 </ul>
             </li>
-        @endforeach --}}
+        @endforeach
 
     </ul>
 
