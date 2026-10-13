@@ -54,8 +54,6 @@ class OptionsProvider extends ServiceProvider
                 }
             }
 
-            dd($struct_cat);
-
             View::share('options', $opt);
             View::share('all_cat', $struct_cat);
             View::share('shops', $shops);
