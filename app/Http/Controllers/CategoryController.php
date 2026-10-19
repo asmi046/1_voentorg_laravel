@@ -23,6 +23,7 @@ class CategoryController extends Controller
 
         $product = $category_info
             ->category_tovars()
+            ->visibleOnSite()
             ->filter($request)
             ->paginate(16)->withQueryString();
 

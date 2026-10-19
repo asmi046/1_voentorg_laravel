@@ -10,14 +10,14 @@ class FeedController extends Controller
     public function yml_actegory($slug)
     {
         if ($slug === 'all') {
-            $catProducts = Product::all();
+            $catProducts = Product::visibleOnSite()->get();
             $categoryInfo = null;
         } else {
             $categoryInfo = Category::where('slug', $slug)->first();
             if ($categoryInfo->isDirty()) {
                 abort('404');
             }
-            $catProducts = $categoryInfo->category_tovars()->get();
+            $catProducts = $categoryInfo->category_tovars()->visibleOnSite()->get();
         }
 
         $all_categories = Category::all();

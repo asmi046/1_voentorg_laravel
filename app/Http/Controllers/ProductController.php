@@ -9,7 +9,10 @@ class ProductController extends Controller
     public function show($slug)
     {
 
-        $prosuct = Product::with('product_prices', 'product_images')->where('slug', $slug)->first();
+        $prosuct = Product::visibleOnSite()
+            ->with('product_prices', 'product_images')
+            ->where('slug', $slug)
+            ->first();
 
         if ($prosuct == null) {
             abort('404');

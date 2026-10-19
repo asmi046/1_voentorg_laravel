@@ -24,7 +24,7 @@ class SearchController extends Controller
         // ->paginate(15)->withQueryString();
 
         $searchTerms = explode(' ', $search_str);
-        $query = Product::query();
+        $query = Product::visibleOnSite();
 
         foreach ($searchTerms as $term) {
             $query->where(function ($q) use ($term) {
@@ -50,8 +50,11 @@ class SearchController extends Controller
             return $result_array;
         }
 
-        $products = Product::where('title', 'LIKE', '%'.$search_str.'%')
-            ->orWhere('description', 'LIKE', '%'.$search_str.'%')
+        $products = Product::visibleOnSite()
+            ->where(function ($query) use ($search_str) {
+                $query->where('title', 'LIKE', '%'.$search_str.'%')
+                    ->orWhere('description', 'LIKE', '%'.$search_str.'%');
+            })
             ->take(30)
             ->get();
 

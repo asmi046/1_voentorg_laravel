@@ -87,6 +87,13 @@ class ProductEditFields extends Rows
                 ->placeholder('Новинка')
                 ->horizontal(),
 
+            Switcher::make('product.show')
+                ->sendTrueOrFalse()
+                ->value(true)
+                ->title('Показывать на сайте')
+                ->placeholder('Показывать на сайте')
+                ->horizontal(),
+
             Quill::make('product.description')
                 ->title('Описание')
                 ->help('Введите описание товара')

@@ -10,7 +10,7 @@ class SiteMapController extends Controller
 {
     public function index()
     {
-        $all_product = Product::all();
+        $all_product = Product::visibleOnSite()->get();
         $all_category = Category::all();
         $all_vedomstvo = Vedomstvo::all();
 

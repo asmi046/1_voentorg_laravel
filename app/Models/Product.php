@@ -31,6 +31,7 @@ class Product extends Model
         'old_site_id',
         'hit',
         'new',
+        'show',
         'seo_title',
         'seo_description',
         'weight',
@@ -53,6 +54,15 @@ class Product extends Model
     ];
 
     protected $with = ['product_prices'];
+
+    protected $casts = [
+        'show' => 'boolean',
+    ];
+
+    public function scopeVisibleOnSite(Builder $query): Builder
+    {
+        return $query->where('show', true);
+    }
 
     public function scopeFilter(Builder $builder, QueryFilter $filter)
     {
